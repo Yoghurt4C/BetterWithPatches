@@ -1,0 +1,28 @@
+def yourMixinConfig = 'mixins.betterwithpatches.json'
+def refMapForYourConfig = 'mixins.betterwithpatches.refmap.json'
+
+def refMap = "${tasks.compileJava.temporaryDir}" + File.separator + refMapForYourConfig
+
+def mixinSrg = "${tasks.reobfJar.temporaryDir}" + File.separator + "mixins.srg"
+
+jar {
+    from refMap
+    manifest {
+        attributes([
+                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                'MixinConfigs': yourMixinConfig,
+                'FMLCorePluginContainsFMLMod': 'true',
+                "ForceLoadAsMod": true
+        ])
+    }
+}
+
+reobfJar {
+    extraSrgFiles.from(mixinSrg)
+}
+
+sourceSets {
+    main {
+        ext.refMap = refMapForYourConfig
+    }
+}
