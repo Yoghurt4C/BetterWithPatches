@@ -13,13 +13,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TileEntityMechGenerator.class)
 public abstract class TileEntityMechGeneratorMixin extends TileEntity {
-    @Shadow(remap = false) public abstract boolean verifyIntegrity();
-    @Shadow(remap = false) public abstract void updateSpeed();
-    @Shadow(remap = false) public byte runningState;
-    @Shadow(remap = false) public int overpowerTime;
-    @Shadow(remap = false) public abstract void overpower();
+    @Shadow(remap = false)
+    public abstract boolean verifyIntegrity();
 
-    @Unique private int timer = 0;
+    @Shadow(remap = false)
+    public abstract void updateSpeed();
+
+    @Shadow(remap = false)
+    public byte runningState;
+    @Shadow(remap = false)
+    public int overpowerTime;
+
+    @Shadow(remap = false)
+    public abstract void overpower();
+
+    @Unique
+    private int timer = 0;
 
     /**
      * @reason Having these attached to the daylight cycle is quite silly, and so is wasting processing time on recalculating validity every second.

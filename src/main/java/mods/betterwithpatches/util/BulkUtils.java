@@ -15,8 +15,10 @@ public interface BulkUtils {
         for (int i = 0; i < inputs.size(); ++i) {
             Object obj = inputs.get(i);
             if (obj instanceof ItemStack) return areStacksSameTypeCrafting(ingredient, (ItemStack) obj);
-            else if (obj instanceof Item) return areStacksSameTypeCrafting(ingredient, new ItemStack((Item) obj, 1, 32767));
-            else if (obj instanceof Block) return areStacksSameTypeCrafting(ingredient, new ItemStack((Block) obj, 1, 32767));
+            else if (obj instanceof Item)
+                return areStacksSameTypeCrafting(ingredient, new ItemStack((Item) obj, 1, 32767));
+            else if (obj instanceof Block)
+                return areStacksSameTypeCrafting(ingredient, new ItemStack((Block) obj, 1, 32767));
             else if (obj instanceof String) {
                 List<ItemStack> stacks;
                 if (i + 1 < inputs.size()) {

@@ -33,7 +33,8 @@ public abstract class BlockMechMachinesMixin extends BlockContainer {
                 ctx.cancel();
                 super.breakBlock(world, x, y, z, block, meta);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 }

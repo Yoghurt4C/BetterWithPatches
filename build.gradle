@@ -335,64 +335,11 @@ configurations.configureEach {
     System.setProperty("org.gradle.internal.http.socketTimeout", 120000 as String)
 }
 
-// Fix Jenkins' Git: chmod a file should not be detected as a change and append a '.dirty' to the version
-try {
-    'git config core.fileMode false'.execute()
-}
-catch (Exception ignored) {
-    out.style(Style.Failure).println("git isn't installed at all")
-}
-
-// Pulls version first from the VERSION env and then git tag
-String identifiedVersion
-String versionOverride = System.getenv("VERSION") ?: null
-try {
-    identifiedVersion = versionOverride == null ? gitVersion() : versionOverride
-}
-catch (Exception ignored) {
-    out.style(Style.Failure).text(
-        'This mod must be version controlled by Git AND the repository must provide at least one tag,\n' +
-            'or the VERSION override must be set! ').style(Style.SuccessHeader).text('(Do NOT download from GitHub using the ZIP option, instead\n' +
-        'clone the repository, see ').style(Style.Info).text('https://gtnh.miraheze.org/wiki/Development').style(Style.SuccessHeader).println(' for details.)'
-    )
-    versionOverride = 'NO-GIT-TAG-SET'
-    identifiedVersion = versionOverride
-}
-version = identifiedVersion
-ext {
-    modVersion = identifiedVersion
-}
-
-if (identifiedVersion == versionOverride) {
-    out.style(Style.Failure).text('Override version to ').style(Style.Identifier).text(modVersion).style(Style.Failure).println('!\7')
-}
-
-group = "com.github.GTNewHorizons"
-if (project.hasProperty("customArchiveBaseName") && customArchiveBaseName) {
-    archivesBaseName = customArchiveBaseName
-} else {
-    archivesBaseName = modId
-}
+version = modVersion
+archivesBaseName = modId
 
 
 minecraft {
-    if (replaceGradleTokenInFile) {
-        for (f in replaceGradleTokenInFile.split(',')) {
-            tagReplacementFiles.add f
-        }
-    }
-    if (gradleTokenModId) {
-        injectedTags.put gradleTokenModId, modId
-    }
-    if (gradleTokenModName) {
-        injectedTags.put gradleTokenModName, modName
-    }
-    if (gradleTokenVersion) {
-        injectedTags.put gradleTokenVersion, modVersion
-    }
-    if (gradleTokenGroupName) {
-        injectedTags.put gradleTokenGroupName, modGroup
-    }
     if (enableGenericInjection.toBoolean()) {
         injectMissingGenerics.set(true)
     }
@@ -419,10 +366,6 @@ minecraft {
     // Blowdryer is present in some old mod builds, do not propagate it further as a dependency
     // IC2 has no reobf jars in its Maven
     groupsToExcludeFromAutoReobfMapping.addAll(["com.diffplug", "com.diffplug.durian", "net.industrial-craft"])
-}
-
-if (generateGradleTokenClass) {
-    tasks.injectTags.outputClassName.set(generateGradleTokenClass)
 }
 
 // Custom reobf auto-mappings
@@ -1077,40 +1020,8 @@ idea {
     }
 }
 
-tasks.named("processIdeaSettings").configure {
-    dependsOn("injectTags")
-}
-
 // workaround variable hiding in pom processing
 def projectConfigs = project.configurations
-
-publishing {
-    publications {
-        create("maven", MavenPublication) {
-            from components.java
-
-            if (apiPackage) {
-                artifact apiJar
-            }
-
-            groupId = System.getenv("ARTIFACT_GROUP_ID") ?: project.group
-            artifactId = System.getenv("ARTIFACT_ID") ?: project.name
-            // Using the identified version, not project.version as it has the prepended 1.7.10
-            version = System.getenv("RELEASE_VERSION") ?: identifiedVersion
-        }
-    }
-
-    repositories {
-        maven {
-            url = "http://jenkins.usrv.eu:8081/nexus/content/repositories/releases"
-            allowInsecureProtocol = true
-            credentials {
-                username = System.getenv("MAVEN_USER") ?: "NONE"
-                password = System.getenv("MAVEN_PASSWORD") ?: "NONE"
-            }
-        }
-    }
-}
 
 if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
     apply plugin: 'com.modrinth.minotaur'

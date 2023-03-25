@@ -5,8 +5,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import mods.betterwithpatches.proxy.CommonProxy;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static mods.betterwithpatches.util.BWPConstants.MODID;
 import static mods.betterwithpatches.util.BWPConstants.MODNAME;
@@ -27,5 +25,7 @@ public class BetterWithPatches {
     }
 
     @Mod.EventHandler
-    public void postInit(FMLInitializationEvent e) { PROXY.postInit(); }
+    public void postInit(FMLInitializationEvent e) {
+        PROXY.postInit();
+    }
 }

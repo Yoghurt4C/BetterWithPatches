@@ -20,6 +20,7 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
             this.inputs = inputs;
             this.output = outputs;
         }
+
         public List<PositionedStack> inputs;
         public List<PositionedStack> output;
 
@@ -80,10 +81,15 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
     }
 
     public abstract int getX();
+
     public int getX(int offset) {
         return getX() + offset;
     }
+
     public abstract int getY();
-    public int getY(int offset) {return getY() + offset;}
+
+    public int getY(int offset) {
+        return getY() + offset;
+    }
 
 }

@@ -1,10 +1,8 @@
 package mods.betterwithpatches.proxy;
 
 import betterwithmods.craft.CraftingManagerMill;
-import cpw.mods.fml.common.Loader;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.nei.NEIBWMConfig;
-import mods.betterwithpatches.nei.machines.MillRecipeHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

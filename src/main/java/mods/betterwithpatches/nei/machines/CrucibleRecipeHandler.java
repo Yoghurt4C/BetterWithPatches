@@ -2,7 +2,6 @@ package mods.betterwithpatches.nei.machines;
 
 import betterwithmods.craft.CraftingManagerBulk;
 import betterwithmods.craft.CraftingManagerCauldron;
-import betterwithmods.craft.CraftingManagerCauldronStoked;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.resources.I18n;
 
@@ -14,7 +13,9 @@ public class CrucibleRecipeHandler extends CauldronRecipeHandler {
     }
 
     @Override
-    public String getRecipeName() { return I18n.format("tile.bwm:tileMachine.2.name");  }
+    public String getRecipeName() {
+        return I18n.format("tile.bwm:tileMachine.2.name");
+    }
 
     @Override
     public CraftingManagerBulk getManager() {
