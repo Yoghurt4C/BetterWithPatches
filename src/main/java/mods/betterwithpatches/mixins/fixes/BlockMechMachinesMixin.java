@@ -17,8 +17,11 @@ public abstract class BlockMechMachinesMixin extends BlockContainer {
         super(p_i45386_1_);
     }
 
+    /**
+     * @reason Original edge-casing misses half of the tiles that can crash the game when passed to the inventory handler.
+     */
     @Inject(method = "breakBlock", at = @At("HEAD"), cancellable = true)
-    public void fixPulleyCrash(World world, int x, int y, int z, Block block, int meta, CallbackInfo ctx) {
+    public void fixInventoryCrash(World world, int x, int y, int z, Block block, int meta, CallbackInfo ctx) {
         switch (meta) {
             case 1:
             case 9:

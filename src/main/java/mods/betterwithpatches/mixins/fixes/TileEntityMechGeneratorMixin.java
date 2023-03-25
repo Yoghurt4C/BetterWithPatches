@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(TileEntityMechGenerator.class)
 public abstract class TileEntityMechGeneratorMixin extends TileEntity {
@@ -22,8 +21,11 @@ public abstract class TileEntityMechGeneratorMixin extends TileEntity {
 
     @Unique private int timer = 0;
 
+    /**
+     * @reason Having these attached to the daylight cycle is quite silly, and so is wasting processing time on recalculating validity every second.
+     */
     @Inject(method = "updateEntity", at = @At(value = "JUMP", opcode = Opcodes.IFNE, ordinal = 0, shift = At.Shift.BEFORE), cancellable = true)
-    public void pipi(CallbackInfo ctx) {
+    public void patchGenerators(CallbackInfo ctx) {
         ctx.cancel();
         if (this.timer >= (this.runningState == 1 ? Config.lazyGeneratorDelay : 20)) {
             this.verifyIntegrity();
