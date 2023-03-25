@@ -1,6 +1,7 @@
 package mods.betterwithpatches;
 
 import com.google.common.collect.ImmutableSet;
+import mods.betterwithpatches.util.BWPConstants;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,10 +16,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static mods.betterwithpatches.BetterWithPatches.L;
-import static mods.betterwithpatches.BetterWithPatches.getModId;
+import static mods.betterwithpatches.util.BWPConstants.L;
 
 public class Config {
+    public static int lazyGeneratorDelay;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -26,22 +27,23 @@ public class Config {
     }
 
     private static void init() {
-        String filename = getModId() + ".properties";
+        String filename = BWPConstants.MODID + ".properties";
         ImmutableSet<? extends Entry<? extends Serializable>> entries = ImmutableSet.of(
-
+                Entry.of("lazyGeneratorDelay", 100,
+                        "The time (in ticks) it takes for a generator to recheck its validity and speed while active, but not strained. [Side: SERVER | Default: 100]")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
-            L.error("[" + getModId() + "] Can't reach the config directory. This is probably really bad.");
+            L.error("[" + BWPConstants.MODID + "] Can't reach the config directory. This is probably really bad.");
         }
         Path configPath = getConfigDir().resolve(filename);
         Map<String, String> cfg = new HashMap<>();
         try {
             boolean changed = false;
             File configurationFile = configPath.toFile();
-            StringBuilder content = new StringBuilder().append("#").append(BetterWithPatches.MODNAME).append(" Configuration.\n");
+            StringBuilder content = new StringBuilder().append("#").append(BWPConstants.MODNAME).append(" Configuration.\n");
             content.append("#Last generated at: ").append(new Date()).append("\n\n");
             if (Files.notExists(configPath) && !configurationFile.createNewFile())
-                L.error("[" + getModId() + "] Can't create config file \"" + configurationFile + "\". This is probably bad.");
+                L.error("[" + BWPConstants.MODID + "] Can't create config file \"" + configurationFile + "\". This is probably bad.");
             BufferedReader r = Files.newBufferedReader(configPath, StandardCharsets.UTF_8);
 
             String line;
@@ -92,14 +94,14 @@ public class Config {
             }
             isInitialized = true;
         } catch (IOException e) {
-            L.fatal("[" + getModId() + "] Could not read/write config!");
+            L.fatal("[" + BWPConstants.MODID + "] Could not read/write config!");
             L.fatal(e);
         }
     }
 
     private static void logEntryError(File configurationFile, String key, Object value, String found, String expected) {
-        L.error("[" + getModId() + "] Error processing configuration file \"" + configurationFile + "\".");
-        L.error("[" + getModId() + "] Expected configuration value for " + key + " to be " + expected + ", found \"" + found + "\". Using default value \"" + value + "\" instead.");
+        L.error("[" + BWPConstants.MODID + "] Error processing configuration file \"" + configurationFile + "\".");
+        L.error("[" + BWPConstants.MODID + "] Expected configuration value for " + key + " to be " + expected + ", found \"" + found + "\". Using default value \"" + value + "\" instead.");
         setCfgValue(key, value);
     }
 
@@ -107,7 +109,7 @@ public class Config {
         try {
             Config.class.getDeclaredField(k).set(Config.class, v);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            L.error("[" + getModId() + "] Could not set the runtime config state!");
+            L.error("[" + BWPConstants.MODID + "] Could not set the runtime config state!");
             L.error(e);
         }
     }

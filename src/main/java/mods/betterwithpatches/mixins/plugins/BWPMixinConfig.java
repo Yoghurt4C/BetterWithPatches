@@ -1,4 +1,4 @@
-package mods.betterwithpatches.mixins;
+package mods.betterwithpatches.mixins.plugins;
 
 import org.spongepowered.asm.lib.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;

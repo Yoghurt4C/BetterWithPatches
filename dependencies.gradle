@@ -33,5 +33,10 @@ dependencies {
     implementation ("codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev")
     implementation ("codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev")
     implementation ("codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev")
-    implementation deobf("lib/BetterWithMods-0.6.0.jar")
+    compileOnly (files(url() + "BetterWithMods-0.6.0-deobf.jar"))
+    runtimeOnlyNonPublishable (files(url() + "BetterWithMods-0.6.0.jar"))
+}
+
+def url() {
+    return "$project.gradle.gradleUserHomeDir/caches/modules-2/files-2.1/"
 }

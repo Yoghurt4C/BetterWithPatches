@@ -8,18 +8,11 @@ import mods.betterwithpatches.proxy.CommonProxy;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static mods.betterwithpatches.BetterWithPatches.MODID;
-import static mods.betterwithpatches.BetterWithPatches.MODNAME;
+import static mods.betterwithpatches.util.BWPConstants.MODID;
+import static mods.betterwithpatches.util.BWPConstants.MODNAME;
 
 @Mod(modid = MODID, name = MODNAME, version = "${version}", dependencies = "required-after:betterwithmods")
 public class BetterWithPatches {
-    public static final String MODID = "betterwithpatches", MODNAME = "BetterWithPatches";
-    public static Logger L = LogManager.getLogger(MODNAME);
-
-    public static String getModId() {
-        return MODID;
-    }
-
     @SidedProxy(clientSide = "mods.betterwithpatches.proxy.ClientProxy", serverSide = "mods.betterwithpatches.proxy.CommonProxy")
     public static CommonProxy PROXY;
 

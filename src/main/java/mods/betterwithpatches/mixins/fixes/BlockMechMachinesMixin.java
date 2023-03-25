@@ -17,7 +17,7 @@ public abstract class BlockMechMachinesMixin extends BlockContainer {
         super(p_i45386_1_);
     }
 
-    @Inject(method = "breakBlock", at = @At(value = "INVOKE", target = "Lbetterwithmods/util/InvUtils;ejectInventoryContents(Lnet/minecraft/world/World;IIILnet/minecraft/inventory/IInventory;)V"), cancellable = true, remap = true)
+    @Inject(method = "breakBlock", at = @At("HEAD"), cancellable = true)
     public void fixPulleyCrash(World world, int x, int y, int z, Block block, int meta, CallbackInfo ctx) {
         switch (meta) {
             case 1:

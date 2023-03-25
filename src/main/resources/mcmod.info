@@ -3,7 +3,7 @@
   "modid": "betterwithpatches",
   "name": "BetterWithPatches",
   "description": "doing silly things",
-  "version": "${version}",
+  "version": "${modVersion}",
   "mcversion": "1.7.10",
   "url": "https://www.curseforge.com/minecraft/mc-mods/audino",
   "updateUrl": "",
