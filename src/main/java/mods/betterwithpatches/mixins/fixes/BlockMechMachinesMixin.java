@@ -17,11 +17,20 @@ public abstract class BlockMechMachinesMixin extends BlockContainer {
         super(p_i45386_1_);
     }
 
-    @Inject(method = "breakBlock", at = @At(value = "INVOKE", target = "Lbetterwithmods/util/InvUtils;ejectInventoryContents(Lnet/minecraft/world/World;IIILnet/minecraft/inventory/IInventory;)V"), cancellable = true, remap = false)
+    @Inject(method = "breakBlock", at = @At(value = "INVOKE", target = "Lbetterwithmods/util/InvUtils;ejectInventoryContents(Lnet/minecraft/world/World;IIILnet/minecraft/inventory/IInventory;)V"), cancellable = true, remap = true)
     public void fixPulleyCrash(World world, int x, int y, int z, Block block, int meta, CallbackInfo ctx) {
-        if (meta == 9) {
-            ctx.cancel();
-            super.breakBlock(world, x, y, z, block, meta);
+        switch (meta) {
+            case 1:
+            case 9:
+            case 5:
+            case 6:
+            case 7:
+            case 13:
+            case 14:
+                ctx.cancel();
+                super.breakBlock(world, x, y, z, block, meta);
+                break;
+            default: break;
         }
     }
 }

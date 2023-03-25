@@ -1,6 +1,7 @@
 package mods.betterwithpatches.proxy;
 
 import betterwithmods.craft.CraftingManagerMill;
+import cpw.mods.fml.common.Loader;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.nei.NEIBWMConfig;
 import mods.betterwithpatches.nei.machines.MillRecipeHandler;
