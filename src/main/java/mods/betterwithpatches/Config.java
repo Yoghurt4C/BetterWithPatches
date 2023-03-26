@@ -20,6 +20,7 @@ import static mods.betterwithpatches.util.BWPConstants.L;
 
 public class Config {
     public static int lazyGeneratorDelay;
+    public static boolean genericFixes, patchKiln;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -29,8 +30,12 @@ public class Config {
     private static void init() {
         String filename = BWPConstants.MODID + ".properties";
         ImmutableSet<? extends Entry<? extends Serializable>> entries = ImmutableSet.of(
+                Entry.of("genericFixes", true,
+                        "Crash safeguards and minor tweaks. The more intrusive patches should have their own entries. [Side: BOTH | Default: true]"),
                 Entry.of("lazyGeneratorDelay", 100,
-                        "The time (in ticks) it takes for a generator to recheck its validity and speed while active, but not strained. [Side: SERVER | Default: 100]")
+                        "The time (in ticks) it takes for a generator to recheck its validity and speed while active, but not strained. Depends on \"genericFixes\". [Side: SERVER | Default: 100]"),
+                Entry.of("patchKiln", true,
+                        "Various additions and fixes to the Kiln. Required for recipe manipulation. [Side: BOTH | Default: true]")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + BWPConstants.MODID + "] Can't reach the config directory. This is probably really bad.");

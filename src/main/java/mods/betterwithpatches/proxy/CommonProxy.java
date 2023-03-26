@@ -1,6 +1,7 @@
 package mods.betterwithpatches.proxy;
 
 import betterwithmods.craft.CraftingManagerMill;
+import betterwithmods.craft.KilnInteraction;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.nei.NEIBWMConfig;
 import net.minecraft.init.Blocks;
@@ -12,6 +13,9 @@ public class CommonProxy implements Proxy {
     public void preInit() {
         Config.tryInit();
         new NEIBWMConfig();
+
+
+        KilnInteraction.addBlockRecipe(Blocks.clay, new ItemStack(Blocks.hardened_clay));
     }
 
     @Override

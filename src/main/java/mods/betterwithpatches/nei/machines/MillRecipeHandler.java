@@ -95,8 +95,8 @@ public class MillRecipeHandler extends BulkRecipeHandler {
     }
 
     @Override
-    public void loadTransferRects() {
-        this.transferRects.add(new RecipeTransferRect(new Rectangle(getX(68), getY(), 14, 14), this.getOverlayIdentifier()));
+    public Rectangle getRect() {
+        return new Rectangle(getX(68), getY(), 14, 14);
     }
 
     @Override

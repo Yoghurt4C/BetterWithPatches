@@ -11,6 +11,7 @@ import mods.betterwithpatches.util.BWMRecipeAccessor;
 import mods.betterwithpatches.util.BulkUtils;
 import net.minecraft.item.ItemStack;
 
+import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 
@@ -79,6 +80,13 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
             if (BulkUtils.matchInput(recipe.getInput(), ingredient)) create(recipe);
         }
     }
+
+    @Override
+    public void loadTransferRects() {
+        this.transferRects.add(new RecipeTransferRect(this.getRect(), this.getOverlayIdentifier()));
+    }
+
+    public abstract Rectangle getRect();
 
     public abstract int getX();
 

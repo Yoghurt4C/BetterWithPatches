@@ -110,8 +110,8 @@ public class CauldronRecipeHandler extends BulkRecipeHandler {
     }
 
     @Override
-    public void loadTransferRects() {
-        this.transferRects.add(new RecipeTransferRect(new Rectangle(getX(76), getY(21), 14, 14), getOverlayIdentifier()));
+    public Rectangle getRect() {
+        return new Rectangle(getX(76), getY(21), 14, 14);
     }
 
     @Override
