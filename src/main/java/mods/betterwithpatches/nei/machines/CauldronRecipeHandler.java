@@ -1,6 +1,5 @@
 package mods.betterwithpatches.nei.machines;
 
-import betterwithmods.client.container.GuiCookingPot;
 import betterwithmods.craft.BulkRecipe;
 import betterwithmods.craft.CraftingManagerBulk;
 import betterwithmods.craft.CraftingManagerCauldron;
@@ -116,7 +115,8 @@ public class CauldronRecipeHandler extends BulkRecipeHandler {
 
     @Override
     public Class<? extends GuiContainer> getGuiClass() {
-        return GuiCookingPot.class;
+        /*return GuiCookingPot.class;*/
+        return null;
     }
 
     @Override

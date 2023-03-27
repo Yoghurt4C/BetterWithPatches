@@ -8,12 +8,15 @@ import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import mods.betterwithpatches.util.BWMRecipeAccessor;
-import mods.betterwithpatches.util.BulkUtils;
+import mods.betterwithpatches.util.BWPNEIHelper;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.Collections;
 import java.util.List;
+
+import static codechicken.lib.gui.GuiDraw.changeTexture;
 
 public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements ICraftingHandler, IUsageHandler {
     public class CachedBWMRecipe extends CachedRecipe {
@@ -27,7 +30,7 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
 
         @Override
         public List<PositionedStack> getIngredients() {
-            return this.inputs;
+            return getCycledIngredients(cycleticks / 48, inputs);
         }
 
         @Override
@@ -71,13 +74,16 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
     public void loadUsageRecipes(String inputId, Object... ingredients) {
         if (inputId.equals(this.getOverlayIdentifier())) {
             for (BulkRecipe recipe : this.getRecipes()) create(recipe);
-        } else if (inputId.equals("item")) loadUsageRecipes((ItemStack) ingredients[0]);
+        } else if (inputId.equals("item"))
+            for (Object ingredient : ingredients) {
+                loadUsageRecipes((ItemStack) ingredient);
+            }
     }
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
         for (BulkRecipe recipe : this.getRecipes()) {
-            if (BulkUtils.matchInput(recipe.getInput(), ingredient)) create(recipe);
+            if (BWPNEIHelper.matchInput(recipe.getInput(), ingredient)) create(recipe);
         }
     }
 
@@ -100,4 +106,9 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
         return getY() + offset;
     }
 
+    @Override
+    public void drawBackground(int recipe) {
+        GL11.glColor4f(1, 1, 1, 1);
+        changeTexture(getGuiTexture());
+    }
 }

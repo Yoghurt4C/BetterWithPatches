@@ -11,13 +11,11 @@ import mods.betterwithpatches.nei.BulkRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static codechicken.lib.gui.GuiDraw.changeTexture;
 import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
 
 public class MillRecipeHandler extends BulkRecipeHandler {
@@ -64,8 +62,7 @@ public class MillRecipeHandler extends BulkRecipeHandler {
 
     @Override
     public void drawBackground(int recipe) {
-        GL11.glColor4f(1, 1, 1, 1);
-        changeTexture(getGuiTexture());
+        super.drawBackground(recipe);
         drawTexturedModalRect(6, 3, 0, 0, 150, 33);
     }
 

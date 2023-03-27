@@ -21,7 +21,7 @@ public class BWPLateMixinConfig implements ILateMixinLoader {
         Config.tryInit();
         List<String> list = new ArrayList<>();
         parse(Config.genericFixes, list, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin");
-        parse(Config.patchKiln, list, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin");
+        parse(Config.patchKiln, list, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin", "kiln.BWCraftingMixin");
         return list;
     }
 
