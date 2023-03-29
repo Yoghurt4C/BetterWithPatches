@@ -3,10 +3,7 @@
   "minVersion": "0.7.11",
   "package": "mods.betterwithpatches.mixins",
   "refmap": "mixins.betterwithpatches.refmap.json",
+  "plugin": "mods.betterwithpatches.mixins.BWPMixinConfig",
   "target": "@env(DEFAULT)",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
-    "CraftingManagerBulkMixin",
-    "KilnRecipeAccessor"
-  ]
+  "compatibilityLevel": "JAVA_8"
 }

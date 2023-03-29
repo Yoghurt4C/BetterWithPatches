@@ -20,7 +20,7 @@ import static mods.betterwithpatches.util.BWPConstants.L;
 
 public class Config {
     public static int lazyGeneratorDelay;
-    public static boolean genericFixes, patchKiln;
+    public static boolean genericFixes, patchKiln, dirtyStokedFlameFix;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -35,7 +35,9 @@ public class Config {
                 Entry.of("lazyGeneratorDelay", 100,
                         "The time (in ticks) it takes for a generator to recheck its validity and speed while active, but not strained. Depends on \"genericFixes\". [Side: SERVER | Default: 100]"),
                 Entry.of("patchKiln", true,
-                        "Various additions and fixes to the Kiln. Required for recipe manipulation. [Side: BOTH | Default: true]")
+                        "Various additions and fixes to the Kiln. Required for recipe manipulation. [Side: BOTH | Default: true]"),
+                Entry.of("dirtyStokedFlameFix", true,
+                        "Extends the lifespan of Stoked Flames to hide the weird gaps in the current update system. [Side: SERVER | Default: true]")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + BWPConstants.MODID + "] Can't reach the config directory. This is probably really bad.");
@@ -120,7 +122,7 @@ public class Config {
     }
 
     private static Path getConfigDir() {
-        return Paths.get(".").resolve("config");
+        return Paths.get(".", "config");
     }
 
     private static class Entry<T> {

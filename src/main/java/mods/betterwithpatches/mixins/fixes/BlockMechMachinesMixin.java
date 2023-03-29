@@ -1,9 +1,11 @@
 package mods.betterwithpatches.mixins.fixes;
 
 import betterwithmods.blocks.BlockMechMachines;
+import betterwithmods.util.InvUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,19 +24,21 @@ public abstract class BlockMechMachinesMixin extends BlockContainer {
      */
     @Inject(method = "breakBlock", at = @At("HEAD"), cancellable = true)
     public void fixInventoryCrash(World world, int x, int y, int z, Block block, int meta, CallbackInfo ctx) {
+        ctx.cancel();
         switch (meta) {
-            case 1:
-            case 9:
-            case 5:
-            case 6:
-            case 7:
-            case 13:
-            case 14:
-                ctx.cancel();
-                super.breakBlock(world, x, y, z, block, meta);
+            case 0:
+            case 8:
+            case 2:
+            case 10:
+            case 3:
+            case 11:
+            case 4:
+            case 12:
+                InvUtils.ejectInventoryContents(world, x, y, z, (IInventory) world.getTileEntity(x, y, z));
                 break;
             default:
                 break;
         }
+        super.breakBlock(world, x, y, z, block, meta);
     }
 }

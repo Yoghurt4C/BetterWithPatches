@@ -77,8 +77,9 @@ public abstract class InteractionHandler extends TemplateRecipeHandler implement
         if (item instanceof ItemBlock) block = ((ItemBlock) item).field_150939_a;
         else block = Block.getBlockFromItem(item);
         String id = GameData.getBlockRegistry().getNameForObject(block);
+        int meta = ingredient.getItemDamage();
         for (Map.Entry<String, ItemStack[]> entry : this.getRecipes().entrySet()) {
-            if (BWPNEIHelper.matchInput(entry.getKey(), id)) create(entry.getKey(), entry.getValue());
+            if (BWPNEIHelper.matchInput(entry.getKey(), id, meta)) create(entry.getKey(), entry.getValue());
         }
     }
 

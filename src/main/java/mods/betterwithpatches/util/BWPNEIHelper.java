@@ -43,7 +43,7 @@ public interface BWPNEIHelper {
         return false;
     }
 
-    static boolean matchInput(String input, String ingredient) {
-        return input.startsWith(ingredient);
+    static boolean matchInput(String input, String ingredient, int meta) {
+        return input.contains("@") ? input.startsWith(ingredient) && input.endsWith(String.valueOf(meta)) : input.startsWith(ingredient);
     }
 }
