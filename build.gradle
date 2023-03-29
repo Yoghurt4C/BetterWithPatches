@@ -471,6 +471,7 @@ repositories {
             includeGroup "org.lwjgl"
         }
     }
+    maven { url 'https://jitpack.io' }
     if (includeWellKnownRepositories.toBoolean()) {
         maven {
             name "CurseMaven"
@@ -502,9 +503,9 @@ repositories {
     }
 }
 
-def mixinProviderGroup = "io.github.legacymoddingmc"
-def mixinProviderModule = "unimixins"
-def mixinProviderVersion = "0.1.5"
+def mixinProviderGroup = "com.github.LegacyModdingMC.UniMixins"
+def mixinProviderModule = "_unimixins-all-1.7.10"
+def mixinProviderVersion = "0.1.6"
 def mixinProviderSpec = "${mixinProviderGroup}:${mixinProviderModule}:${mixinProviderVersion}"
 
 dependencies {
@@ -654,13 +655,13 @@ ext.java17PatchDependenciesCfg = configurations.create("java17PatchDependencies"
 }
 
 dependencies {
-    def lwjgl3ifyVersion = '1.2.2'
+    def lwjgl3ifyVersion = '1.3.3'
     def asmVersion = '9.4'
     if (modId != 'lwjgl3ify') {
         java17Dependencies("com.github.GTNewHorizons:lwjgl3ify:${lwjgl3ifyVersion}")
     }
     if (modId != 'hodgepodge') {
-        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.1.0')
+        java17Dependencies('com.github.GTNewHorizons:Hodgepodge:2.2.4')
     }
 
     java17PatchDependencies('net.minecraft:launchwrapper:1.15') {transitive = false}
