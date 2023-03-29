@@ -1,4 +1,4 @@
-package mods.betterwithpatches.kiln;
+package mods.betterwithpatches.craft;
 
 import betterwithmods.BWRegistry;
 import cpw.mods.fml.common.registry.GameData;
@@ -12,6 +12,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Hashtable;
 import java.util.List;
+
+import static mods.betterwithpatches.util.BWPConstants.getId;
 
 /**
  * Functionally a replacement for {@link betterwithmods.craft.KilnInteraction} - necessary to make use of multiple outputs in recipes.
@@ -53,10 +55,6 @@ public interface KilnInteractionExtensions {
         ItemStack[] stacks = cookables.get(identifier);
         if (stacks == null) stacks = cookables.get(identifier + "@" + meta);
         return stacks;
-    }
-
-    static String getId(Block block) {
-        return GameData.getBlockRegistry().getNameForObject(block);
     }
 
     static void addKilnRecipes() {

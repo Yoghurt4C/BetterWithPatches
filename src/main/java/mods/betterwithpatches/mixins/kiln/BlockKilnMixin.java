@@ -3,7 +3,7 @@ package mods.betterwithpatches.mixins.kiln;
 import betterwithmods.blocks.BTWBlock;
 import betterwithmods.blocks.BlockKiln;
 import betterwithmods.util.InvUtils;
-import mods.betterwithpatches.kiln.KilnInteractionExtensions;
+import mods.betterwithpatches.craft.KilnInteractionExtensions;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;

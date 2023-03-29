@@ -1,7 +1,7 @@
 package mods.betterwithpatches.mixins.kiln;
 
 import betterwithmods.BWCrafting;
-import mods.betterwithpatches.kiln.KilnInteractionExtensions;
+import mods.betterwithpatches.craft.KilnInteractionExtensions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

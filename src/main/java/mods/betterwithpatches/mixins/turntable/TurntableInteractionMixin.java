@@ -1,7 +1,7 @@
-package mods.betterwithpatches.mixins.kiln;
+package mods.betterwithpatches.mixins.turntable;
 
-import betterwithmods.craft.KilnInteraction;
-import mods.betterwithpatches.craft.KilnInteractionExtensions;
+import betterwithmods.craft.TurntableInteraction;
+import mods.betterwithpatches.craft.TurntableInteractionExtensions;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -10,34 +10,34 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(KilnInteraction.class)
-public abstract class KilnInteractionMixin {
+@Mixin(TurntableInteraction.class)
+public abstract class TurntableInteractionMixin {
 
     /**
-     * @reason Impl if he modern? You can call these directly, or use {@link mods.betterwithpatches.craft.KilnInteractionExtensions}.
+     * @reason Impl if he modern? You can call these directly, or use {@link TurntableInteractionExtensions}.
      */
     @Inject(method = "addBlockRecipe(Lnet/minecraft/block/Block;Lnet/minecraft/item/ItemStack;)V", at = @At("HEAD"), cancellable = true, remap = false)
     private static void blockRecipeFix(Block block, ItemStack output, CallbackInfo ctx) {
         ctx.cancel();
-        KilnInteractionExtensions.addStokedRecipe(block, output);
+        TurntableInteractionExtensions.addBlockRecipe(block, output);
     }
 
     @Inject(method = "addBlockRecipe(Lnet/minecraft/block/Block;ILnet/minecraft/item/ItemStack;)V", at = @At("HEAD"), cancellable = true, remap = false)
     private static void blockRecipeFix(Block block, int meta, ItemStack output, CallbackInfo ctx) {
         ctx.cancel();
-        KilnInteractionExtensions.addStokedRecipe(block, meta, output);
+        TurntableInteractionExtensions.addBlockRecipe(block, meta, output);
     }
 
     @Inject(method = "contains", at = @At("HEAD"), cancellable = true, remap = false)
     private static void cont(Block block, int meta, CallbackInfoReturnable<Boolean> ctx) {
-        ctx.setReturnValue(KilnInteractionExtensions.contains(block, meta));
+        ctx.setReturnValue(TurntableInteractionExtensions.contains(block, meta));
     }
 
     /**
-     * @see mods.betterwithpatches.craft.KilnInteractionExtensions#getProducts(Block, int)
+     * @see TurntableInteractionExtensions#getProducts(Block, int)
      */
     @Inject(method = "getProduct", at = @At("HEAD"), cancellable = true, remap = false)
     private static void getFirstProduct(Block block, int meta, CallbackInfoReturnable<ItemStack> ctx) {
-        ctx.setReturnValue(KilnInteractionExtensions.getProducts(block, meta)[0]);
+        ctx.setReturnValue(TurntableInteractionExtensions.getProducts(block, meta)[0]);
     }
 }

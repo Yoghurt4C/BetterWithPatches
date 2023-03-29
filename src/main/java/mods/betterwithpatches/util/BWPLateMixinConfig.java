@@ -15,6 +15,6 @@ public class BWPLateMixinConfig implements ILateMixinLoader {
 
     @Override
     public List<String> getMixins(Set<String> set) {
-        return BWPConstants.getMixins(false);
+        return new BWPMixinLoader(false).getMixins();
     }
 }

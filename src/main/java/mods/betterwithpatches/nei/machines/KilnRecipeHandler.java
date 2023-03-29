@@ -4,7 +4,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.registry.GameData;
-import mods.betterwithpatches.kiln.KilnInteractionExtensions;
+import mods.betterwithpatches.craft.KilnInteractionExtensions;
 import mods.betterwithpatches.nei.InteractionHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;

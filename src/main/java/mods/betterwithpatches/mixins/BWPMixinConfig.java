@@ -1,6 +1,6 @@
 package mods.betterwithpatches.mixins;
 
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPMixinLoader;
 import org.spongepowered.asm.lib.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -30,15 +30,12 @@ public class BWPMixinConfig implements IMixinConfigPlugin {
 
     @Override
     public List<String> getMixins() {
-        boolean hax;
         try {
             Class.forName("com.gtnewhorizon.gtnhmixins.LateMixin", false, this.getClass().getClassLoader());
-            hax = false;
+            return null;
         } catch (ClassNotFoundException e) {
-            hax = true;
+            return new BWPMixinLoader(true).getMixins();
         }
-        if (hax) return BWPConstants.getMixins(true);
-        return null;
     }
 
     @Override
