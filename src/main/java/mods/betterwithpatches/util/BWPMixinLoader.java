@@ -1,5 +1,7 @@
 package mods.betterwithpatches.util;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import mods.betterwithpatches.Config;
 
 import java.io.File;
@@ -22,7 +24,11 @@ public class BWPMixinLoader {
         load(bwm, Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin");
         load(bwm, Config.patchKiln, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin", "kiln.BWCraftingMixin");
         load(bwm, Config.patchTurntable, "turntable.BWCraftingMixin", "turntable.TileEntityTurntableMixin", "turntable.TurntableInteractionMixin");
+        load(bwm, Config.patchHCWood, "hcwood.BWModMixin", "hcwood.ItemBarkMixin", "hcwood.compat.NaturaCompatMixin", "hcwood.BWCraftingMixin");
         load(bwm, Config.dirtyStokedFlameFix, "fixes.dirty.BlockFireStokedMixin");
+        if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
+            load(bwm, Config.patchHCWood, "hcwood.client.ItemBarkMixin");
+        }
         return list;
     }
 

@@ -18,7 +18,7 @@ import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
     public static int lazyGeneratorDelay;
-    public static boolean genericFixes, patchKiln, patchTurntable, dirtyStokedFlameFix, enableNEICompat;
+    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, dirtyStokedFlameFix, enableNEICompat;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -36,6 +36,8 @@ public class Config {
                         "Various additions and fixes to the Kiln. Required for recipe manipulation. [Side: BOTH | Default: true]"),
                 Entry.of("patchTurntable", true,
                         "Various additions and fixes to the Turntable. Required for recipe manipulation. [Side: BOTH | Default: true]"),
+                Entry.of("patchHCWood", true,
+                        "Replaces most of the Hardcore Wood feature set. [Side: BOTH | Default: true]"),
                 Entry.of("dirtyStokedFlameFix", true,
                         "Extends the lifespan of Stoked Flames to hide the weird gaps in the current update system. [Side: SERVER | Default: true]"),
                 Entry.of("enableNEICompat", true,

@@ -5,13 +5,19 @@ import mods.betterwithpatches.craft.KilnInteractionExtensions;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Hashtable;
+
 @Mixin(KilnInteraction.class)
 public abstract class KilnInteractionMixin {
+
+    @Shadow(remap = false)
+    private static Hashtable<String, ItemStack> cookables;
 
     /**
      * @reason Impl if he modern? You can call these directly, or use {@link mods.betterwithpatches.craft.KilnInteractionExtensions}.
@@ -39,5 +45,10 @@ public abstract class KilnInteractionMixin {
     @Inject(method = "getProduct", at = @At("HEAD"), cancellable = true, remap = false)
     private static void getFirstProduct(Block block, int meta, CallbackInfoReturnable<ItemStack> ctx) {
         ctx.setReturnValue(KilnInteractionExtensions.getProducts(block, meta)[0]);
+    }
+
+    @Inject(method = "<clinit>", at = @At("TAIL"), remap = false)
+    private static void free(CallbackInfo ctx) {
+        cookables = null;
     }
 }
