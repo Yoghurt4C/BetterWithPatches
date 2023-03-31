@@ -17,7 +17,7 @@ import java.util.Map;
 import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
-    public static int lazyGeneratorDelay;
+    public static int lazyGeneratorDelay, lazyCauldronDelay;
     public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, dirtyStokedFlameFix, enableNEICompat;
     private static boolean isInitialized = false;
 
@@ -32,6 +32,8 @@ public class Config {
                         "Crash safeguards and minor tweaks. The more intrusive patches should have their own entries. [Side: BOTH | Default: true]"),
                 Entry.of("lazyGeneratorDelay", 100,
                         "The time (in ticks) it takes for a generator to recheck its validity and speed while active, but not strained. Depends on \"genericFixes\". [Side: SERVER | Default: 100]"),
+                Entry.of("lazyCauldronDelay", 100,
+                        "The time (in ticks) it takes for a cauldron to lazily check whether it's over a heat source (only when active). Depends on \"genericFixes\". [Side: SERVER | Default: 100]"),
                 Entry.of("patchKiln", true,
                         "Various additions and fixes to the Kiln. Required for recipe manipulation. [Side: BOTH | Default: true]"),
                 Entry.of("patchTurntable", true,

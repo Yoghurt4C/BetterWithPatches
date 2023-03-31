@@ -2,8 +2,6 @@ package mods.betterwithpatches.mixins.hcwood.client;
 
 import betterwithmods.items.ItemBark;
 import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -18,7 +16,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
@@ -27,6 +24,9 @@ import static mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions.ove
 
 @Mixin(ItemBark.class)
 public abstract class ItemBarkMixin extends Item {
+    /**
+     * Redirecting to the block sprite atlas.
+     */
     @Override
     public int getSpriteNumber() {
         return 0;
@@ -42,6 +42,9 @@ public abstract class ItemBarkMixin extends Item {
         return getIconFromTag(stack);
     }
 
+    /**
+     * Using Tag data to suss out the "source" Block for the Bark Item.
+     */
     @Unique
     public IIcon getIconFromTag(ItemStack stack) {
         if (stack.hasTagCompound()) {
@@ -54,6 +57,9 @@ public abstract class ItemBarkMixin extends Item {
         return Blocks.log.getIcon(2, 0);
     }
 
+    /**
+     * @reason Filling the Creative Tab with every possible kind of Bark using NBT instead of hardcoded meta. This carries over to NEI if present.
+     */
     @SuppressWarnings("all")
     @Inject(method = "getSubItems", at = @At("HEAD"), cancellable = true)
     public void nbtAware(Item item, CreativeTabs tab, List<ItemStack> list, CallbackInfo ctx) {
@@ -73,6 +79,9 @@ public abstract class ItemBarkMixin extends Item {
         }
     }
 
+    /**
+     * @reason A MISSINGNO is fine, too.
+     */
     @Inject(method = "registerIcons", at = @At("HEAD"), cancellable = true)
     public void dontRegisterIcons(IIconRegister reg, CallbackInfo ctx) {
         ctx.cancel();

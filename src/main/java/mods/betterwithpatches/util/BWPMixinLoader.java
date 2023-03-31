@@ -21,7 +21,7 @@ public class BWPMixinLoader {
         Config.tryInit();
         final String bwm = "Better With Mods";
         load(bwm, Config.enableNEICompat, "CraftingManagerBulkMixin");
-        load(bwm, Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin");
+        load(bwm, Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityCookingPotMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin");
         load(bwm, Config.patchKiln, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin", "kiln.BWCraftingMixin");
         load(bwm, Config.patchTurntable, "turntable.BWCraftingMixin", "turntable.TileEntityTurntableMixin", "turntable.TurntableInteractionMixin");
         load(bwm, Config.patchHCWood, "hcwood.BWModMixin", "hcwood.ItemBarkMixin", "hcwood.compat.NaturaCompatMixin", "hcwood.BWCraftingMixin");

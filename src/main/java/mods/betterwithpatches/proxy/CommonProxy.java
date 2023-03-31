@@ -2,7 +2,6 @@ package mods.betterwithpatches.proxy;
 
 import betterwithmods.BWCrafting;
 import betterwithmods.BWRegistry;
-import betterwithmods.items.ITannin;
 import cpw.mods.fml.common.registry.GameData;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
@@ -32,7 +31,7 @@ public class CommonProxy implements Proxy {
             String id = GameData.getBlockRegistry().getNameForObject(((ItemBlock) log.getItem()).field_150939_a);
             int[] iterable = overrides.getOrDefault(id, defaultMeta);
             for (int i : iterable) {
-                int tannin = HardcoreWoodInteractionExtensions.tannin.getOrDefault(id +"@"+ i, 8);
+                int tannin = HardcoreWoodInteractionExtensions.tannin.getOrDefault(id + "@" + i, 8);
                 ItemStack stack = new ItemStack(BWRegistry.bark, tannin, 0);
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setString("logId", id);

@@ -7,7 +7,7 @@ import java.util.Hashtable;
 
 public interface HardcoreWoodInteractionExtensions {
     Hashtable<String, int[]> overrides = new Hashtable<>();
-    Hashtable<String, ItemStack[]> woodProducts = new Hashtable<>();
+    Hashtable<String, ItemStack[]> woodProducts = new Hashtable<>();//todo implement
     Hashtable<String, Integer> tannin = new Hashtable<>();
 
     /**
@@ -24,8 +24,8 @@ public interface HardcoreWoodInteractionExtensions {
     }
 
     /**
-     * @param logId Identifier of the log, e.g. "minecraft:log2"
-     * @param meta Meta for the log, usually ranges from 0 to 3.
+     * @param logId  Identifier of the log, e.g. "minecraft:log2"
+     * @param meta   Meta for the log, usually ranges from 0 to 3.
      * @param amount Amount of bark required for Tanning recipes in the Cauldron. Defaults to 8 if not overridden.
      */
     static void overrideTanninAmount(String logId, int meta, int amount) {
