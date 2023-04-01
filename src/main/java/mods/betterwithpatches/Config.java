@@ -17,8 +17,8 @@ import java.util.Map;
 import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
-    public static int lazyGeneratorDelay, lazyCauldronDelay;
-    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, dirtyStokedFlameFix, enableNEICompat;
+    public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss;
+    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, dirtyStokedFlameFix, cookingPotStokedGui, enableNEICompat;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -40,8 +40,12 @@ public class Config {
                         "Various additions and fixes to the Turntable. Required for recipe manipulation. [Side: BOTH | Default: true]"),
                 Entry.of("patchHCWood", true,
                         "Replaces most of the Hardcore Wood feature set. [Side: BOTH | Default: true]"),
+                Entry.of("hcWoodPlankLoss", 1,
+                        "How many planks are lost when you break logs inappropriately. If set too low (4 in vanilla), planks won't drop at all. Setting to 0 disables plank loss. Depends on \"patchHCWood\". [Side: SERVER | Default: 1]"),
                 Entry.of("dirtyStokedFlameFix", true,
                         "Extends the lifespan of Stoked Flames to hide the weird gaps in the current update system. [Side: SERVER | Default: true]"),
+                Entry.of("cookingPotStokedGui", true,
+                        "Patches the Cauldron/Crucible Interface to have a subtle indicator showing it's Stocked. [Side: BOTH | Default: true]"),
                 Entry.of("enableNEICompat", true,
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]")
         );

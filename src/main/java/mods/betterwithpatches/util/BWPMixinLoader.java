@@ -21,13 +21,15 @@ public class BWPMixinLoader {
         Config.tryInit();
         final String bwm = "Better With Mods";
         load(bwm, Config.enableNEICompat, "CraftingManagerBulkMixin");
-        load(bwm, Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityCookingPotMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin");
+        load(bwm, Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityCookingPotMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin");
         load(bwm, Config.patchKiln, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin", "kiln.BWCraftingMixin");
         load(bwm, Config.patchTurntable, "turntable.BWCraftingMixin", "turntable.TileEntityTurntableMixin", "turntable.TurntableInteractionMixin");
-        load(bwm, Config.patchHCWood, "hcwood.BWModMixin", "hcwood.ItemBarkMixin", "hcwood.compat.NaturaCompatMixin", "hcwood.BWCraftingMixin");
+        load(bwm, Config.patchHCWood, "hcwood.BWModMixin", "hcwood.ItemBarkMixin", "hcwood.compat.NaturaCompatMixin", "hcwood.BWCraftingMixin", "hcwood.HardcoreWoodInteractionMixin");
         load(bwm, Config.dirtyStokedFlameFix, "fixes.dirty.BlockFireStokedMixin");
+        load(bwm, Config.cookingPotStokedGui, "fixes.cauldron.ContainerCookingPotMixin");
         if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
             load(bwm, Config.patchHCWood, "hcwood.client.ItemBarkMixin");
+            load(bwm, Config.cookingPotStokedGui, "fixes.cauldron.GuiCookingPotMixin");
         }
         return list;
     }

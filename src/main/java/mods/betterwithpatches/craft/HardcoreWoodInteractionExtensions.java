@@ -1,14 +1,55 @@
 package mods.betterwithpatches.craft;
 
 import mods.betterwithpatches.util.BWPConstants;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Hashtable;
+
+import static mods.betterwithpatches.util.BWPConstants.getId;
 
 public interface HardcoreWoodInteractionExtensions {
     Hashtable<String, int[]> overrides = new Hashtable<>();
     Hashtable<String, ItemStack[]> woodProducts = new Hashtable<>();//todo implement
     Hashtable<String, Integer> tannin = new Hashtable<>();
+
+    static void addBlock(Block block, ItemStack... barkOverride) {
+        woodProducts.put(getId(block), barkOverride);
+
+    }
+
+    static void addBlock(Block block, int meta, ItemStack... barkOverride) {
+        woodProducts.put(getId(block) + "@" + meta, barkOverride);
+    }
+
+    static boolean contains(Block block, int meta) {
+        String identifier = getId(block);
+        if (woodProducts.containsKey(identifier)) return true;
+        else return woodProducts.containsKey(identifier + "@" + meta);
+    }
+
+    /**
+     * @return Specific override for bark in case you don't want some log to drop any bark (or define a custom stacksize for it).
+     * The overrides have to be "registered" in {@link HardcoreWoodInteractionExtensions#woodProducts}.
+     * Don't forget to use {@link HardcoreWoodInteractionExtensions#getBarkTagForLog(Block, int)} if you're going to use Bark in overrides!
+     */
+    static ItemStack[] getBarkOverrides(Block block, int meta) {
+        String identifier = getId(block);
+        ItemStack[] stacks = woodProducts.get(identifier);
+        if (stacks == null) stacks = woodProducts.get(identifier + "@" + meta);
+        return stacks;
+    }
+
+    /**
+     * @return Bark data for a specific Log. Mainly used internally.
+     */
+    static NBTTagCompound getBarkTagForLog(Block block, int meta) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("logId", getId(block));
+        tag.setInteger("logMeta", meta);
+        return tag;
+    }
 
     /**
      * @param logId Identifier of the log, e.g. "minecraft:log2"
@@ -23,6 +64,10 @@ public interface HardcoreWoodInteractionExtensions {
             BWPConstants.L.warn("Tried to add a Hardcore Wood Bark Override for {}, which isn't a valid identifier and will be skipped!", logId);
     }
 
+    static void overrideLogMeta(String modId, String logId, int... meta) {
+        overrides.put(modId + ":" + logId, meta);
+    }
+
     /**
      * @param logId  Identifier of the log, e.g. "minecraft:log2"
      * @param meta   Meta for the log, usually ranges from 0 to 3.
@@ -32,6 +77,18 @@ public interface HardcoreWoodInteractionExtensions {
         if (logId.contains(":")) tannin.put(logId + "@" + meta, amount);
         else
             BWPConstants.L.warn("Tried to add a Hardcore Wood Tannin Override for {}, which isn't a valid identifier and will be skipped!", logId);
+    }
+
+    static void overrideTanninAmount(String modid, String logId, int meta, int amount) {
+        tannin.put(modid + ":" + logId + "@" + meta, amount);
+    }
+
+    static int getTanninAmount(String logId, int meta) {
+        return tannin.contains(logId) ? tannin.get(logId) : tannin.getOrDefault(logId + "@" + meta, getDefaultTanninAmount(logId.split(":"), meta));
+    }
+
+    static int getDefaultTanninAmount(String[] splittId, int meta) {
+        return ((splittId[0].length() << 1) + splittId[1].length()) & 7 + meta;
     }
 
     static void addVanillaLogOverrides() {

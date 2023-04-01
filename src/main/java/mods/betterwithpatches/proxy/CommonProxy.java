@@ -4,6 +4,7 @@ import betterwithmods.BWCrafting;
 import betterwithmods.BWRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import mods.betterwithpatches.Config;
+import mods.betterwithpatches.compat.BWPModCompat;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import mods.betterwithpatches.nei.NEIBWMConfig;
 import net.minecraft.item.ItemBlock;
@@ -26,12 +27,16 @@ public class CommonProxy implements Proxy {
 
     @Override
     public void postInit() {
+        if (Config.patchHCWood) {
+            BWPModCompat.addNatureBarkOverrides();
+            BWPModCompat.addEBXLBarkOverrides();
+        }
         int[] defaultMeta = new int[]{0, 1, 2, 3};
         for (ItemStack log : OreDictionary.getOres("logWood")) {
             String id = GameData.getBlockRegistry().getNameForObject(((ItemBlock) log.getItem()).field_150939_a);
             int[] iterable = overrides.getOrDefault(id, defaultMeta);
             for (int i : iterable) {
-                int tannin = HardcoreWoodInteractionExtensions.tannin.getOrDefault(id + "@" + i, 8);
+                int tannin = HardcoreWoodInteractionExtensions.getTanninAmount(id, i);
                 ItemStack stack = new ItemStack(BWRegistry.bark, tannin, 0);
                 NBTTagCompound tag = new NBTTagCompound();
                 tag.setString("logId", id);

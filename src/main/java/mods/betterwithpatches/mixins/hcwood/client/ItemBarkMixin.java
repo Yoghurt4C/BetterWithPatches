@@ -2,6 +2,7 @@ package mods.betterwithpatches.mixins.hcwood.client;
 
 import betterwithmods.items.ItemBark;
 import cpw.mods.fml.common.registry.GameData;
+import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -66,7 +67,7 @@ public abstract class ItemBarkMixin extends Item {
         ctx.cancel();
         int[] defaultMeta = new int[]{0, 1, 2, 3};
         for (ItemStack log : OreDictionary.getOres("logWood")) {
-            String id = GameData.getBlockRegistry().getNameForObject(((ItemBlock) log.getItem()).field_150939_a);
+            String id = BWPConstants.getId(((ItemBlock) log.getItem()).field_150939_a);
             int[] iterable = overrides.getOrDefault(id, defaultMeta);
             for (int i : iterable) {
                 ItemStack stack = new ItemStack(item, 1, 0);

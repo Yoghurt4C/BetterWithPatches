@@ -70,7 +70,7 @@ public abstract class TileEntityCookingPotMixin extends TileEntity {
         ctx.cancel();
         if (!this.worldObj.isRemote) {
             BlockMechMachines block = (BlockMechMachines) this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord);
-            if (this.timer >= (lazy ? Config.lazyGeneratorDelay : 20)) {
+            if (this.timer >= (lazy ? Config.lazyCauldronDelay : 20)) {
                 int intensity = this.getFireIntensity();
                 if (this.fireIntensity == intensity) {
                     lazy = true;
