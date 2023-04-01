@@ -65,6 +65,9 @@ public abstract class TileEntityCookingPotMixin extends TileEntity {
     @Unique
     private final byte[] snakeZ = new byte[]{0, 1, 0, 0, -1, -1, 0, 0};
 
+    /**
+     * @reason Replacing the entire tick method is the only viable way to patch this tile.
+     */
     @Inject(method = "updateEntity", at = @At("HEAD"), cancellable = true)
     public void tick(CallbackInfo ctx) {
         ctx.cancel();
@@ -118,6 +121,10 @@ public abstract class TileEntityCookingPotMixin extends TileEntity {
         }
     }
 
+    /**
+     * @reason Optimized algorithm following a spiral around the block immediately under the tile, rather than threading the entire 3x3.
+     * Only happens if the aforementioned block is a valid heat source.
+     */
     @Inject(method = "getCurrentFireIntensity", at = @At("HEAD"), cancellable = true, remap = false)
     public void getTotalFireIntensity(CallbackInfoReturnable<Integer> ctx) {
         int fireFactor = this.fireIntensity;
