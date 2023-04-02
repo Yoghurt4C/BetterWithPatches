@@ -17,8 +17,8 @@ import java.util.Map;
 import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
-    public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss;
-    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, dirtyStokedFlameFix, cookingPotStokedGui, enableNEICompat;
+    public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance;
+    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, enableNEICompat;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -42,10 +42,16 @@ public class Config {
                         "Replaces most of the Hardcore Wood feature set. Bark is now dynamic and can drop from any block in logWood. [Side: BOTH | Default: true]"),
                 Entry.of("hcWoodPlankLoss", 1,
                         "How many planks are lost when you break logs inappropriately. If set too low (4 in vanilla), planks won't drop at all. Setting to 0 disables plank loss. Depends on \"patchHCWood\". [Side: SERVER | Default: 1]"),
+                Entry.of("patchSaw", true,
+                        "Various additions and fixes to the Saw. Unhardcodes most of the behaviours, allows for defining custom drops for Blocks and Entities. Depends on \"patchHCWood\". [Side: BOTH | Default: true]"),
+                Entry.of("choppingBlockHeadDropChance", 33,
+                        "You can use this to manipulate the chance for vanilla heads to drop when a Mob gets Sawed to death on a Chopping Block. This ONLY affects default head drops defined by BetterWithPatches. [Side: SERVER | Default: 33]"),
+                Entry.of("forceChopPlayerHeads", false,
+                        "Enables chopping off other Players' heads using the Saw regardless of whether Tinkers Construct is present and its \"Players drop heads on death\" config option is enabled. [Side: Server | Default: false]"),
                 Entry.of("dirtyStokedFlameFix", true,
                         "Extends the lifespan of Stoked Flames to hide the weird gaps in the current update system. [Side: SERVER | Default: true]"),
-                Entry.of("cookingPotStokedGui", true,
-                        "Patches the Cauldron/Crucible Interface to have a subtle indicator showing it's Stoked. [Side: BOTH | Default: true]"),
+                Entry.of("patchCookingPot", true,
+                        "Various additions and fixes to the Cauldron and Crucible. Patches the GUI to have an indicator of being Stoked. [Side: BOTH | Default: true]"),
                 Entry.of("enableNEICompat", true,
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]")
         );

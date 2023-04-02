@@ -1,4 +1,4 @@
-package mods.betterwithpatches.mixins.fixes;
+package mods.betterwithpatches.mixins.cauldron;
 
 import betterwithmods.blocks.BlockMechMachines;
 import betterwithmods.blocks.tile.TileEntityCookingPot;

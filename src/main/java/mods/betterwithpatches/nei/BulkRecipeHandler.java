@@ -57,7 +57,11 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(this.getOverlayIdentifier())) {
             for (BulkRecipe recipe : this.getRecipes()) create(recipe);
-        } else if (outputId.equals("item")) loadCraftingRecipes((ItemStack) results[0]);
+        } else if (outputId.equals("item")) {
+            for (Object result : results) {
+                loadCraftingRecipes((ItemStack) result);
+            }
+        }
     }
 
     @Override

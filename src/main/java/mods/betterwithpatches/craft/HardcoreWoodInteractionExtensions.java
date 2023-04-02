@@ -10,34 +10,34 @@ import java.util.Hashtable;
 import static mods.betterwithpatches.util.BWPConstants.getId;
 
 public interface HardcoreWoodInteractionExtensions {
-    Hashtable<String, int[]> overrides = new Hashtable<>();
-    Hashtable<String, ItemStack[]> woodProducts = new Hashtable<>();//todo implement
+    Hashtable<String, int[]> metaOverrides = new Hashtable<>();
+    Hashtable<String, ItemStack[]> barkOverrides = new Hashtable<>();
     Hashtable<String, Integer> tannin = new Hashtable<>();
 
     static void addBlock(Block block, ItemStack... barkOverride) {
-        woodProducts.put(getId(block), barkOverride);
+        barkOverrides.put(getId(block), barkOverride);
 
     }
 
     static void addBlock(Block block, int meta, ItemStack... barkOverride) {
-        woodProducts.put(getId(block) + "@" + meta, barkOverride);
+        barkOverrides.put(getId(block) + "@" + meta, barkOverride);
     }
 
     static boolean contains(Block block, int meta) {
         String identifier = getId(block);
-        if (woodProducts.containsKey(identifier)) return true;
-        else return woodProducts.containsKey(identifier + "@" + meta);
+        if (barkOverrides.containsKey(identifier)) return true;
+        else return barkOverrides.containsKey(identifier + "@" + meta);
     }
 
     /**
      * @return Specific override for bark in case you don't want some log to drop any bark (or define a custom stacksize for it).
-     * The overrides have to be "registered" in {@link HardcoreWoodInteractionExtensions#woodProducts}.
+     * The overrides have to be "registered" in {@link HardcoreWoodInteractionExtensions#barkOverrides}.
      * Don't forget to use {@link HardcoreWoodInteractionExtensions#getBarkTagForLog(Block, int)} if you're going to use Bark in overrides!
      */
     static ItemStack[] getBarkOverrides(Block block, int meta) {
         String identifier = getId(block);
-        ItemStack[] stacks = woodProducts.get(identifier);
-        if (stacks == null) stacks = woodProducts.get(identifier + "@" + meta);
+        ItemStack[] stacks = barkOverrides.get(identifier);
+        if (stacks == null) stacks = barkOverrides.get(identifier + "@" + meta);
         return stacks;
     }
 
@@ -59,13 +59,13 @@ public interface HardcoreWoodInteractionExtensions {
      *              This exists to *specifically* define edge cases like that.
      */
     static void overrideLogMeta(String logId, int... meta) {
-        if (logId.contains(":")) overrides.put(logId, meta);
+        if (logId.contains(":")) metaOverrides.put(logId, meta);
         else
             BWPConstants.L.warn("Tried to add a Hardcore Wood Bark Override for {}, which isn't a valid identifier and will be skipped!", logId);
     }
 
     static void overrideLogMeta(String modId, String logId, int... meta) {
-        overrides.put(modId + ":" + logId, meta);
+        metaOverrides.put(modId + ":" + logId, meta);
     }
 
     /**

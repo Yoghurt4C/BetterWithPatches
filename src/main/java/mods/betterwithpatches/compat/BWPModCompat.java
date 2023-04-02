@@ -22,4 +22,10 @@ public interface BWPModCompat {
             }
         }
     }
+
+    static void addThaumcraftBarkOverrides() {
+        if (Loader.isModLoaded("Thaumcraft")) {
+            HardcoreWoodInteractionExtensions.overrideLogMeta("Thaumcraft", "blockMagicalLog", 0, 1);
+        }
+    }
 }

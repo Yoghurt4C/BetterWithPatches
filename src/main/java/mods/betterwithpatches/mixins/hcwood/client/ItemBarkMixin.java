@@ -19,9 +19,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import static mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions.overrides;
+import static mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions.metaOverrides;
 
 @Mixin(ItemBark.class)
 public abstract class ItemBarkMixin extends Item {
@@ -66,16 +68,20 @@ public abstract class ItemBarkMixin extends Item {
     public void nbtAware(Item item, CreativeTabs tab, List<ItemStack> list, CallbackInfo ctx) {
         ctx.cancel();
         int[] defaultMeta = new int[]{0, 1, 2, 3};
+        Set<String> added = new HashSet<>();
         for (ItemStack log : OreDictionary.getOres("logWood")) {
             String id = BWPConstants.getId(((ItemBlock) log.getItem()).field_150939_a);
-            int[] iterable = overrides.getOrDefault(id, defaultMeta);
-            for (int i : iterable) {
-                ItemStack stack = new ItemStack(item, 1, 0);
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setString("logId", id);
-                tag.setInteger("logMeta", i);
-                stack.setTagCompound(tag);
-                list.add(stack);
+            if (added.add(id)) {
+                int[] iterable = metaOverrides.getOrDefault(id, defaultMeta);
+                for (int i : iterable) {
+                    ItemStack stack = new ItemStack(item, 1, 0);
+                    NBTTagCompound tag = new NBTTagCompound();
+                    tag.setString("logId", id);
+                    tag.setInteger("logMeta", i);
+                    stack.setTagCompound(tag);
+                    if (list.contains(stack)) continue;
+                    list.add(stack);
+                }
             }
         }
     }

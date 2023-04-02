@@ -1,4 +1,4 @@
-package mods.betterwithpatches.mixins.fixes.cauldron;
+package mods.betterwithpatches.mixins.cauldron;
 
 import betterwithmods.blocks.tile.TileEntityCookingPot;
 import betterwithmods.client.container.ContainerCookingPot;

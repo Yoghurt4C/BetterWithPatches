@@ -19,6 +19,9 @@ public abstract class BWModMixin {
         HardcoreWoodInteractionExtensions.addVanillaTanninOverrides();
     }
 
+    /**
+     * @reason Replacing the vanilla BWM event with one making use of the relevant patches. Not a redirect because I was lazy.
+     */
     @Inject(method = "postInit", at = @At(value = "INVOKE", target = "Lcpw/mods/fml/common/FMLCommonHandler;instance()Lcpw/mods/fml/common/FMLCommonHandler;", remap = false), cancellable = true, remap = false)
     public void boop(FMLPostInitializationEvent evt, CallbackInfo ctx) {
         ctx.cancel();
