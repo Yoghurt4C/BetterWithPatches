@@ -7,10 +7,13 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.spongepowered.asm.mixin.Unique;
 
 public interface BWPConstants {
     String MODID = "betterwithpatches", MODNAME = "BetterWithPatches";
     Logger L = LogManager.getLogger(MODNAME);
+    byte[] snakeX = new byte[]{1, 0, -1, -1, 0, 0, 1, 1};
+    byte[] snakeZ = new byte[]{0, 1, 0, 0, -1, -1, 0, 0};
 
     static String getId(Block block) {
         return GameData.getBlockRegistry().getNameForObject(block);

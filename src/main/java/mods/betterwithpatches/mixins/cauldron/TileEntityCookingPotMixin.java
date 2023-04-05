@@ -15,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static mods.betterwithpatches.util.BWPConstants.snakeX;
+import static mods.betterwithpatches.util.BWPConstants.snakeZ;
+
 @Mixin(TileEntityCookingPot.class)
 public abstract class TileEntityCookingPotMixin extends TileEntity {
 
@@ -60,10 +63,6 @@ public abstract class TileEntityCookingPotMixin extends TileEntity {
     private int totalIntensity = 0;
     @Unique
     private boolean lazy = false;
-    @Unique
-    private final byte[] snakeX = new byte[]{1, 0, -1, -1, 0, 0, 1, 1};
-    @Unique
-    private final byte[] snakeZ = new byte[]{0, 1, 0, 0, -1, -1, 0, 0};
 
     /**
      * @reason Replacing the entire tick method is the only viable way to patch this tile.
