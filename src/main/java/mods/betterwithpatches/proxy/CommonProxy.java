@@ -31,6 +31,7 @@ public class CommonProxy implements Proxy {
 
     @Override
     public void init() {
+        BWPModCompat.addMineTweakerCompat();
     }
 
     @Override

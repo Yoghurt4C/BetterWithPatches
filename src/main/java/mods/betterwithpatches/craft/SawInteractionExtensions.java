@@ -68,7 +68,9 @@ public interface SawInteractionExtensions {
     }
 
     static boolean containsBlock(Block block, int meta) {
-        return blockOverrides.containsKey(getId(block) + "@" + meta);
+        String identifier = getId(block);
+        if (blockOverrides.containsKey(identifier)) return true;
+        else return blockOverrides.containsKey(identifier + "@" + meta);
     }
 
     static boolean containsEntity(EntityLivingBase entity) {
@@ -76,7 +78,10 @@ public interface SawInteractionExtensions {
     }
 
     static ItemStack[] getBlockOverrides(Block block, int meta) {
-        return blockOverrides.get(getId(block) + "@" + meta);
+        String identifier = getId(block);
+        ItemStack[] stacks = blockOverrides.get(identifier);
+        if (stacks == null) stacks = blockOverrides.get(identifier + "@" + meta);
+        return stacks;
     }
 
     static BWPMobDrops getMobDrops(EntityLivingBase entity) {

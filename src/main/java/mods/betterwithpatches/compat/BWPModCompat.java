@@ -1,9 +1,25 @@
 package mods.betterwithpatches.compat;
 
 import cpw.mods.fml.common.Loader;
+import mods.betterwithpatches.compat.minetweaker.*;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 
 public interface BWPModCompat {
+    static void addMineTweakerCompat() {
+        Class<?>[] compat = {
+                CauldronTweaker.class,
+                CrucibleTweaker.class,
+                HeatRegistryTweaker.class,
+                KilnTweaker.class,
+                MillTweaker.class,
+                SawTweaker.class,
+                TurntableTweaker.class
+        };
+        for (Class<?> cls : compat) {
+            minetweaker.MineTweakerAPI.registerClass(cls);
+        }
+    }
+
     static void addNatureBarkOverrides() {
         if (Loader.isModLoaded("Natura")) {
             String[] ids = new String[]{"bloodwood", "redwood", "willow"};

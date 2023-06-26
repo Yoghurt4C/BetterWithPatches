@@ -2,11 +2,10 @@ package mods.betterwithpatches.mixins.kiln;
 
 import betterwithmods.blocks.BTWBlock;
 import betterwithmods.blocks.BlockKiln;
-import betterwithmods.util.InvUtils;
 import mods.betterwithpatches.craft.KilnInteractionExtensions;
+import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -76,10 +75,7 @@ public abstract class BlockKilnMixin extends BTWBlock {
     public void cook(World world, int x, int y, int z, CallbackInfo ctx, Block block, int meta) {
         ctx.cancel();
         if (block != null) {
-            ItemStack[] result = KilnInteractionExtensions.getProducts(block, meta);
-            for (ItemStack stack : result) {
-                InvUtils.ejectStackWithOffset(world, x, y, z, stack);
-            }
+            BWPConstants.scatter(world, x, y, z, KilnInteractionExtensions.getProducts(block, meta));
             world.setBlockToAir(x, y, z);
         }
     }

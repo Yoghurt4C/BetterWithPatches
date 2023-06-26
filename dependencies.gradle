@@ -35,6 +35,8 @@ dependencies {
     implementation ("codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev")
     compileOnly ("lib:Better With Mods 1.7.10 0.6.2 Beta-deobf")
     runtimeOnly ("lib:Better With Mods 1.7.10 0.6.2 Beta")
+    compileOnly("lib:CraftTweaker-1.7.10-3.1.0-legacy-dev")
+    runtimeOnly("lib:CraftTweaker-1.7.10-3.1.0-legacy")
 }
 
 def url() {
