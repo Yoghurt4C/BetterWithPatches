@@ -33,8 +33,12 @@ public class MillTweaker {
         ItemStack out = MineTweakerMC.getItemStack(output);
         List<BulkRecipe> recipes = MTHelper.copyBulkRecipeList(CraftingManagerMill.getInstance());
         for (BulkRecipe recipe : recipes) {
-            if (recipe.getOutput().contains(out))
-                MineTweakerAPI.apply(new Remove(recipe.getOutput().toArray(new ItemStack[0]), recipe.getInput().toArray()));
+            for (ItemStack stack : recipe.getOutput()) {
+                if (MTHelper.stacksMatch(stack, out)) {
+                    MineTweakerAPI.apply(new Remove(recipe.getOutput().toArray(new ItemStack[0]), recipe.getInput().toArray()));
+                    break;
+                }
+            }
         }
     }
 

@@ -67,7 +67,7 @@ public abstract class ItemBarkMixin extends Item {
     @Inject(method = "getSubItems", at = @At("HEAD"), cancellable = true)
     public void nbtAware(Item item, CreativeTabs tab, List<ItemStack> list, CallbackInfo ctx) {
         ctx.cancel();
-        int[] defaultMeta = new int[]{0, 1, 2, 3};
+        int[] defaultMeta = new int[]{0};
         Set<String> added = new HashSet<>();
         for (ItemStack log : OreDictionary.getOres("logWood")) {
             String id = BWPConstants.getId(((ItemBlock) log.getItem()).field_150939_a);

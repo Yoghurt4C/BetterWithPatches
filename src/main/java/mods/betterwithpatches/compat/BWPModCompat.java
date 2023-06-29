@@ -22,9 +22,9 @@ public interface BWPModCompat {
 
     static void addNatureBarkOverrides() {
         if (Loader.isModLoaded("Natura")) {
-            String[] ids = new String[]{"bloodwood", "redwood", "willow"};
+            String[] ids = new String[]{"Rare Tree", "tree"};
             for (String id : ids) {
-                HardcoreWoodInteractionExtensions.overrideLogMeta("Natura", id, 0);
+                HardcoreWoodInteractionExtensions.overrideLogMeta("Natura", id, 0, 1, 2, 3);
             }
             HardcoreWoodInteractionExtensions.overrideLogMeta("Natura", "Dark Tree", 0, 1);
         }
@@ -32,9 +32,9 @@ public interface BWPModCompat {
 
     static void addEBXLBarkOverrides() {
         if (Loader.isModLoaded("ExtrabiomesXL")) {
-            String[] ids = new String[]{"mini_log_1", "cornerlog_baldcypress", "cornerlog_rainboweucalyptus", "cornerlog_oak", "cornerlog_fir", "cornerlog_redwood", "log_elbow_baldcypress", "log_elbow_rainbow_eucalyptus"};
+            String[] ids = new String[]{"log1", "log2", ""};
             for (String id : ids) {
-                HardcoreWoodInteractionExtensions.overrideLogMeta("ExtrabiomesXL", id, 0);
+                HardcoreWoodInteractionExtensions.overrideLogMeta("ExtrabiomesXL", id, 0, 1, 2, 3);
             }
         }
     }

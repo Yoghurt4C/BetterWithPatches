@@ -1,0 +1,1 @@
+minor fixes and adjustments (correct mt support, remove 2 crashes and flip autobarking)

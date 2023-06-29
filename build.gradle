@@ -72,7 +72,7 @@ plugins {
     id 'com.github.gmazzo.buildconfig' version '3.1.0' apply false // Unused, available for addon.gradle
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
-    id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
+    id 'io.github.CDAGaming.cursegradle' version '1.6.1' apply false
     id 'com.gtnewhorizons.retrofuturagradle' version '1.2.3'
 }
 boolean settingsupdated = verifySettingsGradle()
@@ -1032,8 +1032,8 @@ if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
     modrinth {
         token = System.getenv("MODRINTH_TOKEN")
         projectId = modrinthProjectId
-        versionNumber = identifiedVersion
-        versionType = identifiedVersion.endsWith("-pre") ? "beta" : "release"
+        versionNumber = modVersion
+        versionType = "beta"
         changelog = changelogFile.exists() ? changelogFile.getText("UTF-8") : ""
         uploadFile = publishableObfJar
         additionalFiles = getSecondaryArtifacts()
@@ -1061,7 +1061,7 @@ if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
 }
 
 if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null) {
-    apply plugin: 'com.matthewprenger.cursegradle'
+    apply plugin: 'io.github.CDAGaming.cursegradle'
 
     File changelogFile = new File(System.getenv("CHANGELOG_FILE") ?: "CHANGELOG.md")
 
@@ -1073,7 +1073,7 @@ if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null
                 changelogType = "markdown"
                 changelog = changelogFile
             }
-            releaseType = identifiedVersion.endsWith("-pre") ? "beta" : "release"
+            releaseType = "beta"
             addGameVersion minecraftVersion
             addGameVersion "Forge"
             mainArtifact publishableObfJar

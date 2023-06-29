@@ -26,12 +26,16 @@ public class CommonProxy implements Proxy {
     @Override
     public void preInit() {
         Config.tryInit();
-        new NEIBWMConfig();
+        if (Loader.isModLoaded("NotEnoughItems")) {
+            new NEIBWMConfig();
+        }
     }
 
     @Override
     public void init() {
-        BWPModCompat.addMineTweakerCompat();
+        if (Loader.isModLoaded("MineTweaker3")) {
+            BWPModCompat.addMineTweakerCompat();
+        }
     }
 
     @Override

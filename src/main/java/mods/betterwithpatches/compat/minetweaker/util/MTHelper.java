@@ -10,6 +10,7 @@ import minetweaker.mc1710.item.MCItemStack;
 import minetweaker.mc1710.oredict.MCOreDictEntry;
 import mods.betterwithpatches.util.BWMRecipeAccessor;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +48,12 @@ public interface MTHelper {
             ingr[i] = toMTIngredient(obj[i]);
         }
         return ingr;
+    }
+
+    static boolean stacksMatch(ItemStack stack1, ItemStack stack2) {
+        return stack1 != null && stack2 != null &&
+                stack1.getItem() == stack2.getItem() &&
+                (stack1.getItemDamage() == stack2.getItemDamage() || stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack1.getItem().isDamageable());
     }
 
     static List<BulkRecipe> copyBulkRecipeList(CraftingManagerBulk instance) {

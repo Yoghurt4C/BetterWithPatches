@@ -92,6 +92,7 @@ public interface HardcoreWoodInteractionExtensions {
     }
 
     static void addVanillaLogOverrides() {
+        overrideLogMeta("minecraft:log", 0, 1, 2, 3);
         overrideLogMeta("minecraft:log2", 0, 1);
     }
 

@@ -35,8 +35,12 @@ public class CauldronTweaker {
         ItemStack out = MineTweakerMC.getItemStack(output);
         List<BulkRecipe> recipes = MTHelper.copyBulkRecipeList(stoked ? CraftingManagerCauldronStoked.getInstance() : CraftingManagerCauldron.getInstance());
         for (BulkRecipe recipe : recipes) {
-            if (recipe.getOutput().contains(out))
-                MineTweakerAPI.apply(new Remove(recipe.getOutput().toArray(new ItemStack[0]), recipe.getInput().toArray(), stoked));
+            for (ItemStack stack : recipe.getOutput()) {
+                if (MTHelper.stacksMatch(stack, out)) {
+                    MineTweakerAPI.apply(new Remove(recipe.getOutput().toArray(new ItemStack[0]), recipe.getInput().toArray(), stoked));
+                    break;
+                }
+            }
         }
     }
 
