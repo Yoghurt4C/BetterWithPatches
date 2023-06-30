@@ -4,75 +4,43 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import mods.betterwithpatches.Config;
 
-import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class BWPMixinLoader {
-    private final boolean hax;
-    private final List<String> list, loadedMods;
+    private final boolean early;
+    private final List<String> list;
 
-    public BWPMixinLoader(boolean hax) {
-        this.hax = hax;
+    public BWPMixinLoader(boolean early) {
+        this.early = early;
         this.list = new ArrayList<>();
-        this.loadedMods = new ArrayList<>();
     }
 
     public List<String> getMixins() {
         Config.tryInit();
-        final String bwm = "Better With Mods";
-        load(bwm, Config.enableNEICompat, "CraftingManagerBulkMixin");
-        load(bwm, Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin");
-        load(bwm, Config.patchKiln, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin", "kiln.BWCraftingMixin");
-        load(bwm, Config.genericFixes && Config.patchTurntable, "turntable.BWCraftingMixin", "turntable.TileEntityTurntableMixin", "turntable.TurntableInteractionMixin");
-        load(bwm, Config.patchHCWood, "hcwood.BWModMixin", "hcwood.ItemBarkMixin", "hcwood.compat.NaturaCompatMixin", "hcwood.BWCraftingMixin", "hcwood.HardcoreWoodInteractionMixin");
-        load(bwm, Config.patchHCWood && Config.patchSaw, "saw.BWModMixin", "saw.BlockSawMixin", "saw.SawInteractionMixin");
-        load(bwm, Config.dirtyStokedFlameFix, "fixes.dirty.BlockFireStokedMixin");
-        load(bwm, Config.patchCookingPot, "cauldron.ContainerCookingPotMixin", "cauldron.TileEntityCookingPotMixin");
-        if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
-            load(bwm, Config.patchHCWood, "hcwood.client.ItemBarkMixin");
-            load(bwm, Config.patchCookingPot, "cauldron.GuiCookingPotMixin");
+        if (this.early) {
+            load(Config.patchHCBuckets, "hcbuckets.ItemBucketMixin");
+        } else {
+            load(Config.enableNEICompat, "CraftingManagerBulkMixin");
+            load(Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin");
+            load(Config.patchKiln, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin", "kiln.BWCraftingMixin");
+            load(Config.genericFixes && Config.patchTurntable, "turntable.BWCraftingMixin", "turntable.TileEntityTurntableMixin", "turntable.TurntableInteractionMixin");
+            load(Config.patchHCWood, "hcwood.BWModMixin", "hcwood.ItemBarkMixin", "hcwood.compat.NaturaCompatMixin", "hcwood.BWCraftingMixin", "hcwood.HardcoreWoodInteractionMixin");
+            load(Config.patchHCWood && Config.patchSaw, "saw.BWModMixin", "saw.BlockSawMixin", "saw.SawInteractionMixin");
+            load(Config.dirtyStokedFlameFix, "fixes.dirty.BlockFireStokedMixin");
+            load(Config.patchCookingPot, "cauldron.ContainerCookingPotMixin", "cauldron.TileEntityCookingPotMixin");
+            load(Config.patchHCBuckets, "hcbuckets.BWModMixin");
+            if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
+                load(Config.patchHCWood, "hcwood.client.ItemBarkMixin");
+                load(Config.patchCookingPot, "cauldron.GuiCookingPotMixin");
+            }
         }
         return list;
     }
 
 
-    private void load(String mod, boolean cfg, String... mixins) {
-        if (cfg) {
-            try {
-                if (hax && canLoad(loadedMods, mod)) {
-                    loadedMods.add(mod);
-                }
-                Collections.addAll(list, mixins);
-            } catch (Exception e) {
-                BWPConstants.L.error(e.getMessage());
-            }
-        }
-    }
-
-    //todo remove, doesn't work anyway
-    @SuppressWarnings("deprecation")
-    private boolean canLoad(List<String> mods, String modname) throws Exception {
-        if (mods.contains(modname)) return false;
-        Set<String> names = getModNames(modname);
-        for (String s : names) {
-            File jar = ru.timeconqueror.spongemixins.MinecraftURLClassPath.getJarInModPath(s);
-            if (jar != null && jar.exists()) {
-                BWPConstants.L.info("Applying mixins to {}...", modname);
-                ru.timeconqueror.spongemixins.MinecraftURLClassPath.addJar(jar);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private Set<String> getModNames(String mod) {
-        Set<String> mutated = new HashSet<>();
-        Collections.addAll(mutated, mod, mod.toLowerCase(Locale.ROOT), mod.toUpperCase(Locale.ROOT));
-        if (mod.contains(" ")) {
-            String trimmed = mod.replace(" ", "");
-            String scored = mod.replace(" ", "_");
-            Collections.addAll(mutated, trimmed, trimmed.toLowerCase(Locale.ROOT), trimmed.toUpperCase(Locale.ROOT), scored, scored.toLowerCase(Locale.ROOT), scored.toUpperCase(Locale.ROOT));
-        }
-        return mutated;
+    private void load(boolean cfg, String... mixins) {
+        if (cfg) Collections.addAll(list, mixins);
     }
 }

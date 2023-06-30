@@ -8,14 +8,12 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
+import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.event.world.BlockEvent;
-
-import java.util.Collections;
 
 import static mods.betterwithpatches.util.BWPConstants.presentInOD;
 
@@ -33,15 +31,15 @@ public class LogHarvestEventReplacement extends LogHarvestEvent {
         if (presentInOD(log, "logWood")) {
             int harvestMeta = block.damageDropped(meta);
             if (evt.harvester != null) {
-                boolean harvest = true, fort = evt.fortuneLevel > 0, saw = false;
+                boolean harvest = true, fort = evt.fortuneLevel > 0, force = false, saw = false;
                 if (evt.harvester.getCurrentEquippedItem() != null) {
                     ItemStack item = evt.harvester.getCurrentEquippedItem();
                     if (item.getItem() instanceof ItemTool) {
                         ItemTool tool = (ItemTool) item.getItem();
                         if (tool.getHarvestLevel(item, "axe") >= 0) {
-                            saw = (item.hasTagCompound() && item.stackTagCompound.hasKey("BWMHarvest"));
+                            saw = item.hasTagCompound() && item.stackTagCompound.hasKey("BWMHarvest");
                             if (tool instanceof ItemKnife) {
-                                fort = true;
+                                fort = force = true;
                             } else if (!saw) {
                                 harvest = false;
                             }
@@ -52,16 +50,15 @@ public class LogHarvestEventReplacement extends LogHarvestEvent {
                 }
 
                 if (harvest && !evt.isSilkTouching) {
-                    int fortune = fort ? 2 : evt.fortuneLevel;
+                    int fortune = force ? 2 : evt.fortuneLevel;
                     for (ItemStack logStack : evt.drops) {
                         if (presentInOD(logStack, "logWood")) {
                             craft.setInventorySlotContents(0, new ItemStack(block, 1, harvestMeta));
                             IRecipe recipe = findMatchingRecipe(craft, evt.world);
-                            ItemStack planks;
                             if (recipe != null && recipe.getCraftingResult(craft) != null) {
-                                planks = recipe.getCraftingResult(craft);
+                                ItemStack planks = recipe.getCraftingResult(craft);
                                 if (presentInOD(planks, "plankWood")) {
-                                    Block drop = ((ItemBlock) logStack.getItem()).field_150939_a;
+                                    Block drop = BWPConstants.getBlock(logStack.getItem());
                                     if (Config.hcWoodPlankLoss > 0) {
                                         planks.stackSize = Math.max(0, fort ? planks.stackSize - Config.hcWoodPlankLoss + evt.world.rand.nextInt(fortune) : planks.stackSize - Config.hcWoodPlankLoss);
                                         if (saw) planks.stackSize = planks.stackSize << 1;
@@ -70,12 +67,12 @@ public class LogHarvestEventReplacement extends LogHarvestEvent {
                                     }
                                     if (HardcoreWoodInteractionExtensions.contains(drop, harvestMeta)) {
                                         ItemStack[] overrides = HardcoreWoodInteractionExtensions.getBarkOverrides(drop, harvestMeta);
-                                        Collections.addAll(evt.drops, overrides);
+                                        BWPConstants.copyInto(evt.drops, overrides);
                                     } else {
                                         int barkStack = 1, sawdustStack = 1;
                                         if (fort || saw) {
-                                            barkStack = 1 + evt.world.rand.nextInt(fortune);
-                                            sawdustStack = 1 + evt.world.rand.nextInt(fortune);
+                                            barkStack += evt.world.rand.nextInt(fortune);
+                                            sawdustStack += evt.world.rand.nextInt(fortune);
                                         }
                                         ItemStack bark = new ItemStack(BWRegistry.bark, barkStack);
                                         bark.setTagCompound(HardcoreWoodInteractionExtensions.getBarkTagForLog(drop, harvestMeta));

@@ -2,7 +2,6 @@ package mods.betterwithpatches.mixins.hcwood.client;
 
 import betterwithmods.items.ItemBark;
 import cpw.mods.fml.common.registry.GameData;
-import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.oredict.OreDictionary;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
+import java.util.Map;
 
 import static mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions.metaOverrides;
 
@@ -65,14 +64,11 @@ public abstract class ItemBarkMixin extends Item {
     @Inject(method = "getSubItems", at = @At("HEAD"), cancellable = true)
     public void nbtAware(Item item, CreativeTabs tab, List<ItemStack> list, CallbackInfo ctx) {
         ctx.cancel();
-        int[] def = new int[]{0};
-        List<ItemStack> logs = OreDictionary.getOres("logWood");
-        for (ItemStack log : logs) {
-            String id = BWPConstants.getId(BWPConstants.getBlock(log.getItem()));
-            for (int i : metaOverrides.getOrDefault(id, def)) {
+        for (Map.Entry<String, int[]> bark : metaOverrides.entrySet()) {
+            for (int i : bark.getValue()) {
                 ItemStack stack = new ItemStack(item, 1, 0);
                 NBTTagCompound tag = new NBTTagCompound();
-                tag.setString("logId", id);
+                tag.setString("logId", bark.getKey());
                 tag.setInteger("logMeta", i);
                 stack.setTagCompound(tag);
                 list.add(stack);

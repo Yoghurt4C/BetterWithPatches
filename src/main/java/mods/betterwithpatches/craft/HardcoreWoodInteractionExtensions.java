@@ -8,11 +8,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static mods.betterwithpatches.util.BWPConstants.getId;
 
 public interface HardcoreWoodInteractionExtensions {
-    Hashtable<String, int[]> metaOverrides = new Hashtable<>();
+    Map<String, int[]> metaOverrides = new LinkedHashMap<>();
     Hashtable<String, ItemStack[]> barkOverrides = new Hashtable<>();
     Hashtable<String, Integer> tannin = new Hashtable<>();
 

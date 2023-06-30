@@ -18,7 +18,7 @@ import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
     public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance;
-    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, enableNEICompat;
+    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -52,6 +52,8 @@ public class Config {
                         "Extends the lifespan of Stoked Flames to hide the weird gaps in the current update system. [Side: SERVER | Default: true]"),
                 Entry.of("patchCookingPot", true,
                         "Various additions and fixes to the Cauldron and Crucible. Patches the GUI to have an indicator of being Stoked. [Side: BOTH | Default: true]"),
+                Entry.of("patchHCBuckets", true,
+                        "Makes Hardcore Buckets actually work in a modded environment."),
                 Entry.of("enableNEICompat", true,
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]")
         );

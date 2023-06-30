@@ -1,0 +1,7 @@
+{
+    "repo": "https://archive.org/download/better-with-mods-1.7.10-0.6.2-beta",
+    "file": "BetterWithMods-0.6.2.jar",
+    "dev": "BetterWithMods-0.6.2-deobf.jar",
+    "class": "betterwithmods.BWMod",
+    "version": "0.6.2"
+}
