@@ -6,10 +6,9 @@ import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.registry.GameData;
+import mods.betterwithpatches.util.BWPConstants;
 import mods.betterwithpatches.util.BWPNEIHelper;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
@@ -72,14 +71,11 @@ public abstract class InteractionHandler extends TemplateRecipeHandler implement
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        Item item = ingredient.getItem();
-        Block block;
-        if (item instanceof ItemBlock) block = ((ItemBlock) item).field_150939_a;
-        else block = Block.getBlockFromItem(item);
+        Block block = BWPConstants.getBlock(ingredient.getItem());
         String id = GameData.getBlockRegistry().getNameForObject(block);
         int meta = ingredient.getItemDamage();
         for (Map.Entry<String, ItemStack[]> entry : this.getRecipes().entrySet()) {
-            if (BWPNEIHelper.matchInput(entry.getKey(), id, meta)) create(entry.getKey(), entry.getValue());
+            if (BWPNEIHelper.matchInput(entry.getKey(), ingredient, id, meta)) create(entry.getKey(), entry.getValue());
         }
     }
 

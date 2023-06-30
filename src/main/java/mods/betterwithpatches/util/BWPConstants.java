@@ -3,6 +3,8 @@ package mods.betterwithpatches.util;
 import betterwithmods.util.InvUtils;
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,6 +20,10 @@ public interface BWPConstants {
 
     static String getId(Block block) {
         return GameData.getBlockRegistry().getNameForObject(block);
+    }
+
+    static Block getBlock(Item item) {
+        return item instanceof ItemBlock ? ((ItemBlock) item).field_150939_a : Block.getBlockFromItem(item);
     }
 
     static boolean presentInOD(ItemStack stack, String od) {

@@ -1,5 +1,7 @@
 package mods.betterwithpatches.craft;
 
+import betterwithmods.BWCrafting;
+import betterwithmods.BWRegistry;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
@@ -88,12 +90,7 @@ public interface HardcoreWoodInteractionExtensions {
     }
 
     static int getDefaultTanninAmount(String[] splittId, int meta) {
-        return ((splittId[0].length() << 1) + splittId[1].length()) & 7 + meta;
-    }
-
-    static void addVanillaLogOverrides() {
-        overrideLogMeta("minecraft:log", 0, 1, 2, 3);
-        overrideLogMeta("minecraft:log2", 0, 1);
+        return Math.min(2, (splittId[0].length() << 1) + (splittId[1].length() & 7) - (meta & 3));
     }
 
     static void addVanillaTanninOverrides() {
@@ -103,5 +100,17 @@ public interface HardcoreWoodInteractionExtensions {
         overrideTanninAmount("minecraft:log", 3, 2);
         overrideTanninAmount("minecraft:log2", 0, 4);
         overrideTanninAmount("minecraft:log2", 1, 2);
+    }
+
+    static void registerTanninRecipe(String id, int meta) {
+        int tannin = HardcoreWoodInteractionExtensions.getTanninAmount(id, meta);
+        ItemStack stack = new ItemStack(BWRegistry.bark, tannin, 0);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("logId", id);
+        tag.setInteger("logMeta", meta);
+        stack.setTagCompound(tag);
+
+        BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 1, 6), new Object[]{new ItemStack(BWRegistry.material, 1, 7), stack});
+        BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 2, 33), new Object[]{new ItemStack(BWRegistry.material, 2, 34), stack});
     }
 }

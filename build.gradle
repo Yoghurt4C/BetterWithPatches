@@ -12,8 +12,6 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.gtnewhorizons.retrofuturagradle.ObfuscationAttribute
 import com.gtnewhorizons.retrofuturagradle.mcp.ReobfuscatedJar
 import com.gtnewhorizons.retrofuturagradle.minecraft.RunMinecraftTask
-import com.matthewprenger.cursegradle.CurseArtifact
-import com.matthewprenger.cursegradle.CurseRelation
 import com.modrinth.minotaur.dependencies.ModDependency
 import com.modrinth.minotaur.dependencies.VersionDependency
 import cpw.mods.fml.relauncher.Side
@@ -72,7 +70,8 @@ plugins {
     id 'com.github.gmazzo.buildconfig' version '3.1.0' apply false // Unused, available for addon.gradle
     id 'com.diffplug.spotless' version '6.7.2' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
-    id 'io.github.CDAGaming.cursegradle' version '1.6.1' apply false
+    id 'net.darkhax.curseforgegradle' version '1.1.15' apply false
+    //id 'io.github.CDAGaming.cursegradle' version '1.6.1' apply false
     id 'com.gtnewhorizons.retrofuturagradle' version '1.2.3'
 }
 boolean settingsupdated = verifySettingsGradle()
@@ -1061,44 +1060,39 @@ if (modrinthProjectId.size() != 0 && System.getenv("MODRINTH_TOKEN") != null) {
 }
 
 if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null) {
-    apply plugin: 'io.github.CDAGaming.cursegradle'
 
-    File changelogFile = new File(System.getenv("CHANGELOG_FILE") ?: "CHANGELOG.md")
+    apply plugin: 'net.darkhax.curseforgegradle'
 
-    curseforge {
-        apiKey = System.getenv("CURSEFORGE_TOKEN")
-        project {
-            id = curseForgeProjectId
-            if (changelogFile.exists()) {
-                changelogType = "markdown"
-                changelog = changelogFile
+
+    task curseforge(type: net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+        apiToken = System.getenv("CURSEFORGE_TOKEN")
+        disableVersionDetection()
+        def main = upload(curseForgeProjectId, publishableObfJar)
+        main.addModLoader('Forge')
+        main.addGameVersion(minecraftVersion)
+        main.releaseType = 'beta'
+
+        File changelogFile = file('CHANGELOG.md')
+        if (changelogFile.exists()) {
+            main.changelogType = 'markdown'
+            main.changelog = changelogFile
+        }
+
+        for (file in getSecondaryArtifacts()) main.withAdditionalFile(file)
+
+        if (curseForgeRelations.size() != 0) {
+            String[] deps = curseForgeRelations.split(";")
+            deps.each { dep ->
+                if (dep.size() == 0) {
+                    return
+                }
+                String[] parts = dep.split(":")
+                addCurseForgeRelation(main, parts[0], parts[1])
             }
-            releaseType = "beta"
-            addGameVersion minecraftVersion
-            addGameVersion "Forge"
-            mainArtifact publishableObfJar
-            for (artifact in getSecondaryArtifacts()) addArtifact artifact
         }
-
-        options {
-            javaIntegration = false
-            forgeGradleIntegration = false
-            debug = false
+        if (usesMixins.toBoolean()) {
+            addCurseForgeRelation(main, "requiredDependency", "unimixins")
         }
-    }
-
-    if (curseForgeRelations.size() != 0) {
-        String[] deps = curseForgeRelations.split(";")
-        deps.each { dep ->
-            if (dep.size() == 0) {
-                return
-            }
-            String[] parts = dep.split(":")
-            addCurseForgeRelation(parts[0], parts[1])
-        }
-    }
-    if (usesMixins.toBoolean()) {
-        addCurseForgeRelation("requiredDependency", "unimixins")
     }
     tasks.curseforge.dependsOn(build)
     tasks.publish.dependsOn(tasks.curseforge)
@@ -1122,13 +1116,11 @@ def addModrinthDep(String scope, String type, String name) {
     project.modrinth.dependencies.add(dep)
 }
 
-def addCurseForgeRelation(String type, String name) {
+def addCurseForgeRelation(net.darkhax.curseforgegradle.UploadArtifact main, String type, String name) {
     if (!(type in ["requiredDependency", "embeddedLibrary", "optionalDependency", "tool", "incompatible"])) {
         throw new Exception("Invalid CurseForge relation type: " + type)
     }
-    CurseArtifact artifact = project.curseforge.curseProjects[0].mainArtifact
-    CurseRelation rel = (artifact.curseRelations ?: (artifact.curseRelations = new CurseRelation()))
-    rel."$type"(name)
+    main.addRelation(name, type)
 }
 
 // Updating

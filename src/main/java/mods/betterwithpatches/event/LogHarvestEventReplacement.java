@@ -33,7 +33,7 @@ public class LogHarvestEventReplacement extends LogHarvestEvent {
         if (presentInOD(log, "logWood")) {
             int harvestMeta = block.damageDropped(meta);
             if (evt.harvester != null) {
-                boolean harvest = true, fort = false, saw = false;
+                boolean harvest = true, fort = evt.fortuneLevel > 0, saw = false;
                 if (evt.harvester.getCurrentEquippedItem() != null) {
                     ItemStack item = evt.harvester.getCurrentEquippedItem();
                     if (item.getItem() instanceof ItemTool) {
@@ -52,7 +52,7 @@ public class LogHarvestEventReplacement extends LogHarvestEvent {
                 }
 
                 if (harvest && !evt.isSilkTouching) {
-                    int fortune = evt.fortuneLevel;
+                    int fortune = fort ? 2 : evt.fortuneLevel;
                     for (ItemStack logStack : evt.drops) {
                         if (presentInOD(logStack, "logWood")) {
                             craft.setInventorySlotContents(0, new ItemStack(block, 1, harvestMeta));

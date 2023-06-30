@@ -1,18 +1,17 @@
 package mods.betterwithpatches.craft;
 
 import betterwithmods.BWRegistry;
-import cpw.mods.fml.common.registry.GameData;
+import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Hashtable;
-import java.util.List;
+import java.util.Map;
 
+import static mods.betterwithpatches.util.BWPConstants.L;
 import static mods.betterwithpatches.util.BWPConstants.getId;
 
 /**
@@ -31,30 +30,41 @@ public interface KilnInteractionExtensions {
     }
 
     static void addStokedRecipe(String oreDict, ItemStack... output) {
-        List<ItemStack> ores = OreDictionary.getOres(oreDict, true);
-        for (ItemStack ore : ores) {
-            Item item = ore.getItem();
-            int meta = ore.getItemDamage();
-            Block block;
-            if (item instanceof ItemBlock) block = ((ItemBlock) item).field_150939_a;
-            else block = Block.getBlockFromItem(item);
-            String name = GameData.getBlockRegistry().getNameForObject(block);
-            if (meta == OreDictionary.WILDCARD_VALUE) cookables.put(name, output);
-            else cookables.put(name + "@" + meta, output);
+        if (OreDictionary.doesOreNameExist(oreDict)) {
+            cookables.put("ore:" + oreDict, output);
+        } else {
+            L.warn("[Kiln] Couldn't add recipe ({} -> {}) because {} is empty.", oreDict, output, oreDict);
         }
     }
 
     static boolean contains(Block block, int meta) {
-        String identifier = getId(block);
-        if (cookables.containsKey(identifier)) return true;
-        else return cookables.containsKey(identifier + "@" + meta);
+        String id = getId(block);
+        String withMeta = id + "@" + meta;
+        ItemStack stack = new ItemStack(block, 1, meta);
+        for (String s : cookables.keySet()) {
+            if (s.startsWith("ore:") && BWPConstants.presentInOD(stack, s.substring(4))) {
+                return true;
+            } else if (s.equals(id) || s.equals(withMeta)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static ItemStack[] getProducts(Block block, int meta) {
-        String identifier = getId(block);
-        ItemStack[] stacks = cookables.get(identifier);
-        if (stacks == null) stacks = cookables.get(identifier + "@" + meta);
-        return stacks;
+        String id = getId(block);
+        String withMeta = id + "@" + meta;
+        ItemStack stack = new ItemStack(block, 1, meta);
+        for (Map.Entry<String, ItemStack[]> pair : cookables.entrySet()) {
+            String s = pair.getKey();
+            if (s.startsWith("ore:") && BWPConstants.presentInOD(stack, s.substring(4))) {
+                return pair.getValue();
+            } else if (s.equals(id) || s.equals(withMeta)) {
+                return pair.getValue();
+            }
+        }
+        // should be unreachable
+        return new ItemStack[0];
     }
 
     static void addKilnRecipes() {

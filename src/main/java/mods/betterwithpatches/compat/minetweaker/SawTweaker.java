@@ -1,7 +1,5 @@
 package mods.betterwithpatches.compat.minetweaker;
 
-import betterwithmods.craft.OreStack;
-import cpw.mods.fml.common.registry.GameData;
 import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
@@ -15,8 +13,6 @@ import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
@@ -32,13 +28,16 @@ public class SawTweaker {
     @ZenMethod
     public static void add(IItemStack[] output, IIngredient input) {
         if (input instanceof IOreDictEntry) {
-            MineTweakerAPI.apply(new Add(MineTweakerMC.getItemStacks(output), new OreStack(((IOreDictEntry) input).getName())));
+            MineTweakerAPI.apply(new Add(MineTweakerMC.getItemStacks(output), "ore:" + ((IOreDictEntry) input).getName()));
         } else if (input instanceof IItemStack) {
             Block block = MineTweakerMC.getBlock((IItemStack) input);
             int meta = ((IItemStack) input).getDamage();
             String s;
-            if (meta > 0) s = BWPConstants.getId(block) + "@" + meta;
-            else s = BWPConstants.getId(block);
+            if (meta == OreDictionary.WILDCARD_VALUE) {
+                s = BWPConstants.getId(block);
+            } else {
+                s = BWPConstants.getId(block) + "@" + meta;
+            }
             MineTweakerAPI.apply(new Add(MineTweakerMC.getItemStacks(output), s));
         } else {
             BWPConstants.L.warn("Couldn't add Saw recipe for {} -> {}.", input, output);
@@ -48,13 +47,16 @@ public class SawTweaker {
     @ZenMethod
     public static void remove(IIngredient input) {
         if (input instanceof IOreDictEntry) {
-            MineTweakerAPI.apply(new Remove(new OreStack(((IOreDictEntry) input).getName())));
+            MineTweakerAPI.apply(new Remove("ore:" + ((IOreDictEntry) input).getName()));
         } else if (input instanceof IItemStack) {
             Block block = MineTweakerMC.getBlock((IItemStack) input);
             int meta = ((IItemStack) input).getDamage();
             String s;
-            if (meta > 0) s = BWPConstants.getId(block) + "@" + meta;
-            else s = BWPConstants.getId(block);
+            if (meta == OreDictionary.WILDCARD_VALUE) {
+                s = BWPConstants.getId(block);
+            } else {
+                s = BWPConstants.getId(block) + "@" + meta;
+            }
             MineTweakerAPI.apply(new Remove(s));
         } else {
             BWPConstants.L.warn("Couldn't remove Saw recipe for {}.", input);
@@ -94,20 +96,7 @@ public class SawTweaker {
 
         @Override
         public void apply() {
-            if (this.input instanceof OreStack) {
-                for (ItemStack ore : ((OreStack) this.input).getOres()) {
-                    Item item = ore.getItem();
-                    int meta = ore.getItemDamage();
-                    Block block;
-                    if (item instanceof ItemBlock) block = ((ItemBlock) item).field_150939_a;
-                    else block = Block.getBlockFromItem(item);
-                    String name = GameData.getBlockRegistry().getNameForObject(block);
-                    if (meta == OreDictionary.WILDCARD_VALUE) blockOverrides.put(name, outputs);
-                    else blockOverrides.put(name + "@" + meta, outputs);
-                }
-            } else {
-                blockOverrides.put((String) input, outputs);
-            }
+            blockOverrides.put((String) input, outputs);
         }
 
         @Override
@@ -117,20 +106,7 @@ public class SawTweaker {
 
         @Override
         public void undo() {
-            if (this.input instanceof OreStack) {
-                for (ItemStack ore : ((OreStack) this.input).getOres()) {
-                    Item item = ore.getItem();
-                    int meta = ore.getItemDamage();
-                    Block block;
-                    if (item instanceof ItemBlock) block = ((ItemBlock) item).field_150939_a;
-                    else block = Block.getBlockFromItem(item);
-                    String name = GameData.getBlockRegistry().getNameForObject(block);
-                    if (meta == OreDictionary.WILDCARD_VALUE) blockOverrides.remove(name, outputs);
-                    else blockOverrides.remove(name + "@" + meta, outputs);
-                }
-            } else {
-                blockOverrides.remove((String) input, outputs);
-            }
+            blockOverrides.remove((String) input, outputs);
         }
 
         @Override
@@ -159,20 +135,7 @@ public class SawTweaker {
 
         @Override
         public void apply() {
-            if (this.input instanceof OreStack) {
-                for (ItemStack ore : ((OreStack) this.input).getOres()) {
-                    Item item = ore.getItem();
-                    int meta = ore.getItemDamage();
-                    Block block;
-                    if (item instanceof ItemBlock) block = ((ItemBlock) item).field_150939_a;
-                    else block = Block.getBlockFromItem(item);
-                    String name = GameData.getBlockRegistry().getNameForObject(block);
-                    if (meta == OreDictionary.WILDCARD_VALUE) outputs = blockOverrides.remove(name);
-                    else outputs = blockOverrides.remove(name + "@" + meta);
-                }
-            } else {
-                outputs = blockOverrides.remove((String) input);
-            }
+            this.outputs = blockOverrides.remove((String) this.input);
         }
 
         @Override
@@ -182,31 +145,18 @@ public class SawTweaker {
 
         @Override
         public void undo() {
-            if (outputs == null) return;
-            if (this.input instanceof OreStack) {
-                for (ItemStack ore : ((OreStack) this.input).getOres()) {
-                    Item item = ore.getItem();
-                    int meta = ore.getItemDamage();
-                    Block block;
-                    if (item instanceof ItemBlock) block = ((ItemBlock) item).field_150939_a;
-                    else block = Block.getBlockFromItem(item);
-                    String name = GameData.getBlockRegistry().getNameForObject(block);
-                    if (meta == OreDictionary.WILDCARD_VALUE) blockOverrides.put(name, outputs);
-                    else blockOverrides.put(name + "@" + meta, outputs);
-                }
-            } else {
-                blockOverrides.put((String) input, outputs);
-            }
+            if (this.outputs == null) return;
+            blockOverrides.put((String) this.input, this.outputs);
         }
 
         @Override
         public String describe() {
-            return String.format("[BWP] Removing %s recipe: %s", "Saw", input);
+            return String.format("[BWP] Removing %s recipe: %s", "Saw", this.input);
         }
 
         @Override
         public String describeUndo() {
-            return MTHelper.addRecipeDescription("Saw", input, outputs);
+            return MTHelper.addRecipeDescription("Saw", this.input, this.outputs);
         }
 
         @Override

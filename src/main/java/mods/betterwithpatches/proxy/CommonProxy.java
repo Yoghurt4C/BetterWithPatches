@@ -1,26 +1,30 @@
 package mods.betterwithpatches.proxy;
 
-import betterwithmods.BWCrafting;
-import betterwithmods.BWRegistry;
 import betterwithmods.event.TConHelper;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameData;
 import mods.betterwithpatches.Config;
-import mods.betterwithpatches.compat.BWPModCompat;
+import mods.betterwithpatches.compat.minetweaker.util.MTHelper;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import mods.betterwithpatches.craft.SawInteractionExtensions;
 import mods.betterwithpatches.nei.NEIBWMConfig;
+import mods.betterwithpatches.util.BWPConstants;
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
 
-import static mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions.metaOverrides;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CommonProxy implements Proxy {
     @Override
@@ -34,33 +38,55 @@ public class CommonProxy implements Proxy {
     @Override
     public void init() {
         if (Loader.isModLoaded("MineTweaker3")) {
-            BWPModCompat.addMineTweakerCompat();
+            MTHelper.addMineTweakerCompat();
         }
     }
 
     @Override
     public void postInit() {
         if (Config.patchHCWood) {
-            BWPModCompat.addNatureBarkOverrides();
-            BWPModCompat.addEBXLBarkOverrides();
-            BWPModCompat.addThaumcraftBarkOverrides();
+            HardcoreWoodInteractionExtensions.addVanillaTanninOverrides();
 
-            int[] defaultMeta = new int[]{0, 1, 2, 3};
-            for (ItemStack log : OreDictionary.getOres("logWood")) {
-                String id = GameData.getBlockRegistry().getNameForObject(((ItemBlock) log.getItem()).field_150939_a);
-                int[] iterable = metaOverrides.getOrDefault(id, defaultMeta);
-                for (int i : iterable) {
-                    int tannin = HardcoreWoodInteractionExtensions.getTanninAmount(id, i);
-                    ItemStack stack = new ItemStack(BWRegistry.bark, tannin, 0);
-                    NBTTagCompound tag = new NBTTagCompound();
-                    tag.setString("logId", id);
-                    tag.setInteger("logMeta", i);
-                    stack.setTagCompound(tag);
-
-                    BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 1, 6), new Object[]{new ItemStack(BWRegistry.material, 1, 7), stack});
-                    BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 2, 33), new Object[]{new ItemStack(BWRegistry.material, 2, 34), stack});
+            List<ItemStack> logs = new ArrayList<>();
+            List<ItemStack> temp = new ArrayList<>();
+            int ore = OreDictionary.getOreID("logWood");
+            for (Object o : Item.itemRegistry) {
+                Item thing = (Item) o;
+                if (thing instanceof ItemBlock) {
+                    Block block = BWPConstants.getBlock(thing);
+                    for (CreativeTabs creativeTab : thing.getCreativeTabs()) {
+                        block.getSubBlocks(thing, creativeTab, temp);
+                    }
+                    temp.removeIf(stack -> !ArrayUtils.contains(OreDictionary.getOreIDs(stack), ore));
+                    logs.addAll(temp);
+                    temp.clear();
                 }
             }
+
+            Map<String, List<Integer>> map = new LinkedHashMap<>();
+            for (ItemStack log : logs) {
+                String id = BWPConstants.getId(BWPConstants.getBlock(log.getItem()));
+                if (map.containsKey(id)) {
+                    map.get(id).add(log.getItemDamage());
+                } else {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(log.getItemDamage());
+                    map.put(id, list);
+                }
+            }
+            logs.clear();
+
+            for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
+                int[] meta = new int[entry.getValue().size()];
+                for (int i = 0; i < entry.getValue().size(); i++) {
+                    int point = entry.getValue().get(i);
+                    meta[i] = point;
+                    HardcoreWoodInteractionExtensions.registerTanninRecipe(entry.getKey(), point);
+                }
+
+                HardcoreWoodInteractionExtensions.overrideLogMeta(entry.getKey(), meta);
+            }
+            map.clear();
 
             if (Config.patchSaw) {
                 SawInteractionExtensions.setAdvancedEntityDrop(EntitySkeleton.class, SawInteractionExtensions::getSkeletonHead);

@@ -1,17 +1,16 @@
 package mods.betterwithpatches.craft;
 
 import betterwithmods.BWRegistry;
-import cpw.mods.fml.common.registry.GameData;
+import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Hashtable;
-import java.util.List;
+import java.util.Map;
 
 import static mods.betterwithpatches.util.BWPConstants.L;
 import static mods.betterwithpatches.util.BWPConstants.getId;
@@ -32,36 +31,45 @@ public interface TurntableInteractionExtensions {
     static void addBlockRecipe(Block block, int meta, ItemStack... output) {
         if (output[0].getItem() instanceof ItemBlock) spinnables.put(getId(block) + "@" + meta, output);
         else
-            L.info("Couldn't add Turntable recipe ({} -> {}) because the first output stack isn't a valid Block!", getId(block), output);
+            L.info("[Turntable] Couldn't add recipe ({} -> {}) because the first output stack isn't a valid Block!", getId(block), output);
     }
 
     static void addBlockRecipe(String oreDict, ItemStack... output) {
-        if (!(output[0].getItem() instanceof ItemBlock))
-            L.info("Couldn't add Turntable recipe ({} -> {}) because the first output stack isn't a valid Block!", oreDict, output);
-        List<ItemStack> ores = OreDictionary.getOres(oreDict, true);
-        for (ItemStack ore : ores) {
-            Item item = ore.getItem();
-            int meta = ore.getItemDamage();
-            Block block;
-            if (item instanceof ItemBlock) block = ((ItemBlock) item).field_150939_a;
-            else block = Block.getBlockFromItem(item);
-            String name = GameData.getBlockRegistry().getNameForObject(block);
-            if (meta == OreDictionary.WILDCARD_VALUE) spinnables.put(name, output);
-            else spinnables.put(name + "@" + meta, output);
+        if (OreDictionary.doesOreNameExist(oreDict)) {
+            spinnables.put("ore:" + oreDict, output);
+        } else {
+            L.warn("[Turntable] Couldn't add recipe ({} -> {}) because {} is empty.", oreDict, output, oreDict);
         }
     }
 
     static boolean contains(Block block, int meta) {
-        String identifier = getId(block);
-        if (spinnables.containsKey(identifier)) return true;
-        else return spinnables.containsKey(identifier + "@" + meta);
+        String id = getId(block);
+        String withMeta = id + "@" + meta;
+        ItemStack stack = new ItemStack(block, 1, meta);
+        for (String s : spinnables.keySet()) {
+            if (s.startsWith("ore:") && BWPConstants.presentInOD(stack, s.substring(4))) {
+                return true;
+            } else if (s.equals(id) || s.equals(withMeta)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static ItemStack[] getProducts(Block block, int meta) {
-        String identifier = getId(block);
-        ItemStack[] stacks = spinnables.get(identifier);
-        if (stacks == null) stacks = spinnables.get(identifier + "@" + meta);
-        return stacks;
+        String id = getId(block);
+        String withMeta = id + "@" + meta;
+        ItemStack stack = new ItemStack(block, 1, meta);
+        for (Map.Entry<String, ItemStack[]> pair : spinnables.entrySet()) {
+            String s = pair.getKey();
+            if (s.startsWith("ore:") && BWPConstants.presentInOD(stack, s.substring(4))) {
+                return pair.getValue();
+            } else if (s.equals(id) || s.equals(withMeta)) {
+                return pair.getValue();
+            }
+        }
+        // should be unreachable
+        return new ItemStack[0];
     }
 
     static void addTurntableRecipes() {

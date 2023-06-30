@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -19,9 +18,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions.metaOverrides;
 
@@ -62,26 +59,23 @@ public abstract class ItemBarkMixin extends Item {
 
     /**
      * @reason Filling the Creative Tab with every possible kind of Bark using NBT instead of hardcoded meta. This carries over to NEI if present.
+     * Iterating over OD to preserve ordering, which is lost on the Hashtable.
      */
     @SuppressWarnings("all")
     @Inject(method = "getSubItems", at = @At("HEAD"), cancellable = true)
     public void nbtAware(Item item, CreativeTabs tab, List<ItemStack> list, CallbackInfo ctx) {
         ctx.cancel();
-        int[] defaultMeta = new int[]{0};
-        Set<String> added = new HashSet<>();
-        for (ItemStack log : OreDictionary.getOres("logWood")) {
-            String id = BWPConstants.getId(((ItemBlock) log.getItem()).field_150939_a);
-            if (added.add(id)) {
-                int[] iterable = metaOverrides.getOrDefault(id, defaultMeta);
-                for (int i : iterable) {
-                    ItemStack stack = new ItemStack(item, 1, 0);
-                    NBTTagCompound tag = new NBTTagCompound();
-                    tag.setString("logId", id);
-                    tag.setInteger("logMeta", i);
-                    stack.setTagCompound(tag);
-                    if (list.contains(stack)) continue;
-                    list.add(stack);
-                }
+        int[] def = new int[]{0};
+        List<ItemStack> logs = OreDictionary.getOres("logWood");
+        for (ItemStack log : logs) {
+            String id = BWPConstants.getId(BWPConstants.getBlock(log.getItem()));
+            for (int i : metaOverrides.getOrDefault(id, def)) {
+                ItemStack stack = new ItemStack(item, 1, 0);
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setString("logId", id);
+                tag.setInteger("logMeta", i);
+                stack.setTagCompound(tag);
+                list.add(stack);
             }
         }
     }

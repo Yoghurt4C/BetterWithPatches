@@ -8,6 +8,7 @@ import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.oredict.IOreDictEntry;
 import minetweaker.mc1710.item.MCItemStack;
 import minetweaker.mc1710.oredict.MCOreDictEntry;
+import mods.betterwithpatches.compat.minetweaker.*;
 import mods.betterwithpatches.util.BWMRecipeAccessor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -17,6 +18,21 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface MTHelper {
+    static void addMineTweakerCompat() {
+        Class<?>[] compat = {
+                CauldronTweaker.class,
+                CrucibleTweaker.class,
+                HeatRegistryTweaker.class,
+                KilnTweaker.class,
+                MillTweaker.class,
+                SawTweaker.class,
+                TurntableTweaker.class
+        };
+        for (Class<?> cls : compat) {
+            minetweaker.MineTweakerAPI.registerClass(cls);
+        }
+    }
+
     static Object toBWMStack(IIngredient ingr) {
         if (ingr instanceof IOreDictEntry) {
             IOreDictEntry od = (IOreDictEntry) ingr;

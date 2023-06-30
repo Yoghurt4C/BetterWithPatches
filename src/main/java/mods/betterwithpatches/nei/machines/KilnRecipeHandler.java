@@ -9,6 +9,7 @@ import mods.betterwithpatches.nei.InteractionHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -23,14 +24,19 @@ public class KilnRecipeHandler extends InteractionHandler {
 
     @Override
     public void create(String block, ItemStack[] output) {
-        String[] id = block.split("@");
         PositionedStack inputs;
-        Block in = GameData.getBlockRegistry().getObject(id[0]);
-        if (id.length > 1) {
-            ItemStack input = new ItemStack(in, 1, Integer.parseInt(id[1]));
-            inputs = new PositionedStack(input, getX(21), getY(32));
+        if (block.startsWith("ore:")) {
+            String id = block.substring(4);
+            inputs = new PositionedStack(OreDictionary.getOres(id), getX(21), getY(32), true);
         } else {
-            inputs = new PositionedStack(new ItemStack(in, 1, 32767), getX(21), getY(32), true);
+            String[] id = block.split("@");
+            Block in = GameData.getBlockRegistry().getObject(id[0]);
+            if (id.length > 1) {
+                ItemStack input = new ItemStack(in, 1, Integer.parseInt(id[1]));
+                inputs = new PositionedStack(input, getX(21), getY(32));
+            } else {
+                inputs = new PositionedStack(new ItemStack(in, 1, 32767), getX(21), getY(32), true);
+            }
         }
         List<PositionedStack> outputs = new ArrayList<>();
         int x = getX(87);

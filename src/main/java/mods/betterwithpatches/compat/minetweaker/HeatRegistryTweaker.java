@@ -7,6 +7,7 @@ import minetweaker.api.item.IItemStack;
 import minetweaker.api.minecraft.MineTweakerMC;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
+import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -18,35 +19,15 @@ public class HeatRegistryTweaker {
         Block block = MineTweakerMC.getBlock(stack);
         if (block == null) {
             BWPConstants.L.warn("Couldn't add HeatRegistry data [{}] -> [{}] because the input isn't a valid block.", stack, heat);
-            return;
-        }
-        if (stack.getDamage() > 0) {
-            MineTweakerAPI.apply(new Add(block, stack.getDamage(), heat));
         } else {
-            MineTweakerAPI.apply(new Add(block, heat));
+            MineTweakerAPI.apply(new Add(block, stack.getDamage(), heat));
         }
-    }
-
-    @ZenMethod
-    public static void addHeatSource(IItemStack stack, int meta, int heat) {
-        Block block = MineTweakerMC.getBlock(stack);
-        if (block == null) {
-            BWPConstants.L.warn("Couldn't add HeatRegistry data [{}] -> [{}] because the input isn't a valid block.", stack, heat);
-            return;
-        }
-        MineTweakerAPI.apply(new Add(block, meta, heat));
     }
 
     private static class Add implements IUndoableAction {
         public Block block;
         public int meta;
         public int heat;
-
-        public Add(Block block, int heat) {
-            this.block = block;
-            this.meta = -1;
-            this.heat = heat;
-        }
 
         public Add(Block block, int meta, int heat) {
             this.block = block;
@@ -56,8 +37,11 @@ public class HeatRegistryTweaker {
 
         @Override
         public void apply() {
-            if (meta > -1) BWMHeatRegistry.setBlockHeatRegistry(block, meta, heat);
-            else BWMHeatRegistry.setBlockHeatRegistry(block, heat);
+            if (this.meta == OreDictionary.WILDCARD_VALUE) {
+                BWMHeatRegistry.setBlockHeatRegistry(this.block, this.heat);
+            } else {
+                BWMHeatRegistry.setBlockHeatRegistry(this.block, this.meta, this.heat);
+            }
         }
 
         @Override
@@ -67,20 +51,23 @@ public class HeatRegistryTweaker {
 
         @Override
         public void undo() {
-            if (meta > -1) BWMHeatRegistry.getHeatRegistry().remove(block + ":" + meta);
-            else for (int i = 0; i < 16; i++) {
-                if (BWMHeatRegistry.getHeatRegistry().remove(block + ":" + i) == null) break;
+            if (this.meta == OreDictionary.WILDCARD_VALUE) {
+                for (int i = 0; i < 16; i++) {
+                    if (BWMHeatRegistry.getHeatRegistry().remove(this.block + ":" + i) == null) break;
+                }
+            } else {
+                BWMHeatRegistry.getHeatRegistry().remove(this.block + ":" + this.meta);
             }
         }
 
         @Override
         public String describe() {
-            return String.format("[BWP] Adding block to the Heat Registry: [%s] -> [%s] heat.", meta > -1 ? block + "@" + meta : block, heat);
+            return String.format("[BWP] Adding block to the Heat Registry: [%s] -> [%s] heat.", this.meta == OreDictionary.WILDCARD_VALUE ? this.block : this.block + "@" + this.meta, this.heat);
         }
 
         @Override
         public String describeUndo() {
-            return String.format("[BWP] Removing block from the Heat Registry: [%s] -> [%s] heat.", meta > -1 ? block + "@" + meta : block, heat);
+            return String.format("[BWP] Removing block from the Heat Registry: [%s] -> [%s] heat.", this.meta == OreDictionary.WILDCARD_VALUE ? this.block : this.block + "@" + this.meta, this.heat);
         }
 
         @Override

@@ -43,7 +43,14 @@ public interface BWPNEIHelper {
         return false;
     }
 
-    static boolean matchInput(String input, String ingredient, int meta) {
-        return input.contains("@") ? input.startsWith(ingredient) && input.endsWith(String.valueOf(meta)) : input.startsWith(ingredient);
+    static boolean matchInput(String input, ItemStack ingredient, String id, int meta) {
+        if (input.contains("@")) {
+            String[] split = input.split("@");
+            return id.equals(split[0]) && String.valueOf(meta).equals(split[1]);
+        } else if (input.startsWith("ore:")) {
+            return BWPConstants.presentInOD(ingredient, input.substring(4));
+        } else {
+            return input.equals(id);
+        }
     }
 }

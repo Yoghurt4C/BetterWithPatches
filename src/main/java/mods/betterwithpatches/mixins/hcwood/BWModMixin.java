@@ -2,7 +2,6 @@ package mods.betterwithpatches.mixins.hcwood;
 
 import betterwithmods.BWMod;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import mods.betterwithpatches.event.LogHarvestEventReplacement;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,10 +12,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BWMod.class)
 public abstract class BWModMixin {
+    /**
+     * @reason This is going to postinit or even later
+     */
     @Redirect(method = "init", at = @At(value = "INVOKE", target = "Lbetterwithmods/BWRegistry;registerWood()V", remap = false), remap = false)
     public void registerBarkBetterdly() {
-        HardcoreWoodInteractionExtensions.addVanillaLogOverrides();
-        HardcoreWoodInteractionExtensions.addVanillaTanninOverrides();
     }
 
     /**
