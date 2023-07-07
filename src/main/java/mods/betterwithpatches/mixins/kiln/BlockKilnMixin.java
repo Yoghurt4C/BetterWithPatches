@@ -6,6 +6,7 @@ import mods.betterwithpatches.craft.KilnInteractionExtensions;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,11 +42,13 @@ public abstract class BlockKilnMixin extends BTWBlock {
     @Inject(method = "updateTick", at = @At(value = "INVOKE", target = "Lbetterwithmods/craft/KilnInteraction;contains(Lnet/minecraft/block/Block;I)Z", remap = false), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void unHardcodeTick(World world, int x, int y, int z, Random rand, CallbackInfo ctx, int oldCookTime, int currentTickRate, boolean canCook, Block above, int aboveMeta) {
         ctx.cancel();
-        if (KilnInteractionExtensions.contains(above, aboveMeta) && this.checkKilnIntegrity(world, x, y, z)) {
+        ItemStack[] produce = KilnInteractionExtensions.getProducts(above, aboveMeta);
+        if (this.checkKilnIntegrity(world, x, y, z) && produce != null) {
             int newCookTime = oldCookTime + 1;
             if (newCookTime > 7) {
                 newCookTime = 0;
-                this.cookBlock(world, x, y + 1, z);
+                world.setBlockToAir(x, y + 1, z);
+                BWPConstants.scatter(world, x, y + 1, z, produce);
             } else {
                 if (newCookTime > 0) {
                     world.destroyBlockInWorldPartially(0, x, y + 1, z, newCookTime + 2);

@@ -41,9 +41,7 @@ public abstract class ItemBarkMixin extends Item {
             String id = tag.getString("logId");
             int meta = tag.getInteger("logMeta");
             Item log = GameData.getItemRegistry().getObject(id);
-            String name = log.getItemStackDisplayName(new ItemStack(log, 1, meta));
-            name += " " + I18n.format("text.bwp:bark");
-            return name;
+            return log.getItemStackDisplayName(new ItemStack(log, 1, meta)) + " " + I18n.format("text.bwp:bark");
         }
         return I18n.format("tile.log.oak.name") + " " + I18n.format("text.bwp:bark");
     }

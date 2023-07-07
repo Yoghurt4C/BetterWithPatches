@@ -63,8 +63,7 @@ public interface KilnInteractionExtensions {
                 return pair.getValue();
             }
         }
-        // should be unreachable
-        return new ItemStack[0];
+        return null;
     }
 
     static void addKilnRecipes() {

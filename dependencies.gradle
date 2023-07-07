@@ -37,6 +37,7 @@ dependencies {
     runtimeOnly ("lib:Better With Mods 1.7.10 0.6.2 Beta")
     compileOnly("lib:CraftTweaker-1.7.10-3.1.0-legacy-dev")
     runtimeOnly("lib:CraftTweaker-1.7.10-3.1.0-legacy")
+    compileOnly("lib:SignPicture-1.7.10-2.8.0-universal")
 }
 
 def url() {

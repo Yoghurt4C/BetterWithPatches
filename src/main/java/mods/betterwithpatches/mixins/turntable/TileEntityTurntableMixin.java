@@ -2,7 +2,6 @@ package mods.betterwithpatches.mixins.turntable;
 
 import betterwithmods.api.block.IBTWBlock;
 import betterwithmods.blocks.tile.TileEntityTurntable;
-import betterwithmods.craft.TurntableInteraction;
 import mods.betterwithpatches.craft.TurntableInteractionExtensions;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.*;
@@ -48,17 +47,8 @@ public abstract class TileEntityTurntableMixin extends TileEntity {
     public void basicallyReplaceEntireMethod(int x, int y, int z, boolean reverse, CallbackInfo ctx, Block target, int meta) {
         ctx.cancel();
         IBTWBlock block;
-        if (TurntableInteraction.contains(target, meta)) {
-            if (target instanceof IBTWBlock) {
-                block = (IBTWBlock) target;
-                if (block.canRotateOnTurntable(this.worldObj, x, y, z)) {
-                    block.rotateAroundYAxis(this.worldObj, x, y, z, reverse);
-                }
-            }
-
-            this.rotateCraftableFromTable(TurntableInteractionExtensions.getProducts(target, meta), x, y, z, target.stepSound.getBreakSound());
-            this.potteryRotated = true;
-        } else {
+        ItemStack[] products = TurntableInteractionExtensions.getProducts(target, meta);
+        if (products == null) {
             if (target instanceof BlockRail) {
                 BlockRail rail = (BlockRail) target;
                 this.rotateRail(rail, x, y, z, reverse);
@@ -81,6 +71,16 @@ public abstract class TileEntityTurntableMixin extends TileEntity {
                 this.rotateStairs(x, y, z, reverse);
             }
 
+        } else {
+            if (target instanceof IBTWBlock) {
+                block = (IBTWBlock) target;
+                if (block.canRotateOnTurntable(this.worldObj, x, y, z)) {
+                    block.rotateAroundYAxis(this.worldObj, x, y, z, reverse);
+                }
+            }
+
+            this.rotateCraftableFromTable(products, x, y, z, target.stepSound.getBreakSound());
+            this.potteryRotated = true;
         }
     }
 

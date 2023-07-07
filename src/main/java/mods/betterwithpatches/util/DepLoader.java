@@ -33,7 +33,7 @@ import java.util.zip.ZipFile;
 /**
  * For autodownloading Better With Mods and nothing else.
  * Basically a copy of @link codechicken.core.launch.DepLoader, slightly mangled.
- * Loads a file separate from dependæncies.info to let the actual DepLoader have its fun.
+ * Loads a file separate from "dependæncies.info" to let the actual DepLoader have its fun.
  */
 @IFMLLoadingPlugin.MCVersion("1.7.10")
 public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook, IEarlyMixinLoader {
@@ -44,7 +44,7 @@ public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook, IEarlyMixinLo
 
     @Override
     public List<String> getMixins(Set<String> loadedCoreMods) {
-        return new BWPMixinLoader(true).getMixins();
+        return new BWPMixinLoader(true).getMixins(loadedCoreMods);
     }
 
     private static final ByteBuffer downloadBuffer = ByteBuffer.allocateDirect(1 << 23);

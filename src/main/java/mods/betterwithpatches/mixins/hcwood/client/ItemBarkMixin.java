@@ -58,7 +58,6 @@ public abstract class ItemBarkMixin extends Item {
 
     /**
      * @reason Filling the Creative Tab with every possible kind of Bark using NBT instead of hardcoded meta. This carries over to NEI if present.
-     * Iterating over OD to preserve ordering, which is lost on the Hashtable.
      */
     @SuppressWarnings("all")
     @Inject(method = "getSubItems", at = @At("HEAD"), cancellable = true)

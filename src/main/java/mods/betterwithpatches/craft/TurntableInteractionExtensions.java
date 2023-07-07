@@ -68,8 +68,7 @@ public interface TurntableInteractionExtensions {
                 return pair.getValue();
             }
         }
-        // should be unreachable
-        return new ItemStack[0];
+        return null;
     }
 
     static void addTurntableRecipes() {

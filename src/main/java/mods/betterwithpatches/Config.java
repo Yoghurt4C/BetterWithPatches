@@ -18,7 +18,7 @@ import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
     public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance;
-    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat;
+    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -53,9 +53,11 @@ public class Config {
                 Entry.of("patchCookingPot", true,
                         "Various additions and fixes to the Cauldron and Crucible. Patches the GUI to have an indicator of being Stoked. [Side: BOTH | Default: true]"),
                 Entry.of("patchHCBuckets", true,
-                        "Makes Hardcore Buckets actually work in a modded environment."),
+                        "Makes Hardcore Buckets actually work in a modded environment. Forces HCBuckets to be on if it's disabled in the BWM Config."),
                 Entry.of("enableNEICompat", true,
-                        "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]")
+                        "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]"),
+                Entry.of("patchSignPicPanelForLwjglify", false,
+                        "patchSignPicPanelForLwjglify: LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it.")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + MODID + "] Can't reach the config directory. This is probably really bad.");

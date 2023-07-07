@@ -28,6 +28,7 @@ public class SawTweaker {
     @ZenMethod
     public static void add(IItemStack[] output, IIngredient input) {
         if (input instanceof IOreDictEntry) {
+            //todo unsupported
             MineTweakerAPI.apply(new Add(MineTweakerMC.getItemStacks(output), "ore:" + ((IOreDictEntry) input).getName()));
         } else if (input instanceof IItemStack) {
             Block block = MineTweakerMC.getBlock((IItemStack) input);
