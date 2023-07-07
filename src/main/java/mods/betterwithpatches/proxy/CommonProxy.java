@@ -8,6 +8,7 @@ import mods.betterwithpatches.Config;
 import mods.betterwithpatches.compat.minetweaker.util.MTHelper;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import mods.betterwithpatches.craft.SawInteractionExtensions;
+import mods.betterwithpatches.event.HCTreestumpsEvent;
 import mods.betterwithpatches.nei.NEIBWMConfig;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
@@ -21,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -52,6 +54,10 @@ public class CommonProxy implements Proxy {
     public void init() {
         if (Loader.isModLoaded("MineTweaker3")) {
             MTHelper.addMineTweakerCompat();
+        }
+
+        if (Config.HCTreestumps) {
+            MinecraftForge.EVENT_BUS.register(new HCTreestumpsEvent());
         }
     }
 

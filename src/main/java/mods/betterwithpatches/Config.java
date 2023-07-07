@@ -18,7 +18,7 @@ import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
     public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance;
-    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify;
+    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -42,6 +42,8 @@ public class Config {
                         "Replaces most of the Hardcore Wood feature set. Bark is now dynamic and can drop from any block in logWood. [Side: BOTH | Default: true]"),
                 Entry.of("hcWoodPlankLoss", 1,
                         "How many planks are lost when you break logs inappropriately. If set too low (4 in vanilla), planks won't drop at all. Setting to 0 disables plank loss. Depends on \"patchHCWood\". [Side: SERVER | Default: 1]"),
+                Entry.of("HCTreestumps", true,
+                        "Makes Log Blocks take much longer to break if they're standing on anything that resembles soil."),
                 Entry.of("patchSaw", true,
                         "Various additions and fixes to the Saw. Unhardcodes most of the behaviours, allows for defining custom drops for Blocks and Entities. Depends on \"patchHCWood\". [Side: BOTH | Default: true]"),
                 Entry.of("choppingBlockHeadDropChance", 33,
@@ -56,8 +58,8 @@ public class Config {
                         "Makes Hardcore Buckets actually work in a modded environment. Forces HCBuckets to be on if it's disabled in the BWM Config."),
                 Entry.of("enableNEICompat", true,
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]"),
-                Entry.of("patchSignPicForLwjglify", false,
-                        "patchSignPicForLwjglify: LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it.")
+                Entry.of("patchSignPicForLwjglify", true,
+                        "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it.")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + MODID + "] Can't reach the config directory. This is probably really bad.");
@@ -145,6 +147,7 @@ public class Config {
         return Paths.get(".", "config");
     }
 
+    @SuppressWarnings("unused")
     private static class Entry<T> {
         private final String key;
         private final T value;
