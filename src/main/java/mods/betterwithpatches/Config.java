@@ -56,8 +56,8 @@ public class Config {
                         "Makes Hardcore Buckets actually work in a modded environment. Forces HCBuckets to be on if it's disabled in the BWM Config."),
                 Entry.of("enableNEICompat", true,
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]"),
-                Entry.of("patchSignPicPanelForLwjglify", false,
-                        "patchSignPicPanelForLwjglify: LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it.")
+                Entry.of("patchSignPicForLwjglify", false,
+                        "patchSignPicForLwjglify: LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it.")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + MODID + "] Can't reach the config directory. This is probably really bad.");

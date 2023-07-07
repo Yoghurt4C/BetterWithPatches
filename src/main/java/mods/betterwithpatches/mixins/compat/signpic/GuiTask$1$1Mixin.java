@@ -25,6 +25,7 @@ public abstract class GuiTask$1$1Mixin extends WTypedPanel<WCommon> {
     public GuiTask$1$1Mixin(@Nonnull R position) {
         super(position);
     }
+
     @Dynamic
     @Inject(method = "update(Lcom/kamesuta/mc/bnnwidget/WEvent;Lcom/kamesuta/mc/bnnwidget/position/Area;Lcom/kamesuta/mc/bnnwidget/position/Point;)V", at = @At("HEAD"), remap = false, cancellable = true)
     public void test(@Nonnull WEvent ev, @Nonnull Area pgp, @Nonnull Point p, CallbackInfo ctx) {

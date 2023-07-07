@@ -21,7 +21,7 @@ public class BWPMixinLoader {
     public List<String> getMixins(Set<String> loadedMods) {
         Config.tryInit();
         if (this.early) {
-            load( Config.patchHCBuckets, "hcbuckets.ItemBucketMixin");
+            load(Config.patchHCBuckets, "hcbuckets.ItemBucketMixin");
         } else {
             load(Config.enableNEICompat, "CraftingManagerBulkMixin");
             load(Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin");
@@ -35,8 +35,8 @@ public class BWPMixinLoader {
             if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
                 load(Config.patchHCWood, "hcwood.client.ItemBarkMixin");
                 load(Config.patchCookingPot, "cauldron.GuiCookingPotMixin");
-                if (loadedMods.contains("signpic"))
-                    load(true, "compat.signpic.GuiTaskAccessor", "compat.signpic.GuiTaskMixin", "compat.signpic.GuiTask$1$1Mixin", "compat.signpic.CoreHandlerMixin");
+                if (loadedMods.contains("lwjgl3ify") && loadedMods.contains("signpic"))
+                    load(Config.patchSignPicForLwjglify, "compat.signpic.GuiTaskAccessor", "compat.signpic.GuiTaskMixin", "compat.signpic.GuiTask$1$1Mixin", "compat.signpic.CoreHandlerMixin");
             }
         }
         return list;
