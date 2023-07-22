@@ -22,6 +22,7 @@ public class BWPMixinLoader {
         Config.tryInit();
         if (this.early) {
             load(Config.patchHCBuckets, "hcbuckets.ItemBucketMixin");
+            load(Config.furnaceHCGunpowder, "hcgunpowder.TileEntityFurnaceMixin");
         } else {
             load(Config.enableNEICompat, "CraftingManagerBulkMixin");
             load(Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin");

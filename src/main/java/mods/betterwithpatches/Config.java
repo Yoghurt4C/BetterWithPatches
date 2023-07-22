@@ -18,7 +18,7 @@ import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
     public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance;
-    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify;
+    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -59,7 +59,9 @@ public class Config {
                 Entry.of("enableNEICompat", true,
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]"),
                 Entry.of("patchSignPicForLwjglify", true,
-                        "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it.")
+                        "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it."),
+                Entry.of("furnaceHCGunpowder", true,
+                        "Makes Gunpowder explode when put inside a lit furnace.")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + MODID + "] Can't reach the config directory. This is probably really bad.");
