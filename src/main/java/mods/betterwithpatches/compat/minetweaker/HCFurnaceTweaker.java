@@ -5,7 +5,7 @@ import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.oredict.IOreDictEntry;
-import mods.betterwithpatches.craft.HCFurnaceExtensions;
+import mods.betterwithpatches.features.HCFurnace;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
@@ -34,9 +34,9 @@ public class HCFurnaceTweaker {
         @Override
         public void apply() {
             if (ingr instanceof IOreDictEntry) {
-                HCFurnaceExtensions.overrideCookingTime(((IOreDictEntry) ingr).getName(), ticks);
+                HCFurnace.overrideCookingTime(((IOreDictEntry) ingr).getName(), ticks);
             } else {
-                HCFurnaceExtensions.overrideCookingTime(MineTweakerMC.getItemStack(ingr), ticks);
+                HCFurnace.overrideCookingTime(MineTweakerMC.getItemStack(ingr), ticks);
             }
         }
 
@@ -48,9 +48,9 @@ public class HCFurnaceTweaker {
         @Override
         public void undo() {
             if (ingr instanceof IOreDictEntry) {
-                HCFurnaceExtensions.removeOverride(((IOreDictEntry) ingr).getName());
+                HCFurnace.removeOverride(((IOreDictEntry) ingr).getName());
             } else {
-                HCFurnaceExtensions.removeOverride(MineTweakerMC.getItemStack(ingr));
+                HCFurnace.removeOverride(MineTweakerMC.getItemStack(ingr));
             }
         }
 
@@ -82,9 +82,9 @@ public class HCFurnaceTweaker {
         @Override
         public void apply() {
             if (ingr instanceof IOreDictEntry) {
-                HCFurnaceExtensions.removeOverride(((IOreDictEntry) ingr).getName());
+                HCFurnace.removeOverride(((IOreDictEntry) ingr).getName());
             } else {
-                HCFurnaceExtensions.removeOverride(MineTweakerMC.getItemStack(ingr));
+                HCFurnace.removeOverride(MineTweakerMC.getItemStack(ingr));
             }
         }
 
@@ -96,9 +96,9 @@ public class HCFurnaceTweaker {
         @Override
         public void undo() {
             if (ingr instanceof IOreDictEntry) {
-                HCFurnaceExtensions.overrideCookingTime(((IOreDictEntry) ingr).getName(), ticks);
+                HCFurnace.overrideCookingTime(((IOreDictEntry) ingr).getName(), ticks);
             } else {
-                HCFurnaceExtensions.overrideCookingTime(MineTweakerMC.getItemStack(ingr), ticks);
+                HCFurnace.overrideCookingTime(MineTweakerMC.getItemStack(ingr), ticks);
             }
         }
 

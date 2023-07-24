@@ -1,7 +1,7 @@
 package mods.betterwithpatches.mixins.hcfurnace;
 
 import mods.betterwithpatches.Config;
-import mods.betterwithpatches.craft.HCFurnaceExtensions;
+import mods.betterwithpatches.features.HCFurnace;
 import mods.betterwithpatches.util.IHCFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -28,7 +28,7 @@ public abstract class TileEntityFurnaceMixin extends TileEntity implements IHCFu
     @Inject(method = "updateEntity", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/tileentity/TileEntityFurnace;furnaceCookTime:I", ordinal = 0))
     public void setCachedCookTime(CallbackInfo ctx) {
         if (this.cachedCookTime == 0) {
-            this.cachedCookTime = HCFurnaceExtensions.getCookingTime(this.furnaceItemStacks[0]);
+            this.cachedCookTime = HCFurnace.getCookingTime(this.furnaceItemStacks[0]);
         }
     }
 

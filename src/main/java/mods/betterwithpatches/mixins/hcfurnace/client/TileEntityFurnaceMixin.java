@@ -15,6 +15,6 @@ public abstract class TileEntityFurnaceMixin {
 
     @Inject(method = "getCookProgressScaled", at = @At("HEAD"), cancellable = true)
     public void bleh(int current, CallbackInfoReturnable<Integer> ctx) {
-        ctx.setReturnValue(this.furnaceCookTime * current / ((IHCFurnace)this).getCookTime());
+        ctx.setReturnValue(this.furnaceCookTime * current / ((IHCFurnace) this).getCookTime());
     }
 }

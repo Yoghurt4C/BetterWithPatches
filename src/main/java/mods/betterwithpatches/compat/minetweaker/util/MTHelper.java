@@ -3,6 +3,7 @@ package mods.betterwithpatches.compat.minetweaker.util;
 import betterwithmods.craft.BulkRecipe;
 import betterwithmods.craft.CraftingManagerBulk;
 import betterwithmods.craft.OreStack;
+import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.oredict.IOreDictEntry;
@@ -27,10 +28,11 @@ public interface MTHelper {
                 MillTweaker.class,
                 SawTweaker.class,
                 TurntableTweaker.class,
-                HCFurnaceTweaker.class
+                HCArmorTweaker.class,
+                HCFurnaceTweaker.class,
         };
         for (Class<?> cls : compat) {
-            minetweaker.MineTweakerAPI.registerClass(cls);
+            MineTweakerAPI.registerClass(cls);
         }
     }
 

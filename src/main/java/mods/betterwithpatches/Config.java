@@ -18,7 +18,10 @@ import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
     public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance, hcFurnaceDefaultCookTime;
-    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder, HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel;
+    public static boolean
+            genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder,
+            HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel,
+            enablePenalties, HCArmor;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -43,7 +46,7 @@ public class Config {
                 Entry.of("hcWoodPlankLoss", 1,
                         "How many planks are lost when you break logs inappropriately. If set too low (4 in vanilla), planks won't drop at all. Setting to 0 disables plank loss. Depends on \"patchHCWood\". [Side: SERVER | Default: 1]"),
                 Entry.of("HCTreestumps", true,
-                        "Makes Log Blocks take much longer to break if they're standing on anything that resembles soil."),
+                        "Makes Log Blocks take much longer to break if they're standing on anything that resembles soil. [Side: BOTH | Default: true]"),
                 Entry.of("patchSaw", true,
                         "Various additions and fixes to the Saw. Unhardcodes most of the behaviours, allows for defining custom drops for Blocks and Entities. Depends on \"patchHCWood\". [Side: BOTH | Default: true]"),
                 Entry.of("choppingBlockHeadDropChance", 33,
@@ -61,7 +64,7 @@ public class Config {
                 Entry.of("patchSignPicForLwjglify", true,
                         "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it."),
                 Entry.of("furnaceHCGunpowder", true,
-                        "Makes Gunpowder explode when put inside a lit furnace."),
+                        "Makes Gunpowder explode when put inside a lit furnace. [Side: SERVER | Default: true]"),
                 Entry.of("HCFurnace", false,
                         "Allows specifying cook times for items and changes vanilla fuel values. [Side: SERVER | Default: false]"),
                 Entry.of("hcFurnaceDefaultCookTime", 200,
@@ -69,7 +72,11 @@ public class Config {
                 Entry.of("hcFurnaceCustomFuel", true,
                         "Overrides vanilla burn times for specific items. [Side: SERVER | Default: true]"),
                 Entry.of("hcFurnaceTooltip", true,
-                        "Adds furnace data to items with modified cook time. [Side: CLIENT | Default: true]")
+                        "Adds furnace data to items with modified cook time. [Side: CLIENT | Default: true]"),
+                Entry.of("enablePenalties", false,
+                        "Adds hooks to support various Hardcore Features, like HCArmor. Somewhat performance intensive. [Side: BOTH | Default: false]"),
+                Entry.of("HCArmor", true,
+                        "Gives armor weights that affect movement. Depends on \"enablePenalties\". [Side: BOTH | Default: true]")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + MODID + "] Can't reach the config directory. This is probably really bad.");

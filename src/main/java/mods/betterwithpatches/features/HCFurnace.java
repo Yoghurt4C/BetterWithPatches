@@ -1,4 +1,4 @@
-package mods.betterwithpatches.craft;
+package mods.betterwithpatches.features;
 
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.util.BWPConstants;
@@ -9,7 +9,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public interface HCFurnaceExtensions {
+public interface HCFurnace {
     Hashtable<ItemStack, Integer> COOKING_TIMINGS = new Hashtable<>();
 
     static int getCookingTime(ItemStack input) {
