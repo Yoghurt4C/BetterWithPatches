@@ -1,8 +1,7 @@
 package mods.betterwithpatches.util;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
 import mods.betterwithpatches.Config;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +22,11 @@ public class BWPMixinLoader {
         if (this.early) {
             load(Config.patchHCBuckets, "hcbuckets.ItemBucketMixin");
             load(Config.furnaceHCGunpowder, "hcgunpowder.TileEntityFurnaceMixin");
+            load(Config.HCFurnace, "hcfurnace.TileEntityFurnaceMixin", "hcfurnace.ContainerFurnaceMixin");
+
+            if (MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT) {
+                load(Config.HCFurnace, "hcfurnace.client.TileEntityFurnaceMixin");
+            }
         } else {
             load(Config.enableNEICompat, "CraftingManagerBulkMixin");
             load(Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin");
@@ -33,7 +37,7 @@ public class BWPMixinLoader {
             load(Config.dirtyStokedFlameFix, "fixes.dirty.BlockFireStokedMixin");
             load(Config.patchCookingPot, "cauldron.ContainerCookingPotMixin", "cauldron.TileEntityCookingPotMixin");
             load(Config.patchHCBuckets, "hcbuckets.BWModMixin");
-            if (FMLCommonHandler.instance().getSide().equals(Side.CLIENT)) {
+            if (MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT) {
                 load(Config.patchHCWood, "hcwood.client.ItemBarkMixin");
                 load(Config.patchCookingPot, "cauldron.GuiCookingPotMixin");
                 if (loadedMods.contains("lwjgl3ify") && loadedMods.contains("signpic"))

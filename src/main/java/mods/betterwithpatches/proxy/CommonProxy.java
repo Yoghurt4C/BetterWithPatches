@@ -6,8 +6,11 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.compat.minetweaker.util.MTHelper;
+import mods.betterwithpatches.craft.HCFurnaceExtensions;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import mods.betterwithpatches.craft.SawInteractionExtensions;
+import mods.betterwithpatches.event.HCFurnaceBurnTimeEvent;
+import mods.betterwithpatches.event.HCFurnaceTooltipEvent;
 import mods.betterwithpatches.event.HCTreestumpsEvent;
 import mods.betterwithpatches.nei.NEIBWMConfig;
 import mods.betterwithpatches.util.BWPConstants;
@@ -114,6 +117,21 @@ public class CommonProxy implements Proxy {
                 if (Config.forceChopPlayerHeads || (Loader.isModLoaded("TConstruct") && TConHelper.dropPlayerHeads)) {
                     SawInteractionExtensions.setAdvancedEntityDrop(EntityPlayer.class, SawInteractionExtensions::getPlayerHead);
                 }
+            }
+        }
+
+        if (Config.HCFurnace) {
+            HCFurnaceExtensions.overrideCookingTime("oreIron", 1600);
+            HCFurnaceExtensions.overrideCookingTime("oreGold", 1600);
+            HCFurnaceExtensions.overrideCookingTime("cobblestone", 1600);
+            HCFurnaceExtensions.overrideCookingTime("sand", 1600);
+
+            if (Config.hcFurnaceCustomFuel) {
+                MinecraftForge.EVENT_BUS.register(new HCFurnaceBurnTimeEvent());
+            }
+
+            if (Config.hcFurnaceTooltip) {
+                MinecraftForge.EVENT_BUS.register(new HCFurnaceTooltipEvent());
             }
         }
     }

@@ -26,7 +26,8 @@ public interface MTHelper {
                 KilnTweaker.class,
                 MillTweaker.class,
                 SawTweaker.class,
-                TurntableTweaker.class
+                TurntableTweaker.class,
+                HCFurnaceTweaker.class
         };
         for (Class<?> cls : compat) {
             minetweaker.MineTweakerAPI.registerClass(cls);

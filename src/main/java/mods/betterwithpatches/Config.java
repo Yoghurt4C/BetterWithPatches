@@ -17,8 +17,8 @@ import java.util.Map;
 import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
-    public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance;
-    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder;
+    public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance, hcFurnaceDefaultCookTime;
+    public static boolean genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder, HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -61,7 +61,15 @@ public class Config {
                 Entry.of("patchSignPicForLwjglify", true,
                         "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it."),
                 Entry.of("furnaceHCGunpowder", true,
-                        "Makes Gunpowder explode when put inside a lit furnace.")
+                        "Makes Gunpowder explode when put inside a lit furnace."),
+                Entry.of("HCFurnace", false,
+                        "Allows specifying cook times for items and changes vanilla fuel values. [Side: SERVER | Default: false]"),
+                Entry.of("hcFurnaceDefaultCookTime", 200,
+                        "Default number of ticks it takes to cook an item. [Side: SERVER | Default: 200]"),
+                Entry.of("hcFurnaceCustomFuel", true,
+                        "Overrides vanilla burn times for specific items. [Side: SERVER | Default: true]"),
+                Entry.of("hcFurnaceTooltip", true,
+                        "Adds furnace data to items with modified cook time. [Side: CLIENT | Default: true]")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + MODID + "] Can't reach the config directory. This is probably really bad.");

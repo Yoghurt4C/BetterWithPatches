@@ -1,2 +1,3 @@
 text.bwp:cauldronStoked=Stoked
 text.bwp:bark=Bark
+text.bwp.hcFurnace=Cook Time: %s Seconds (%s Items)
