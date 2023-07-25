@@ -1,5 +1,9 @@
 package mods.betterwithpatches.proxy;
 
+import mods.betterwithpatches.Config;
+import mods.betterwithpatches.features.HCMovement;
+import net.minecraftforge.common.MinecraftForge;
+
 public class ClientProxy extends CommonProxy {
     @Override
     public void preInit() {
@@ -9,6 +13,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init() {
         super.init();
+
+        if (Config.enablePenalties) {
+            if (Config.HCMovement) MinecraftForge.EVENT_BUS.register(new HCMovement.HCMovementFOV());
+        }
     }
 
     @Override

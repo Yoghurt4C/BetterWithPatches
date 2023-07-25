@@ -18,10 +18,11 @@ import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
     public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance, hcFurnaceDefaultCookTime;
+    public static float hcMovementDefault, hcMovementFast;
     public static boolean
             genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder,
             HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel,
-            enablePenalties, HCArmor;
+            enablePenalties, HCArmor, HCMovement;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -58,11 +59,11 @@ public class Config {
                 Entry.of("patchCookingPot", true,
                         "Various additions and fixes to the Cauldron and Crucible. Patches the GUI to have an indicator of being Stoked. [Side: BOTH | Default: true]"),
                 Entry.of("patchHCBuckets", true,
-                        "Makes Hardcore Buckets actually work in a modded environment. Forces HCBuckets to be on if it's disabled in the BWM Config."),
+                        "Makes Hardcore Buckets actually work in a modded environment. Forces HCBuckets to be on if it's disabled in the BWM Config. [Side: SERVER | Default: true]"),
                 Entry.of("enableNEICompat", true,
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]"),
                 Entry.of("patchSignPicForLwjglify", true,
-                        "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it."),
+                        "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it. [Side: CLIENT | Default: true]"),
                 Entry.of("furnaceHCGunpowder", true,
                         "Makes Gunpowder explode when put inside a lit furnace. [Side: SERVER | Default: true]"),
                 Entry.of("HCFurnace", false,
@@ -75,8 +76,16 @@ public class Config {
                         "Adds furnace data to items with modified cook time. [Side: CLIENT | Default: true]"),
                 Entry.of("enablePenalties", false,
                         "Adds hooks to support various Hardcore Features, like HCArmor. Somewhat performance intensive. [Side: BOTH | Default: false]"),
+                Entry.of("removeSpeedPenaltyFOVChanges", true,
+                        "Counteracts FOV changes caused by Speed Penalties. [Side: CLIENT | Default: true]"),
                 Entry.of("HCArmor", true,
-                        "Gives armor weights that affect movement. Depends on \"enablePenalties\". [Side: BOTH | Default: true]")
+                        "Gives armor weights that affect movement. Depends on \"enablePenalties\". [Side: BOTH | Default: true]"),
+                Entry.of("HCMovement", true,
+                        "Changes player walking speed depending on the block underfoot. Depends on \"enablePenalties\". [Side: BOTH | Default: true]"),
+                Entry.of("hcMovementDefault", 0.75f,
+                        "Default walking speed for unknown materials; Changing this won't modify the \"actual\" default walking speed. [Side: BOTH | Default: 0.75]"),
+                Entry.of("hcMovementFast", 1.2f,
+                        "Default, faster walking speed for quality roads. [Side: BOTH | Default: 1.2]")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
             L.error("[" + MODID + "] Can't reach the config directory. This is probably really bad.");

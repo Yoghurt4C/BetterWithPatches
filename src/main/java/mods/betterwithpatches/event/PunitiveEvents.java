@@ -4,7 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import mods.betterwithpatches.data.PenaltyRegistry;
-import mods.betterwithpatches.data.PenaltyRegistry.PunitivePlayerData;
+import mods.betterwithpatches.data.PenaltyRegistry.PenaltyData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -52,7 +52,7 @@ public class PunitiveEvents {
         } else if (evt.player.worldObj.isRemote || evt.player.capabilities.isCreativeMode) {
             return;
         }
-        PunitivePlayerData data = PenaltyRegistry.getPenaltiesForPlayer(evt.player);
+        PenaltyData data = PenaltyRegistry.getPenaltiesForPlayer(evt.player);
         if (!data.canSprint) {
             evt.player.setSprinting(false);
         }
@@ -74,14 +74,8 @@ public class PunitiveEvents {
                 if (mod != null) attr.removeModifier(mod);
             }
             //Speed
-            PunitivePlayerData data = PenaltyRegistry.getPenaltiesForPlayer(player);
-            if (data.speedMod != 0) {
-                AttributeModifier mod = new AttributeModifier(PENALTY_SPEED_UUID, "Speed Penalty", data.speedMod - 1, 2);
-                if (attr.getModifier(PENALTY_SPEED_UUID) != null) {
-                    attr.removeModifier(mod);
-                }
-                attr.applyModifier(mod);
-            }
+            PenaltyData data = PenaltyRegistry.getPenaltiesForPlayer(player);
+            modifyPlayerSpeed(attr, data.speedMod, "SpeedPenalty", PENALTY_SPEED_UUID);
 
             /*
             if (!world.isRemote && BWRegistry.PENALTY_HANDLERS.inPain(player)) {
@@ -91,6 +85,16 @@ public class PunitiveEvents {
             }
              */
 
+        }
+    }
+
+    public static void modifyPlayerSpeed(IAttributeInstance attr, float speedMod, String descriptor, UUID attribute) {
+        if (speedMod != 0) {
+            AttributeModifier mod = new AttributeModifier(attribute, descriptor, speedMod - 1, 2);
+            if (attr.getModifier(attribute) != null) {
+                attr.removeModifier(mod);
+            }
+            attr.applyModifier(mod);
         }
     }
 }

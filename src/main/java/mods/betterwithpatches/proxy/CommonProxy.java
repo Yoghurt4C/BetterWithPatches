@@ -14,6 +14,7 @@ import mods.betterwithpatches.event.HCTreestumpsEvent;
 import mods.betterwithpatches.event.PunitiveEvents;
 import mods.betterwithpatches.features.HCArmor;
 import mods.betterwithpatches.features.HCFurnace;
+import mods.betterwithpatches.features.HCMovement;
 import mods.betterwithpatches.nei.NEIBWMConfig;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
@@ -63,6 +64,17 @@ public class CommonProxy implements Proxy {
 
         if (Config.HCTreestumps) {
             MinecraftForge.EVENT_BUS.register(new HCTreestumpsEvent());
+        }
+
+        if (Config.enablePenalties) {
+            PunitiveEvents kinky = new PunitiveEvents();
+
+            if (Config.HCArmor) {
+                HCArmor.registerHCArmor();
+            }
+            if (Config.HCMovement) {
+                HCMovement.registerHCMovement();
+            }
         }
     }
 
@@ -134,14 +146,6 @@ public class CommonProxy implements Proxy {
 
             if (Config.hcFurnaceTooltip) {
                 MinecraftForge.EVENT_BUS.register(new HCFurnaceTooltipEvent());
-            }
-        }
-
-        if (Config.enablePenalties) {
-            PunitiveEvents kinky = new PunitiveEvents();
-
-            if (Config.HCArmor) {
-                HCArmor.registerHCArmor();
             }
         }
     }

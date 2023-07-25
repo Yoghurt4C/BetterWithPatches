@@ -49,7 +49,7 @@ public interface HCArmor {
 
     class ArmorPenalty implements Penalty {
         @Override
-        public void apply(EntityPlayer player, PenaltyRegistry.PunitivePlayerData data) {
+        public void apply(EntityPlayer player, PenaltyRegistry.PenaltyData data) {
             int weight = 0;
             for (ItemStack stack : player.inventory.armorInventory) {
                 if (stack == null) continue;
