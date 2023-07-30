@@ -48,7 +48,7 @@ public interface BWPConstants {
         }
     }
 
-    static boolean areStacksSameTypeCrafting(ItemStack stack1, ItemStack stack2) {
+    static boolean stacksMatch(ItemStack stack1, ItemStack stack2) {
         return stack1 != null && stack2 != null &&
                 stack1.getItem() == stack2.getItem() &&
                 (stack1.getItemDamage() == stack2.getItemDamage() || stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack1.getItem().isDamageable());

@@ -3,7 +3,7 @@ package mods.betterwithpatches.mixins.fixes;
 import betterwithmods.craft.BulkRecipe;
 import betterwithmods.craft.OreStack;
 import betterwithmods.util.InvUtils;
-import mods.betterwithpatches.craft.InvUtilsExtensions;
+import mods.betterwithpatches.util.InvUtilsExtensions;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;

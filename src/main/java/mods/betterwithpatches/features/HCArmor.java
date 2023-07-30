@@ -57,7 +57,7 @@ public interface HCArmor {
             }
             if (weight > 23) {
                 data.speedMod *= 0.8f;
-                data.canSwim = false;
+                data.canSwim -= 1;
             } else if (weight > 12) {
                 data.speedMod *= 0.9f;
             }

@@ -1,11 +1,22 @@
-package mods.betterwithpatches.craft;
+package mods.betterwithpatches.util;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.Collections;
+import java.util.List;
 
 import static betterwithmods.util.InvUtils.decrStackSize;
 
 public interface InvUtilsExtensions {
+
+    @SuppressWarnings("unchecked")
+    static List<ItemStack> getMatchingSuffix(String ore, String prefix, String target) {
+        String replaced = ore.replace(prefix, target);
+        if (OreDictionary.doesOreNameExist(replaced)) return OreDictionary.getOres(replaced, false);
+        return Collections.EMPTY_LIST;
+    }
 
     static int countItemsWithTagsInInventory(IInventory inv, ItemStack stack, int meta) {
         int itemCount = 0;

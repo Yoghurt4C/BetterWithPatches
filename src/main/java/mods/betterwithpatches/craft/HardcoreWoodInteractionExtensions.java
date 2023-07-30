@@ -4,12 +4,15 @@ import betterwithmods.BWCrafting;
 import betterwithmods.BWRegistry;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
+import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Hashtable;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static mods.betterwithpatches.util.BWPConstants.getId;
 
@@ -102,6 +105,49 @@ public interface HardcoreWoodInteractionExtensions {
         overrideTanninAmount("minecraft:log", 3, 2);
         overrideTanninAmount("minecraft:log2", 0, 4);
         overrideTanninAmount("minecraft:log2", 1, 2);
+    }
+
+    static void registerBarkVariants() {
+        List<ItemStack> logs = new ArrayList<>();
+        List<ItemStack> temp = new ArrayList<>();
+        int ore = OreDictionary.getOreID("logWood");
+        for (Object o : Item.itemRegistry) {
+            Item thing = (Item) o;
+            if (thing instanceof ItemBlock) {
+                Block block = BWPConstants.getBlock(thing);
+                for (CreativeTabs creativeTab : thing.getCreativeTabs()) {
+                    block.getSubBlocks(thing, creativeTab, temp);
+                }
+                temp.removeIf(stack -> !ArrayUtils.contains(OreDictionary.getOreIDs(stack), ore));
+                logs.addAll(temp);
+                temp.clear();
+            }
+        }
+
+        Map<String, List<Integer>> map = new LinkedHashMap<>();
+        for (ItemStack log : logs) {
+            String id = BWPConstants.getId(BWPConstants.getBlock(log.getItem()));
+            if (map.containsKey(id)) {
+                map.get(id).add(log.getItemDamage());
+            } else {
+                List<Integer> list = new ArrayList<>();
+                list.add(log.getItemDamage());
+                map.put(id, list);
+            }
+        }
+        logs.clear();
+
+        for (Map.Entry<String, List<Integer>> entry : map.entrySet()) {
+            int[] meta = new int[entry.getValue().size()];
+            for (int i = 0; i < entry.getValue().size(); i++) {
+                int point = entry.getValue().get(i);
+                meta[i] = point;
+                HardcoreWoodInteractionExtensions.registerTanninRecipe(entry.getKey(), point);
+            }
+
+            HardcoreWoodInteractionExtensions.overrideLogMeta(entry.getKey(), meta);
+        }
+        map.clear();
     }
 
     static void registerTanninRecipe(String id, int meta) {

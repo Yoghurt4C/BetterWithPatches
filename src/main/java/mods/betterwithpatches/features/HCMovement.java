@@ -9,7 +9,6 @@ import mods.betterwithpatches.data.PenaltyRegistry;
 import mods.betterwithpatches.event.PunitiveEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -60,13 +59,13 @@ public interface HCMovement {
             if (player.isRiding()) return;
             float speed = 0;
             if (player.onGround) {
-                Block block = player.worldObj.getBlock((int) player.posX, (int) (player.posY - (player instanceof EntityClientPlayerMP ? 1.8 : 0.2)), (int) player.posZ);
+                Block block = player.worldObj.getBlock((int) player.posX, PunitiveEvents.offsetYPos(player, 0.2f), (int) player.posZ);
                 if (BLOCK_OVERRIDES.containsKey(block)) {
                     speed = BLOCK_OVERRIDES.get(block);
                 } else {
                     speed = MATERIALS.getOrDefault(block.getMaterial(), Config.hcMovementDefault);
                 }
-                Block in = player.worldObj.getBlock((int) player.posX, (int) (player instanceof EntityClientPlayerMP ? player.posY - 1.65 : player.posY), (int) player.posZ);
+                Block in = player.worldObj.getBlock((int) player.posX, PunitiveEvents.offsetYPos(player, 0), (int) player.posZ);
                 if (in.getMaterial() != Material.air && !in.getMaterial().isSolid()) {
                     if (BLOCK_OVERRIDES.containsKey(in)) {
                         speed = BLOCK_OVERRIDES.get(in);

@@ -1,4 +1,4 @@
-package mods.betterwithpatches.event;
+package mods.betterwithpatches.features;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import mods.betterwithpatches.util.BWPConstants;
@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
-public class HCTreestumpsEvent {
+public class HCTreestumps {
 
     @SubscribeEvent
     public void breakSneed(PlayerEvent.BreakSpeed evt) {

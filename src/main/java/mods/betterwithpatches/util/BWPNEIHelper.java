@@ -10,7 +10,6 @@ import java.util.List;
 import static codechicken.nei.NEIServerUtils.areStacksSameTypeCrafting;
 
 public interface BWPNEIHelper {
-
     static boolean matchInput(List<Object> inputs, ItemStack ingredient) {
         for (int i = 0; i < inputs.size(); ++i) {
             Object obj = inputs.get(i);

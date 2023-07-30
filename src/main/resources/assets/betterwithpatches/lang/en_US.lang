@@ -1,3 +1,6 @@
+itemGroup.betterwithmods=Better With Mods
 text.bwp:cauldronStoked=Stoked
 text.bwp:bark=Bark
 text.bwp.hcFurnace=Cook Time: %s Seconds (%s Items)
+
+tile.bwm:steelAnvil.name=Soulforged Steel Anvil

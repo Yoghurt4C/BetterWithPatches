@@ -20,8 +20,8 @@ public class Config {
     public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance, hcFurnaceDefaultCookTime;
     public static float hcMovementDefault, hcMovementFast;
     public static boolean
-            genericFixes, patchKiln, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder,
-            HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel,
+            genericFixes, patchKiln, canKilnSmeltOres, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, patchCreativeTabs, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder,
+            HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel, HCOres,
             enablePenalties, HCArmor, HCMovement;
     private static boolean isInitialized = false;
 
@@ -40,6 +40,8 @@ public class Config {
                         "The time (in ticks) it takes for a cauldron to lazily check whether it's over a heat source (only when active). Depends on \"genericFixes\". [Side: SERVER | Default: 100]"),
                 Entry.of("patchKiln", true,
                         "Various additions and fixes to the Kiln. Required for recipe manipulation. [Side: BOTH | Default: true]"),
+                Entry.of("canKilnSmeltOres", true,
+                        "Enables attempted theft of smelting recipes for Ores inside the Kiln."),
                 Entry.of("patchTurntable", true,
                         "Various additions and fixes to the Turntable. Required for recipe manipulation. [Side: BOTH | Default: true]"),
                 Entry.of("patchHCWood", true,
@@ -60,6 +62,8 @@ public class Config {
                         "Various additions and fixes to the Cauldron and Crucible. Patches the GUI to have an indicator of being Stoked. [Side: BOTH | Default: true]"),
                 Entry.of("patchHCBuckets", true,
                         "Makes Hardcore Buckets actually work in a modded environment. Forces HCBuckets to be on if it's disabled in the BWM Config. [Side: SERVER | Default: true]"),
+                Entry.of("patchCreativeTabs", true,
+                        "Moves every BWM item into a separate creative tab added by BWP. If false, only things added by BWP use it. [Side: CLIENT | Default: true]"),
                 Entry.of("enableNEICompat", true,
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]"),
                 Entry.of("patchSignPicForLwjglify", true,
@@ -74,6 +78,8 @@ public class Config {
                         "Overrides vanilla burn times for specific items. [Side: SERVER | Default: true]"),
                 Entry.of("hcFurnaceTooltip", true,
                         "Adds furnace data to items with modified cook time. [Side: CLIENT | Default: true]"),
+                Entry.of("HCOres", false,
+                        "Ores only smelt into a single Nugget, making it much harder to create large amounts of metal. Also makes Dusts smelt into Nuggets.\nAdditionally, this feature changes the recipes of Compasses, Clocks, Buckets, and Flint and Steels to better fit the nugget smelting."),
                 Entry.of("enablePenalties", false,
                         "Adds hooks to support various Hardcore Features, like HCArmor. Somewhat performance intensive. [Side: BOTH | Default: false]"),
                 Entry.of("removeSpeedPenaltyFOVChanges", true,

@@ -1,11 +1,14 @@
 package mods.betterwithpatches.craft;
 
 import betterwithmods.BWRegistry;
+import mods.betterwithpatches.Config;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Hashtable;
@@ -72,5 +75,27 @@ public interface KilnInteractionExtensions {
         KilnInteractionExtensions.addStokedRecipe(BWRegistry.unfiredPottery, 1, new ItemStack(BWRegistry.planter, 1, 0));
         KilnInteractionExtensions.addStokedRecipe(BWRegistry.unfiredPottery, 2, new ItemStack(BWRegistry.planter, 1, 15));
         KilnInteractionExtensions.addStokedRecipe("logWood", new ItemStack(Items.coal, 2, 1));
+    }
+
+    static void addKilnOreRecipes() {
+        for (String oreName : OreDictionary.getOreNames()) {
+            if (oreName.startsWith("ore")) {
+                for (ItemStack ore : OreDictionary.getOres(oreName, false)) {
+                    if (ore.getItem() instanceof ItemBlock) {
+                        Block block = ((ItemBlock) ore.getItem()).field_150939_a;
+                        int meta = ore.getItemDamage();
+                        ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(ore);
+                        if (result != null) {
+                            if (Config.HCOres) result.stackSize = 2;
+                            if (meta == OreDictionary.WILDCARD_VALUE) {
+                                KilnInteractionExtensions.addStokedRecipe(block, result);
+                            } else {
+                                KilnInteractionExtensions.addStokedRecipe(block, meta, result);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
