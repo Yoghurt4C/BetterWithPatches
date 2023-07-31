@@ -1,4 +1,4 @@
-package mods.betterwithpatches.nei;
+package mods.betterwithpatches.compat.nei;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
@@ -6,8 +6,8 @@ import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import cpw.mods.fml.common.registry.GameData;
-import mods.betterwithpatches.util.BWPConstants;
 import mods.betterwithpatches.util.BWPNEIHelper;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
@@ -71,7 +71,7 @@ public abstract class InteractionHandler extends TemplateRecipeHandler implement
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        Block block = BWPConstants.getBlock(ingredient.getItem());
+        Block block = BWPUtils.getBlock(ingredient.getItem());
         String id = GameData.getBlockRegistry().getNameForObject(block);
         int meta = ingredient.getItemDamage();
         for (Map.Entry<String, ItemStack[]> entry : this.getRecipes().entrySet()) {

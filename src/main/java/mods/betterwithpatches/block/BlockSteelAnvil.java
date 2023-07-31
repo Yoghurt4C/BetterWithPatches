@@ -2,6 +2,7 @@ package mods.betterwithpatches.block;
 
 import betterwithmods.BWRegistry;
 import betterwithmods.blocks.BlockAesthetic;
+import mods.betterwithpatches.BWPRegistry;
 import mods.betterwithpatches.block.tile.TileEntitySteelAnvil;
 import mods.betterwithpatches.proxy.ClientProxy;
 import mods.betterwithpatches.util.BWPConstants;
@@ -23,7 +24,7 @@ public class BlockSteelAnvil extends BlockContainer {
     public BlockSteelAnvil() {
         super(Material.iron);
         this.setBlockName("bwm:steelAnvil");
-        this.setCreativeTab(ClientProxy.bwpTab);
+        this.setCreativeTab(BWPRegistry.bwpTab);
         this.setHardness(5f);
         this.setResistance(2000f);
         this.setHarvestLevel("pickaxe", 1);

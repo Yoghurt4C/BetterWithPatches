@@ -1,4 +1,4 @@
-package mods.betterwithpatches.nei.machines;
+package mods.betterwithpatches.compat.nei.machines;
 
 import betterwithmods.craft.CraftingManagerBulk;
 import betterwithmods.craft.CraftingManagerCauldronStoked;

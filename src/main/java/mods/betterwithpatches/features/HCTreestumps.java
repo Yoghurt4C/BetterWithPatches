@@ -1,7 +1,7 @@
 package mods.betterwithpatches.features;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
@@ -27,7 +27,7 @@ public class HCTreestumps {
     private boolean isLog(Block block, int meta) {
         if ((meta & 3) == meta) {
             if (block instanceof BlockLog) return true;
-            else return BWPConstants.presentInOD(new ItemStack(block, 1, meta), "logWood");
+            else return BWPUtils.presentInOD(new ItemStack(block, 1, meta), "logWood");
         }
         return false;
     }

@@ -21,8 +21,11 @@ import org.gradle.internal.logging.text.StyledTextOutputFactory
 import org.gradle.internal.xml.XmlTransformer
 import org.jetbrains.gradle.ext.*
 
+import javax.xml.bind.DatatypeConverter
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
@@ -1074,8 +1077,12 @@ if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null
 
         File changelogFile = file('CHANGELOG.md')
         if (changelogFile.exists()) {
+            StringBuilder changelog = new StringBuilder()
+            for (final def s in changelogFile.readLines()) {
+                changelog.append(s)
+            }
             main.changelogType = 'markdown'
-            main.changelog = changelogFile
+            main.changelog = changelog.toString()
         }
 
         for (file in getSecondaryArtifacts()) main.withAdditionalFile(file)
@@ -1097,6 +1104,30 @@ if (curseForgeProjectId.size() != 0 && System.getenv("CURSEFORGE_TOKEN") != null
     tasks.curseforge.dependsOn(build)
     tasks.publish.dependsOn(tasks.curseforge)
 }
+
+task validateMetadata {
+    doLast {
+        File meta = new File(".metadata")
+        meta.createNewFile()
+        List<String> lines = meta.readLines()
+        File changelog = new File("CHANGELOG.md")
+        MessageDigest md = MessageDigest.getInstance("MD5")
+        md.update(changelog.bytes)
+        String md5 = DatatypeConverter.printHexBinary(md.digest())
+        if (lines.size() > 1) {
+            String version = lines.get(0)
+            String changehash = lines.get(1)
+            if (project.modVersion == version) throw new GradleException("Can't publish mod because this version already exists.")
+            if (changehash == md5) throw new GradleException("Can't publish mod because the changelog hasn't been updated.")
+        }
+        BufferedWriter io = meta.newWriter("UTF-8", false)
+        io.writeLine(project.modVersion)
+        io.write(md5)
+        io.close()
+    }
+}
+tasks.validateMetadata.dependsOn(build)
+tasks.publish.dependsOn(tasks.validateMetadata)
 
 def addModrinthDep(String scope, String type, String name) {
     com.modrinth.minotaur.dependencies.Dependency dep;

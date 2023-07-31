@@ -21,8 +21,9 @@ public class Config {
     public static float hcMovementDefault, hcMovementFast;
     public static boolean
             genericFixes, patchKiln, canKilnSmeltOres, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, patchCreativeTabs, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder,
-            HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel, HCOres,
-            enablePenalties, HCArmor, HCMovement;
+            vanillaRecipesInAnvil,
+            HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel, HCOres, hcOreDusts,
+            enablePenalties, HCArmor, HCMovement, removeSpeedPenaltyFOVChanges;
     private static boolean isInitialized = false;
 
     public static void tryInit() {
@@ -68,6 +69,8 @@ public class Config {
                         "Adds recipe views for NotEnoughItems. [Side: BOTH | Default: true]"),
                 Entry.of("patchSignPicForLwjglify", true,
                         "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it. [Side: CLIENT | Default: true]"),
+                Entry.of("vanillaRecipesInAnvil", true,
+                        "If true, the Soulforged Steel Anvil will attempt to match vanilla recipes in its grid. [Side: BOTH | Default: true]"),
                 Entry.of("furnaceHCGunpowder", true,
                         "Makes Gunpowder explode when put inside a lit furnace. [Side: SERVER | Default: true]"),
                 Entry.of("HCFurnace", false,
@@ -79,7 +82,9 @@ public class Config {
                 Entry.of("hcFurnaceTooltip", true,
                         "Adds furnace data to items with modified cook time. [Side: CLIENT | Default: true]"),
                 Entry.of("HCOres", false,
-                        "Ores only smelt into a single Nugget, making it much harder to create large amounts of metal. Also makes Dusts smelt into Nuggets.\nAdditionally, this feature changes the recipes of Compasses, Clocks, Buckets, and Flint and Steels to better fit the nugget smelting."),
+                        "Ores only smelt into a single Nugget, making it much harder to create large amounts of metal.\nAdditionally, this feature changes the recipes of Compasses, Clocks, Buckets, and Flint and Steels to better fit the nugget smelting."),
+                Entry.of("hcOreDusts", false,
+                        "Makes dusts smelt into nuggets. This will probably break even more mods than HCOres itself."),
                 Entry.of("enablePenalties", false,
                         "Adds hooks to support various Hardcore Features, like HCArmor. Somewhat performance intensive. [Side: BOTH | Default: false]"),
                 Entry.of("removeSpeedPenaltyFOVChanges", true,
@@ -94,7 +99,7 @@ public class Config {
                         "Default, faster walking speed for quality roads. [Side: BOTH | Default: 1.2]")
         );
         if (Files.notExists(getConfigDir()) && !getConfigDir().toFile().mkdir()) {
-            L.error("[" + MODID + "] Can't reach the config directory. This is probably really bad.");
+            L.error("Can't reach the config directory. This is probably really bad.");
         }
         Path configPath = getConfigDir().resolve(filename);
         Map<String, String> cfg = new HashMap<>();
@@ -104,7 +109,7 @@ public class Config {
             StringBuilder content = new StringBuilder().append("#").append(MODNAME).append(" Configuration.\n");
             content.append("#Last generated at: ").append(new Date()).append("\n\n");
             if (Files.notExists(configPath) && !configurationFile.createNewFile())
-                L.error("[" + MODID + "] Can't create config file \"" + configurationFile + "\". This is probably bad.");
+                L.error("Can't create config file \"" + configurationFile + "\". This is probably bad.");
             BufferedReader r = Files.newBufferedReader(configPath, StandardCharsets.UTF_8);
 
             String line;
@@ -155,22 +160,25 @@ public class Config {
             }
             isInitialized = true;
         } catch (IOException e) {
-            L.fatal("[" + MODID + "] Could not read/write config!");
+            L.fatal("Could not read/write config!");
             L.fatal(e);
         }
     }
 
     private static void logEntryError(File configurationFile, String key, Object value, String found, String expected) {
-        L.error("[" + MODID + "] Error processing configuration file \"" + configurationFile + "\".");
-        L.error("[" + MODID + "] Expected configuration value for " + key + " to be " + expected + ", found \"" + found + "\". Using default value \"" + value + "\" instead.");
+        L.error("Error processing configuration file \"" + configurationFile + "\".");
+        L.error("Expected configuration value for " + key + " to be " + expected + ", found \"" + found + "\". Using default value \"" + value + "\" instead.");
         setCfgValue(key, value);
     }
 
     private static void setCfgValue(String k, Object v) {
         try {
             Config.class.getDeclaredField(k).set(Config.class, v);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            L.error("[" + MODID + "] Could not set the runtime config state!");
+        } catch (NoSuchFieldException e) {
+            L.error("There's an odd entry in the config. Please report this to the author.");
+            L.error(e);
+        } catch (IllegalAccessException e) {
+            L.error("Could not set the runtime config state!");
             L.error(e);
         }
     }

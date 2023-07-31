@@ -10,6 +10,7 @@ import mods.betterwithpatches.compat.minetweaker.util.MTHelper;
 import mods.betterwithpatches.craft.SawInteractionExtensions;
 import mods.betterwithpatches.data.BWPMobDrops;
 import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -35,9 +36,9 @@ public class SawTweaker {
             int meta = ((IItemStack) input).getDamage();
             String s;
             if (meta == OreDictionary.WILDCARD_VALUE) {
-                s = BWPConstants.getId(block);
+                s = BWPUtils.getId(block);
             } else {
-                s = BWPConstants.getId(block) + "@" + meta;
+                s = BWPUtils.getId(block) + "@" + meta;
             }
             MineTweakerAPI.apply(new Add(MineTweakerMC.getItemStacks(output), s));
         } else {
@@ -54,9 +55,9 @@ public class SawTweaker {
             int meta = ((IItemStack) input).getDamage();
             String s;
             if (meta == OreDictionary.WILDCARD_VALUE) {
-                s = BWPConstants.getId(block);
+                s = BWPUtils.getId(block);
             } else {
-                s = BWPConstants.getId(block) + "@" + meta;
+                s = BWPUtils.getId(block) + "@" + meta;
             }
             MineTweakerAPI.apply(new Remove(s));
         } else {

@@ -1,4 +1,4 @@
-package mods.betterwithpatches.nei.machines;
+package mods.betterwithpatches.compat.nei.machines;
 
 import betterwithmods.craft.BulkRecipe;
 import betterwithmods.craft.CraftingManagerBulk;
@@ -6,7 +6,7 @@ import betterwithmods.craft.CraftingManagerCauldron;
 import betterwithmods.craft.OreStack;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import mods.betterwithpatches.nei.BulkRecipeHandler;
+import mods.betterwithpatches.compat.nei.BulkRecipeHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;

@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class BWPCreativeTab extends CreativeTabs {
-    public final ItemStack gear = new ItemStack(BWRegistry.material, 1, 0);
+    public ItemStack gear;
 
     public BWPCreativeTab() {
         super("betterwithmods");
@@ -14,6 +14,7 @@ public class BWPCreativeTab extends CreativeTabs {
 
     @Override
     public ItemStack getIconItemStack() {
+        if (this.gear == null) this.gear = new ItemStack(BWRegistry.material, 1, 0);
         return this.gear;
     }
 

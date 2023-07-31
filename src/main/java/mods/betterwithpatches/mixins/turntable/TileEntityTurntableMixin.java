@@ -3,7 +3,7 @@ package mods.betterwithpatches.mixins.turntable;
 import betterwithmods.api.block.IBTWBlock;
 import betterwithmods.blocks.tile.TileEntityTurntable;
 import mods.betterwithpatches.craft.TurntableInteractionExtensions;
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.*;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -99,12 +99,12 @@ public abstract class TileEntityTurntableMixin extends TileEntity {
                 int meta = craftingStack.getItemDamage();
                 this.worldObj.playSoundEffect((double) x + 0.5, (double) y + 0.5, (double) z + 0.5, soundType, 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.8F);
                 for (int i = 1; i < products.length; i++) {
-                    BWPConstants.scatter(this.worldObj, x, y + 1, z, products[i]);
+                    BWPUtils.scatter(this.worldObj, x, y + 1, z, products[i]);
                 }
 
                 this.worldObj.setBlock(x, y, z, block, meta, 3);
             } else {
-                BWPConstants.scatter(this.worldObj, x, y + 1, z, craftingStack);
+                BWPUtils.scatter(this.worldObj, x, y + 1, z, craftingStack);
             }
 
             this.potteryRotation = 0;

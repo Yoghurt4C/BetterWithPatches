@@ -47,7 +47,7 @@ public interface BWPNEIHelper {
             String[] split = input.split("@");
             return id.equals(split[0]) && String.valueOf(meta).equals(split[1]);
         } else if (input.startsWith("ore:")) {
-            return BWPConstants.presentInOD(ingredient, input.substring(4));
+            return BWPUtils.presentInOD(ingredient, input.substring(4));
         } else {
             return input.equals(id);
         }

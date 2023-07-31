@@ -4,3 +4,8 @@ text.bwp:bark=Bark
 text.bwp.hcFurnace=Cook Time: %s Seconds (%s Items)
 
 tile.bwm:steelAnvil.name=Soulforged Steel Anvil
+item.bwm:steelAxe.name=Soulforged Steel Axe
+item.bwm:steelHoe.name=Soulforged Steel Hoe
+item.bwm:steelPickaxe.name=Soulforged Steel Pickaxe
+item.bwm:steelShovel.name=Soulforged Steel Shovel
+item.bwm:steelSword.name=Soulforged Steel Sword

@@ -1,7 +1,7 @@
 package mods.betterwithpatches.menu;
 
 import mods.betterwithpatches.block.tile.TileEntitySteelAnvil;
-import mods.betterwithpatches.craft.anvil.SteelCraftingManager;
+import mods.betterwithpatches.craft.SteelCraftingManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;

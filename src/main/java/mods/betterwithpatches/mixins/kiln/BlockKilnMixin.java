@@ -3,7 +3,7 @@ package mods.betterwithpatches.mixins.kiln;
 import betterwithmods.blocks.BTWBlock;
 import betterwithmods.blocks.BlockKiln;
 import mods.betterwithpatches.craft.KilnInteractionExtensions;
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,7 @@ public abstract class BlockKilnMixin extends BTWBlock {
             if (newCookTime > 7) {
                 newCookTime = 0;
                 world.setBlockToAir(x, y + 1, z);
-                BWPConstants.scatter(world, x, y + 1, z, produce);
+                BWPUtils.scatter(world, x, y + 1, z, produce);
             } else {
                 if (newCookTime > 0) {
                     world.destroyBlockInWorldPartially(0, x, y + 1, z, newCookTime + 2);
@@ -77,9 +77,5 @@ public abstract class BlockKilnMixin extends BTWBlock {
     @Inject(method = "cookBlock", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/World;getBlockMetadata(III)I"), locals = LocalCapture.CAPTURE_FAILHARD, cancellable = true)
     public void cook(World world, int x, int y, int z, CallbackInfo ctx, Block block, int meta) {
         ctx.cancel();
-        if (block != null) {
-            BWPConstants.scatter(world, x, y, z, KilnInteractionExtensions.getProducts(block, meta));
-            world.setBlockToAir(x, y, z);
-        }
     }
 }

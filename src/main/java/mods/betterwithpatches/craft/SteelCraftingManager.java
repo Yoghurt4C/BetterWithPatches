@@ -1,19 +1,26 @@
-package mods.betterwithpatches.craft.anvil;
+package mods.betterwithpatches.craft;
 
 import betterwithmods.BWRegistry;
 import betterwithmods.craft.OreStack;
+import mods.betterwithpatches.BWPRegistry;
+import mods.betterwithpatches.Config;
+import mods.betterwithpatches.craft.anvil.ShapedSteelRecipe;
+import mods.betterwithpatches.craft.anvil.ShapelessSteelRecipe;
+import mods.betterwithpatches.mixins.anvil.ShapedOreRecipeAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public interface SteelCraftingManager {
     List<IRecipe> RECIPES = new ArrayList<>();
@@ -76,11 +83,36 @@ public interface SteelCraftingManager {
         for (IRecipe recipe : RECIPES) {
             if (recipe.matches(matrix, world)) return recipe.getCraftingResult(matrix);
         }
+        if (Config.vanillaRecipesInAnvil) {
+            for (IRecipe recipe : CraftingManager.getInstance().getRecipeList()) {
+                if (recipe instanceof ShapelessRecipes && ShapelessSteelRecipe.matchVanillaRecipe(matrix, ((ShapelessRecipes) recipe).recipeItems))
+                    return recipe.getCraftingResult(matrix);
+                else if (recipe instanceof ShapelessOreRecipe && ShapelessSteelRecipe.matchVanillaRecipe(matrix, ((ShapelessOreRecipe) recipe).getInput()))
+                    return recipe.getCraftingResult(matrix);
+                else if (recipe instanceof ShapedRecipes) {
+                    ShapedRecipes shaped = (ShapedRecipes) recipe;
+                    if (ShapedSteelRecipe.matchVanillaRecipe(matrix, shaped.recipeWidth, shaped.recipeHeight, Arrays.asList(shaped.recipeItems)))
+                        return recipe.getCraftingResult(matrix);
+                } else if (recipe instanceof ShapedOreRecipe) {
+                    ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
+                    ShapedOreRecipeAccessor acc = (ShapedOreRecipeAccessor) shaped;
+                    if (ShapedSteelRecipe.matchVanillaRecipe(matrix, acc.getWidth(), acc.getHeight(), Arrays.asList(shaped.getInput())))
+                        return recipe.getCraftingResult(matrix);
+                }
+            }
+        }
         return null;
     }
 
     static void addSteelAnvilRecipes() {
         addShapedRecipe(new ItemStack(BWRegistry.detector), "CCCC", "LTTL", "SRRS", "SRRS", 'C', "cobblestone", 'L', new ItemStack(BWRegistry.material, 1, 20), 'T', Blocks.redstone_torch, 'S', "stone", 'R', "dustRedstone");
         addShapedRecipe(new ItemStack(BWRegistry.material, 2, 20), "LLL", "LLL", "GGG", " R ", 'L', "gemLapis", 'R', "dustRedstone", 'G', "nuggetGold");
+        ItemStack haft = new ItemStack(BWRegistry.material, 1, 38);
+        addShapedRecipe(new ItemStack(BWPRegistry.steelAxe), "XX", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', haft);
+        addShapedRecipe(new ItemStack(BWPRegistry.steelHoe), "XX", " H", " H", " H", 'X', "ingotSoulforgedSteel", 'H', haft);
+        addShapedRecipe(new ItemStack(BWPRegistry.steelPickaxe), "XXX", " H ", " H ", " H ", 'X', "ingotSoulforgedSteel", 'H', haft);
+        addShapedRecipe(new ItemStack(BWPRegistry.steelShovel), "X", "H", "H", "H", 'X', "ingotSoulforgedSteel", 'H', haft);
+        addShapedRecipe(new ItemStack(BWPRegistry.steelSword), "X", "X", "X", "H", 'X', "ingotSoulforgedSteel", 'H', haft);
+
     }
 }

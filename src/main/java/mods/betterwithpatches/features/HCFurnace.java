@@ -3,7 +3,7 @@ package mods.betterwithpatches.features;
 import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import mods.betterwithpatches.Config;
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -24,7 +24,7 @@ public interface HCFurnace {
 
     static int getCookingTime(ItemStack input) {
         for (Map.Entry<ItemStack, Integer> e : COOKING_TIMINGS.entrySet()) {
-            if (BWPConstants.stacksMatch(e.getKey(), input)) return e.getValue();
+            if (BWPUtils.stacksMatch(e.getKey(), input)) return e.getValue();
         }
         return Config.hcFurnaceDefaultCookTime;
     }

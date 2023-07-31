@@ -1,4 +1,4 @@
-package mods.betterwithpatches.nei;
+package mods.betterwithpatches.compat.nei;
 
 import betterwithmods.craft.BulkRecipe;
 import betterwithmods.craft.CraftingManagerBulk;

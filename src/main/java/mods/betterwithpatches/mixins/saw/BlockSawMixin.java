@@ -3,7 +3,7 @@ package mods.betterwithpatches.mixins.saw;
 import betterwithmods.blocks.BlockSaw;
 import betterwithmods.util.BlockPosition;
 import mods.betterwithpatches.craft.SawInteractionExtensions;
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
@@ -49,9 +49,9 @@ public abstract class BlockSawMixin {
             fake.setCurrentItemOrArmor(0, stack);
 
             if (SawInteractionExtensions.containsBlock(block, harvestMeta)) {
-                BWPConstants.scatter(world, x, y, z, SawInteractionExtensions.getBlockOverrides(block, harvestMeta));
+                BWPUtils.scatter(world, x, y, z, SawInteractionExtensions.getBlockOverrides(block, harvestMeta));
                 block.removedByPlayer(world, fake, pos.x, pos.y, pos.z, false);
-            } else if (BWPConstants.presentInOD(new ItemStack(block, 1, harvestMeta), "logWood") && fake.canHarvestBlock(block)) {
+            } else if (BWPUtils.presentInOD(new ItemStack(block, 1, harvestMeta), "logWood") && fake.canHarvestBlock(block)) {
                 BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x, y, z, world, block, harvestMeta, fake);
                 MinecraftForge.EVENT_BUS.post(event);
                 if (block.removedByPlayer(world, fake, pos.x, pos.y, pos.z, true))

@@ -3,6 +3,7 @@ package mods.betterwithpatches.craft;
 import betterwithmods.BWCrafting;
 import betterwithmods.BWRegistry;
 import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -14,7 +15,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 
-import static mods.betterwithpatches.util.BWPConstants.getId;
+import static mods.betterwithpatches.util.BWPUtils.getId;
 
 public interface HardcoreWoodInteractionExtensions {
     Map<String, int[]> metaOverrides = new LinkedHashMap<>();
@@ -114,7 +115,7 @@ public interface HardcoreWoodInteractionExtensions {
         for (Object o : Item.itemRegistry) {
             Item thing = (Item) o;
             if (thing instanceof ItemBlock) {
-                Block block = BWPConstants.getBlock(thing);
+                Block block = BWPUtils.getBlock(thing);
                 for (CreativeTabs creativeTab : thing.getCreativeTabs()) {
                     block.getSubBlocks(thing, creativeTab, temp);
                 }
@@ -126,7 +127,7 @@ public interface HardcoreWoodInteractionExtensions {
 
         Map<String, List<Integer>> map = new LinkedHashMap<>();
         for (ItemStack log : logs) {
-            String id = BWPConstants.getId(BWPConstants.getBlock(log.getItem()));
+            String id = BWPUtils.getId(BWPUtils.getBlock(log.getItem()));
             if (map.containsKey(id)) {
                 map.get(id).add(log.getItemDamage());
             } else {

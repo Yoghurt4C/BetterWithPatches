@@ -24,7 +24,7 @@ public interface RecipeUtils {
         while (recipes.hasNext()) {
             IRecipe recipe = recipes.next();
             for (ItemStack stack : stacks) {
-                if (BWPConstants.stacksMatch(recipe.getRecipeOutput(), stack)) {
+                if (BWPUtils.stacksMatch(recipe.getRecipeOutput(), stack)) {
                     recipes.remove();
                 }
             }
@@ -36,7 +36,7 @@ public interface RecipeUtils {
         while (iter.hasNext()) {
             Map.Entry<ItemStack, ItemStack> entry = iter.next();
             for (ItemStack stack : stacks) {
-                if (BWPConstants.stacksMatch(entry.getKey(), stack)) {
+                if (BWPUtils.stacksMatch(entry.getKey(), stack)) {
                     iter.remove();
                 }
             }
@@ -47,11 +47,9 @@ public interface RecipeUtils {
         Iterator<Map.Entry<ItemStack, ItemStack>> iter = FurnaceRecipes.smelting().getSmeltingList().entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<ItemStack, ItemStack> entry = iter.next();
-            //for (Map.Entry<ItemStack, ItemStack> entry : FurnaceRecipes.smelting().getSmeltingList().entrySet()) {
             for (ItemStack stack : stacks) {
-                if (BWPConstants.stacksMatch(entry.getValue(), stack)) {
+                if (BWPUtils.stacksMatch(entry.getValue(), stack)) {
                     iter.remove();
-                    //FurnaceRecipes.smelting().getSmeltingList().remove(entry.getKey());
                 }
             }
         }

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static mods.betterwithpatches.util.BWPConstants.isBlockReplaceable;
+import static mods.betterwithpatches.util.BWPUtils.isBlockReplaceable;
 
 @Mixin(ItemBucket.class)
 public abstract class ItemBucketMixin {

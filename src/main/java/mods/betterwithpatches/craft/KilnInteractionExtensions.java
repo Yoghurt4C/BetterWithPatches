@@ -2,7 +2,7 @@ package mods.betterwithpatches.craft;
 
 import betterwithmods.BWRegistry;
 import mods.betterwithpatches.Config;
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -15,7 +15,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import static mods.betterwithpatches.util.BWPConstants.L;
-import static mods.betterwithpatches.util.BWPConstants.getId;
+import static mods.betterwithpatches.util.BWPUtils.getId;
 
 /**
  * Functionally a replacement for {@link betterwithmods.craft.KilnInteraction} - necessary to make use of multiple outputs in recipes.
@@ -45,7 +45,7 @@ public interface KilnInteractionExtensions {
         String withMeta = id + "@" + meta;
         ItemStack stack = new ItemStack(block, 1, meta);
         for (String s : cookables.keySet()) {
-            if (s.startsWith("ore:") && BWPConstants.presentInOD(stack, s.substring(4))) {
+            if (s.startsWith("ore:") && BWPUtils.presentInOD(stack, s.substring(4))) {
                 return true;
             } else if (s.equals(id) || s.equals(withMeta)) {
                 return true;
@@ -60,7 +60,7 @@ public interface KilnInteractionExtensions {
         ItemStack stack = new ItemStack(block, 1, meta);
         for (Map.Entry<String, ItemStack[]> pair : cookables.entrySet()) {
             String s = pair.getKey();
-            if (s.startsWith("ore:") && BWPConstants.presentInOD(stack, s.substring(4))) {
+            if (s.startsWith("ore:") && BWPUtils.presentInOD(stack, s.substring(4))) {
                 return pair.getValue();
             } else if (s.equals(id) || s.equals(withMeta)) {
                 return pair.getValue();
@@ -86,7 +86,10 @@ public interface KilnInteractionExtensions {
                         int meta = ore.getItemDamage();
                         ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(ore);
                         if (result != null) {
-                            if (Config.HCOres) result.stackSize = 2;
+                            if (Config.HCOres) {
+                                result = result.copy();
+                                result.stackSize = 2;
+                            }
                             if (meta == OreDictionary.WILDCARD_VALUE) {
                                 KilnInteractionExtensions.addStokedRecipe(block, result);
                             } else {

@@ -1,7 +1,7 @@
 package mods.betterwithpatches.craft;
 
 import betterwithmods.BWRegistry;
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,7 +13,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import static mods.betterwithpatches.util.BWPConstants.L;
-import static mods.betterwithpatches.util.BWPConstants.getId;
+import static mods.betterwithpatches.util.BWPUtils.getId;
 
 /**
  * Functionally a replacement for {@link betterwithmods.craft.TurntableInteraction} - necessary to make use of multiple outputs in recipes.
@@ -47,7 +47,7 @@ public interface TurntableInteractionExtensions {
         String withMeta = id + "@" + meta;
         ItemStack stack = new ItemStack(block, 1, meta);
         for (String s : spinnables.keySet()) {
-            if (s.startsWith("ore:") && BWPConstants.presentInOD(stack, s.substring(4))) {
+            if (s.startsWith("ore:") && BWPUtils.presentInOD(stack, s.substring(4))) {
                 return true;
             } else if (s.equals(id) || s.equals(withMeta)) {
                 return true;
@@ -62,7 +62,7 @@ public interface TurntableInteractionExtensions {
         ItemStack stack = new ItemStack(block, 1, meta);
         for (Map.Entry<String, ItemStack[]> pair : spinnables.entrySet()) {
             String s = pair.getKey();
-            if (s.startsWith("ore:") && BWPConstants.presentInOD(stack, s.substring(4))) {
+            if (s.startsWith("ore:") && BWPUtils.presentInOD(stack, s.substring(4))) {
                 return pair.getValue();
             } else if (s.equals(id) || s.equals(withMeta)) {
                 return pair.getValue();

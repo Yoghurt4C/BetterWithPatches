@@ -1,7 +1,7 @@
 package mods.betterwithpatches.craft.anvil;
 
 import betterwithmods.craft.OreStack;
-import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -10,49 +10,52 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import scala.actors.threadpool.Arrays;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 public class ShapelessSteelRecipe implements IRecipe {
-    public final ItemStack recipeOutput;
+    public final ItemStack output;
     /**
      * Is a List of ItemStack that composes the recipe.
      */
-    public final Object[] recipeItems;
+    public final Object[] ingredients;
 
     public ShapelessSteelRecipe(ItemStack result, Object... ingredients) {
-        this.recipeOutput = result;
-        this.recipeItems = new Object[ingredients.length];
+        this.output = result;
+        this.ingredients = new Object[ingredients.length];
         for (int i = 0; i < ingredients.length; i++) {
             Object in = ingredients[i];
             if (in instanceof ItemStack) {
-                recipeItems[i] = ((ItemStack) in).copy();
+                this.ingredients[i] = ((ItemStack) in).copy();
             } else if (in instanceof Item) {
-                recipeItems[i] = new ItemStack((Item) in);
+                this.ingredients[i] = new ItemStack((Item) in);
             } else if (in instanceof Block) {
-                recipeItems[i] = new ItemStack((Block) in);
+                this.ingredients[i] = new ItemStack((Block) in);
             } else if (in instanceof String) {
-                recipeItems[i] = new OreStack((String) in);
+                this.ingredients[i] = new OreStack((String) in);
             } else {
                 StringBuilder ret = new StringBuilder("Invalid shapeless ore recipe: ");
                 for (Object tmp : ingredients) {
                     ret.append(tmp).append(", ");
                 }
-                ret.append(recipeOutput);
+                ret.append(output);
                 throw new RuntimeException(ret.toString());
             }
         }
     }
 
     public ItemStack getRecipeOutput() {
-        return this.recipeOutput.copy();
+        return this.output.copy();
     }
 
     /**
      * Used to check if a recipe matches current crafting inventory
      */
     @SuppressWarnings("unchecked")
+    @Override
     public boolean matches(InventoryCrafting matrix, World world) {
-        List<Object> stacks = Arrays.asList(this.recipeItems);
+        List<Object> stacks = Arrays.asList(this.ingredients);
 
         for (int i = 0; i < 4; ++i) {
             for (int j = 0; j < 4; ++j) {
@@ -60,19 +63,21 @@ public class ShapelessSteelRecipe implements IRecipe {
 
                 if (slotStack != null) {
                     boolean flag = true;
-                    for (Object o : stacks) {
+                    ListIterator<Object> iter = stacks.listIterator();
+                    while (iter.hasNext()) {
+                        Object o = iter.next();
                         if (o instanceof ItemStack) {
                             ItemStack itemStack = (ItemStack) o;
                             if (slotStack.getItem() == itemStack.getItem() && (itemStack.getItemDamage() == 32767 || slotStack.getItemDamage() == itemStack.getItemDamage())) {
                                 flag = false;
-                                stacks.remove(itemStack);
+                                iter.remove();
                                 break;
                             }
                         } else if (o instanceof OreStack) {
                             OreStack ore = (OreStack) o;
-                            if (BWPConstants.presentInOD(slotStack, ore.getOreName())) {
+                            if (BWPUtils.presentInOD(slotStack, ore.getOreName())) {
                                 flag = false;
-                                stacks.remove(ore);
+                                iter.remove();
                                 break;
                             }
                         }
@@ -88,18 +93,60 @@ public class ShapelessSteelRecipe implements IRecipe {
         return stacks.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
+    public static boolean matchVanillaRecipe(InventoryCrafting matrix, List<?> ingredients) {
+        List<Object> stacks = new ArrayList<>(ingredients);
+        for (int i = 0; i < 4; ++i) {
+            for (int j = 0; j < 4; ++j) {
+                ItemStack slotStack = matrix.getStackInRowAndColumn(j, i);
+
+                if (slotStack != null) {
+                    boolean unmatched = true;
+                    ListIterator<Object> iter = stacks.listIterator();
+                    while (iter.hasNext()) {
+                        Object o = iter.next();
+                        if (o instanceof ItemStack) {
+                            ItemStack itemStack = (ItemStack) o;
+                            if (slotStack.getItem() == itemStack.getItem() && (itemStack.getItemDamage() == 32767 || slotStack.getItemDamage() == itemStack.getItemDamage())) {
+                                unmatched = false;
+                                iter.remove();
+                                break;
+                            }
+                        } else if (o instanceof List) {
+                            List<ItemStack> list = (List<ItemStack>) o;
+                            for (ItemStack itemStack : list) {
+                                if (BWPUtils.stacksMatch(slotStack, itemStack)) {
+                                    unmatched = false;
+                                    iter.remove();
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+
+                    if (unmatched) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return stacks.isEmpty();
+    }
+
     /**
      * Returns an Item that is the result of this recipe
      */
     public ItemStack getCraftingResult(InventoryCrafting matrix) {
-        return this.recipeOutput;
+        return this.output;
     }
 
     /**
      * Returns the size of the recipe area
      */
     public int getRecipeSize() {
-        return this.recipeItems.length;
+        return this.ingredients.length;
     }
 
 }

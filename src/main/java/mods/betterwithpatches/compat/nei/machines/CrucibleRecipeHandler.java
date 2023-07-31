@@ -1,7 +1,7 @@
-package mods.betterwithpatches.nei.machines;
+package mods.betterwithpatches.compat.nei.machines;
 
 import betterwithmods.craft.CraftingManagerBulk;
-import betterwithmods.craft.CraftingManagerCauldron;
+import betterwithmods.craft.CraftingManagerCrucible;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import net.minecraft.client.resources.I18n;
 
@@ -19,7 +19,7 @@ public class CrucibleRecipeHandler extends CauldronRecipeHandler {
 
     @Override
     public CraftingManagerBulk getManager() {
-        return CraftingManagerCauldron.getInstance();
+        return CraftingManagerCrucible.getInstance();
     }
 
     @Override

@@ -8,6 +8,7 @@ import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.oredict.IOreDictEntry;
 import mods.betterwithpatches.compat.minetweaker.util.MTHelper;
 import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -32,9 +33,9 @@ public class TurntableTweaker {
             int meta = ((IItemStack) input).getDamage();
             String s;
             if (meta == OreDictionary.WILDCARD_VALUE) {
-                s = BWPConstants.getId(block);
+                s = BWPUtils.getId(block);
             } else {
-                s = BWPConstants.getId(block) + "@" + meta;
+                s = BWPUtils.getId(block) + "@" + meta;
             }
             MineTweakerAPI.apply(new TurntableTweaker.Add(MineTweakerMC.getItemStacks(output), s));
         } else {
@@ -51,9 +52,9 @@ public class TurntableTweaker {
             int meta = ((IItemStack) input).getDamage();
             String s;
             if (meta == OreDictionary.WILDCARD_VALUE) {
-                s = BWPConstants.getId(block);
+                s = BWPUtils.getId(block);
             } else {
-                s = BWPConstants.getId(block) + "@" + meta;
+                s = BWPUtils.getId(block) + "@" + meta;
             }
             MineTweakerAPI.apply(new TurntableTweaker.Remove(s));
         } else {

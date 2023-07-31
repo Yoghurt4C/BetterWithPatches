@@ -3,20 +3,19 @@ package mods.betterwithpatches.proxy;
 import betterwithmods.event.TConHelper;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import mods.betterwithpatches.BWPRegistry;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.compat.minetweaker.util.MTHelper;
+import mods.betterwithpatches.compat.nei.NEIBWMConfig;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import mods.betterwithpatches.craft.KilnInteractionExtensions;
 import mods.betterwithpatches.craft.SawInteractionExtensions;
-import mods.betterwithpatches.craft.anvil.SteelCraftingManager;
+import mods.betterwithpatches.craft.SteelCraftingManager;
 import mods.betterwithpatches.event.PunitiveEvents;
 import mods.betterwithpatches.features.*;
 import mods.betterwithpatches.menu.BWPMenuHandler;
-import mods.betterwithpatches.nei.NEIBWMConfig;
 import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -24,7 +23,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
@@ -37,16 +35,17 @@ public class CommonProxy implements Proxy {
         NetworkRegistry.INSTANCE.registerGuiHandler(BWPConstants.MODID, new BWPMenuHandler());
 
         if (Config.enableNEICompat && Loader.isModLoaded("NotEnoughItems")) {
-            new NEIBWMConfig();
-            ModContainer nei = Loader.instance().getIndexedModList().get("NotEnoughItems");
-            if (nei.getVersion().contains("GTNH")) {
-                this.sendGTNHNEIIMC("MillRecipeHandler", "bwm.mill", "betterwithmods:singleMachine:0", 3);
-                this.sendGTNHNEIIMC("CauldronRecipeHandler", "bwm.cauldron", "betterwithmods:singleMachine:3", 2);
-                this.sendGTNHNEIIMC("StokedCauldronRecipeHandler", "bwm.cauldronStoked", "betterwithmods:singleMachine:3", 2);
-                this.sendGTNHNEIIMC("CrucibleRecipeHandler", "bwm.crucible", "betterwithmods:singleMachine:2", 2);
-                this.sendGTNHNEIIMC("StokedCrucibleRecipeHandler", "bwm.crucibleStoked", "betterwithmods:singleMachine:2", 2);
-                this.sendGTNHNEIIMC("KilnRecipeHandler", "bwm.kiln", "betterwithmods:kiln", 3);
-                this.sendGTNHNEIIMC("TurntableRecipeHandler", "bwm.turntable", "betterwithmods:singleMachine:5", 3);
+            NEIBWMConfig nei = new NEIBWMConfig();
+            ModContainer neiMC = Loader.instance().getIndexedModList().get("NotEnoughItems");
+            if (neiMC.getVersion().contains("GTNH")) {
+                nei.sendIMC("MillRecipeHandler", "bwm.mill", "betterwithmods:singleMachine:0", 3);
+                nei.sendIMC("CauldronRecipeHandler", "bwm.cauldron", "betterwithmods:singleMachine:3", 2);
+                nei.sendIMC("StokedCauldronRecipeHandler", "bwm.cauldronStoked", "betterwithmods:singleMachine:3", 2);
+                nei.sendIMC("CrucibleRecipeHandler", "bwm.crucible", "betterwithmods:singleMachine:2", 2);
+                nei.sendIMC("StokedCrucibleRecipeHandler", "bwm.crucibleStoked", "betterwithmods:singleMachine:2", 2);
+                nei.sendIMC("KilnRecipeHandler", "bwm.kiln", "betterwithmods:kiln", 3);
+                nei.sendIMC("TurntableRecipeHandler", "bwm.turntable", "betterwithmods:singleMachine:5", 3);
+                nei.sendIMC("SteelAnvilRecipeHandler", "bwm.anvil", "betterwithmods:steelAnvil", 1);
             }
         }
     }
@@ -108,24 +107,5 @@ public class CommonProxy implements Proxy {
     @Override
     public void registerRenderInformation() {
 
-    }
-
-    private void sendGTNHNEIIMC(String handler, String id, String itemName, int recipies) {
-        handler = "mods.betterwithpatches.nei.machines." + handler;
-        NBTTagCompound imc = new NBTTagCompound();
-        imc.setString("handler", handler);
-        imc.setString("handlerID", handler);
-        imc.setString("modName", "Better With Mods");
-        imc.setString("modId", "betterwithmods");
-        imc.setBoolean("modRequired", true);
-        imc.setString("itemName", itemName);
-        imc.setInteger("yShift", 0);
-        imc.setInteger("handlerHeight", 65);
-        imc.setInteger("handlerWidth", 166);
-        imc.setInteger("maxRecipesPerPage", recipies);
-        FMLInterModComms.sendMessage("NotEnoughItems", "registerHandlerInfo", imc);
-        imc.setString("handlerID", id);
-        imc.setString("catalystHandlerID", id);
-        FMLInterModComms.sendMessage("NotEnoughItems", "registerCatalystInfo", imc);
     }
 }

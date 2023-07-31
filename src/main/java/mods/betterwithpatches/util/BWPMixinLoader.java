@@ -24,6 +24,7 @@ public class BWPMixinLoader {
             load(Config.furnaceHCGunpowder, "hcgunpowder.TileEntityFurnaceMixin");
             load(Config.HCFurnace, "hcfurnace.TileEntityFurnaceMixin", "hcfurnace.ContainerFurnaceMixin");
             load(Config.enablePenalties, "penalty.EntityPlayerMixin");
+            load(Config.vanillaRecipesInAnvil, "anvil.ShapedOreRecipeAccessor");
             if (MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT) {
                 load(Config.HCFurnace, "hcfurnace.client.TileEntityFurnaceMixin");
             }
@@ -31,6 +32,7 @@ public class BWPMixinLoader {
             load(true, "BWCraftingMixin", "BWRegistryMixin");
             load(Config.enableNEICompat, "CraftingManagerBulkMixin");
             load(Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin");
+            load(Config.patchCreativeTabs, "fixes.creativetab.BWRegistryMixin");
             load(Config.patchKiln, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin", "kiln.BWCraftingMixin");
             load(Config.genericFixes && Config.patchTurntable, "turntable.BWCraftingMixin", "turntable.TileEntityTurntableMixin", "turntable.TurntableInteractionMixin");
             load(Config.patchHCWood, "hcwood.BWModMixin", "hcwood.ItemBarkMixin", "hcwood.compat.NaturaCompatMixin", "hcwood.BWCraftingMixin", "hcwood.HardcoreWoodInteractionMixin");

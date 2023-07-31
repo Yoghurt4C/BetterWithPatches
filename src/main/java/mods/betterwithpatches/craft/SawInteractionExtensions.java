@@ -14,7 +14,7 @@ import net.minecraft.util.MathHelper;
 import java.util.Hashtable;
 import java.util.function.BiFunction;
 
-import static mods.betterwithpatches.util.BWPConstants.getId;
+import static mods.betterwithpatches.util.BWPUtils.getId;
 
 public interface SawInteractionExtensions {
     Hashtable<String, ItemStack[]> blockOverrides = new Hashtable<>();
