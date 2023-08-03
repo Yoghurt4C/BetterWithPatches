@@ -7,7 +7,7 @@ import net.minecraft.item.ItemSword;
 
 public class ItemSoulforgedSword extends ItemSword {
     public ItemSoulforgedSword() {
-        super(BWPRegistry.SOULFORGED);
+        super(BWPRegistry.SOULFORGED_TOOL);
     }
 
     @Override

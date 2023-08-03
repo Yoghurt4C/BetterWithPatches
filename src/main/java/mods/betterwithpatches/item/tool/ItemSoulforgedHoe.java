@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemSoulforgedHoe extends ItemHoe {
     public ItemSoulforgedHoe() {
-        super(BWPRegistry.SOULFORGED);
+        super(BWPRegistry.SOULFORGED_TOOL);
     }
 
     @Override

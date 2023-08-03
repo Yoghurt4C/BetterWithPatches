@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class ItemSoulforgedPickaxe extends ItemPickaxe {
     public ItemSoulforgedPickaxe() {
-        super(BWPRegistry.SOULFORGED);
+        super(BWPRegistry.SOULFORGED_TOOL);
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemSoulforgedAxe extends ItemAxe {
     public ItemSoulforgedAxe() {
-        super(BWPRegistry.SOULFORGED);
+        super(BWPRegistry.SOULFORGED_TOOL);
     }
 
     @Override

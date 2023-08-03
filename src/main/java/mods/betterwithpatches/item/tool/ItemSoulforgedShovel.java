@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class ItemSoulforgedShovel extends ItemSpade {
     public ItemSoulforgedShovel() {
-        super(BWPRegistry.SOULFORGED);
+        super(BWPRegistry.SOULFORGED_TOOL);
     }
 
     @Override
