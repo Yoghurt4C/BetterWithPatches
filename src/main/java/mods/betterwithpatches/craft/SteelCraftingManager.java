@@ -6,7 +6,6 @@ import mods.betterwithpatches.BWPRegistry;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.craft.anvil.ShapedSteelRecipe;
 import mods.betterwithpatches.craft.anvil.ShapelessSteelRecipe;
-import mods.betterwithpatches.mixins.anvil.ShapedOreRecipeAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
@@ -14,13 +13,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 public interface SteelCraftingManager {
     List<IRecipe> RECIPES = new ArrayList<>();
@@ -85,20 +83,7 @@ public interface SteelCraftingManager {
         }
         if (Config.vanillaRecipesInAnvil) {
             for (IRecipe recipe : CraftingManager.getInstance().getRecipeList()) {
-                if (recipe instanceof ShapelessRecipes && ShapelessSteelRecipe.matchVanillaRecipe(matrix, ((ShapelessRecipes) recipe).recipeItems))
-                    return recipe.getCraftingResult(matrix);
-                else if (recipe instanceof ShapelessOreRecipe && ShapelessSteelRecipe.matchVanillaRecipe(matrix, ((ShapelessOreRecipe) recipe).getInput()))
-                    return recipe.getCraftingResult(matrix);
-                else if (recipe instanceof ShapedRecipes) {
-                    ShapedRecipes shaped = (ShapedRecipes) recipe;
-                    if (ShapedSteelRecipe.matchVanillaRecipe(matrix, shaped.recipeWidth, shaped.recipeHeight, Arrays.asList(shaped.recipeItems)))
-                        return recipe.getCraftingResult(matrix);
-                } else if (recipe instanceof ShapedOreRecipe) {
-                    ShapedOreRecipe shaped = (ShapedOreRecipe) recipe;
-                    ShapedOreRecipeAccessor acc = (ShapedOreRecipeAccessor) shaped;
-                    if (ShapedSteelRecipe.matchVanillaRecipe(matrix, acc.getWidth(), acc.getHeight(), Arrays.asList(shaped.getInput())))
-                        return recipe.getCraftingResult(matrix);
-                }
+                if (recipe.matches(matrix, world)) return recipe.getCraftingResult(matrix);
             }
         }
         return null;

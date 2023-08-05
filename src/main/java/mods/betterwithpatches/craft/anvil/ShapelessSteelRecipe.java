@@ -10,7 +10,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import scala.actors.threadpool.Arrays;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -84,48 +83,6 @@ public class ShapelessSteelRecipe implements IRecipe {
                     }
 
                     if (flag) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return stacks.isEmpty();
-    }
-
-    @SuppressWarnings("unchecked")
-    public static boolean matchVanillaRecipe(InventoryCrafting matrix, List<?> ingredients) {
-        List<Object> stacks = new ArrayList<>(ingredients);
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                ItemStack slotStack = matrix.getStackInRowAndColumn(j, i);
-
-                if (slotStack != null) {
-                    boolean unmatched = true;
-                    ListIterator<Object> iter = stacks.listIterator();
-                    while (iter.hasNext()) {
-                        Object o = iter.next();
-                        if (o instanceof ItemStack) {
-                            ItemStack itemStack = (ItemStack) o;
-                            if (slotStack.getItem() == itemStack.getItem() && (itemStack.getItemDamage() == 32767 || slotStack.getItemDamage() == itemStack.getItemDamage())) {
-                                unmatched = false;
-                                iter.remove();
-                                break;
-                            }
-                        } else if (o instanceof List) {
-                            List<ItemStack> list = (List<ItemStack>) o;
-                            for (ItemStack itemStack : list) {
-                                if (BWPUtils.stacksMatch(slotStack, itemStack)) {
-                                    unmatched = false;
-                                    iter.remove();
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    }
-
-                    if (unmatched) {
                         return false;
                     }
                 }
