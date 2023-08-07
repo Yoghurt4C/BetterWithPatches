@@ -3,6 +3,7 @@ package mods.betterwithpatches.proxy;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.client.RenderSteelAnvil;
+import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import mods.betterwithpatches.features.HCMovement;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -30,6 +31,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit() {
         super.postInit();
+        HardcoreWoodInteractionExtensions.fillDisplayMap();
     }
 
     @Override

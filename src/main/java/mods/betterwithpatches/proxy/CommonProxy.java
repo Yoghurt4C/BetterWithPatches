@@ -78,8 +78,7 @@ public class CommonProxy implements Proxy {
     @Override
     public void postInit() {
         if (Config.patchHCWood) {
-            HardcoreWoodInteractionExtensions.addVanillaTanninOverrides();
-            HardcoreWoodInteractionExtensions.registerBarkVariants();
+            HardcoreWoodInteractionExtensions.registerTannin();
 
             if (Config.patchSaw) {
                 SawInteractionExtensions.setAdvancedEntityDrop(EntitySkeleton.class, SawInteractionExtensions::getSkeletonHead);

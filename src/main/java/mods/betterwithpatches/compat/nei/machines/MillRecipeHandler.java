@@ -31,13 +31,19 @@ public class MillRecipeHandler extends BulkRecipeHandler {
     }
 
     @Override
-    public void create(BulkRecipe recipe) {
+    public void create(BulkRecipe recipe, ItemStack usageStack) {
         List<PositionedStack> in = new ArrayList<>();
         int x = getX(8), y = getY();
         for (Object input : recipe.getInput()) {
             if (input instanceof OreStack) {
                 List<ItemStack> ores = ((OreStack) input).getOres();
-                if (ores != null) in.add(new PositionedStack(ores, x, y, true));
+                if (ores != null) {
+                    ores = new ArrayList<>(ores);
+                    for (ItemStack ore : ores) {
+                        ore.stackSize = ((OreStack) input).getStackSize();
+                    }
+                    in.add(new PositionedStack(ores, x, y, true));
+                }
             } else {
                 in.add(new PositionedStack(input, x, y));
             }

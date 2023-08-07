@@ -6,19 +6,24 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Vec3;
 import org.lwjgl.opengl.GL11;
 
-public class DredgeHeavyArmorRenderer extends ModelBiped {
+import java.util.Random;
+
+public class ModelDredgeHeavyArmor extends ModelBiped {
 
     private final ModelRenderer flap;
     public static final ResourceLocation texPath = new ResourceLocation("betterwithpatches:textures/models/armor/dredge_heavy_layer_0.png");
     public static final ResourceLocation overPath = new ResourceLocation("betterwithpatches:textures/models/armor/dredge_heavy_layer_1.png");
 
-    public DredgeHeavyArmorRenderer(int slot) {
+    public ModelDredgeHeavyArmor(int slot) {
         this.textureWidth = 128;
         this.textureHeight = 64;
         float inflate = 0.3f;
@@ -111,6 +116,22 @@ public class DredgeHeavyArmorRenderer extends ModelBiped {
     @Override
     public void render(Entity entity, float limbSwing, float prevLimbSwing, float wrappedYaw, float yawHead, float pitch, float scale) {
         this.setRotationAngles(limbSwing, prevLimbSwing, wrappedYaw, yawHead, pitch, scale, entity);
+        if (entity instanceof EntityZombie) {
+            float f6 = MathHelper.sin(this.onGround * (float)Math.PI);
+            float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
+            this.bipedRightArm.rotateAngleZ = 0.0F;
+            this.bipedLeftArm.rotateAngleZ = 0.0F;
+            this.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
+            this.bipedLeftArm.rotateAngleY = 0.1F - f6 * 0.6F;
+            this.bipedRightArm.rotateAngleX = -((float)Math.PI * 0.5F);
+            this.bipedLeftArm.rotateAngleX = -((float)Math.PI * 0.5F);
+            this.bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+            this.bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
+            this.bipedRightArm.rotateAngleZ += MathHelper.cos(prevLimbSwing * 0.09F) * 0.05F + 0.05F;
+            this.bipedLeftArm.rotateAngleZ -= MathHelper.cos(prevLimbSwing * 0.09F) * 0.05F + 0.05F;
+            this.bipedRightArm.rotateAngleX += MathHelper.sin(prevLimbSwing * 0.067F) * 0.05F;
+            this.bipedLeftArm.rotateAngleX -= MathHelper.sin(prevLimbSwing * 0.067F) * 0.05F;
+        }
 
         if (this.isChild) {
             GL11.glPushMatrix();
@@ -140,6 +161,14 @@ public class DredgeHeavyArmorRenderer extends ModelBiped {
     @Override
     public void setLivingAnimations(EntityLivingBase entity, float limbSwing, float prevLimbSwing, float tickDelta) {
         super.setLivingAnimations(entity, limbSwing, prevLimbSwing, tickDelta);
+        if (!this.bipedBody.isHidden && entity.isSwingInProgress && entity.worldObj.rand.nextBoolean()) {
+            Random rand = entity.worldObj.rand;
+            Vec3 vector = Vec3.createVectorHelper(entity.posX, entity.posY + entity.getEyeHeight() - 0.07f, entity.posZ);
+            Vec3 v2 = Vec3.createVectorHelper(0.36, 0, 0);
+            v2.rotateAroundY(-entity.rotationYaw * 0.01745329251994329576923690768489f);
+            vector = v2.subtract(vector);
+            entity.worldObj.spawnParticle("smoke", vector.xCoord, vector.yCoord, vector.zCoord, rand.nextFloat() * 0.0125f, 0.05f, rand.nextFloat() * 0.0125f);
+        }
         this.isSneak = entity.isSneaking();
         if (entity instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer) entity;
@@ -177,12 +206,5 @@ public class DredgeHeavyArmorRenderer extends ModelBiped {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
-    }
-
-    private void setRenderColor(int color) {
-        float r = (float) (color >> 16 & 255) / 255.0F;
-        float g = (float) (color >> 8 & 255) / 255.0F;
-        float b = (float) (color & 255) / 255.0F;
-        GL11.glColor4f(r, g, b, 0.4f);
     }
 }

@@ -1,8 +1,11 @@
 package mods.betterwithpatches.util;
 
+import betterwithmods.BWRegistry;
 import betterwithmods.util.InvUtils;
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -45,5 +48,9 @@ public interface BWPUtils {
         return stack1 != null && stack2 != null &&
                 stack1.getItem() == stack2.getItem() &&
                 (stack1.getItemDamage() == stack2.getItemDamage() || stack1.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack2.getItemDamage() == OreDictionary.WILDCARD_VALUE || stack1.getItem().isDamageable());
+    }
+
+    static int offsetYDown(EntityLivingBase entity, float offset) {
+        return (int) (entity.posY - (entity instanceof EntityClientPlayerMP ? (offset + entity.yOffset) : offset));
     }
 }

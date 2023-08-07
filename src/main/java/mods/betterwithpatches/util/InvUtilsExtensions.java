@@ -1,7 +1,10 @@
 package mods.betterwithpatches.util;
 
+import betterwithmods.items.ItemBark;
+import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Collections;
@@ -36,8 +39,14 @@ public interface InvUtilsExtensions {
         for (int i = 0; i < inv.getSizeInventory(); ++i) {
             ItemStack invStack = inv.getStackInSlot(i);
             if (invStack != null && invStack.getItem() == stack.getItem() && (meta == 32767 || invStack.getItemDamage() == meta)) {
-                if (invStack.stackSize >= stack.stackSize && compareTags(stack, invStack)) {
-                    decrStackSize(inv, i, stack.stackSize);
+                if (invStack.getItem() instanceof ItemBark && invStack.hasTagCompound()) {
+                    NBTTagCompound tag = invStack.stackTagCompound;
+                    String id = tag.getString("logId");
+                    int bMeta = tag.getInteger("logMeta");
+                    stackSize = HardcoreWoodInteractionExtensions.getTanninAmount(id, bMeta);
+                }
+                if (invStack.stackSize >= stackSize && compareTags(stack, invStack)) {
+                    decrStackSize(inv, i, stackSize);
                     return false;
                 }
 
@@ -55,7 +64,7 @@ public interface InvUtilsExtensions {
         boolean inv = invStack.hasTagCompound();
         if (inv && ing) {
             for (String s : ingredient.stackTagCompound.func_150296_c()) {
-                if (ingredient.stackTagCompound.getTag(s).hashCode() != invStack.stackTagCompound.getTag(s).hashCode())
+                if (!invStack.stackTagCompound.hasKey(s) || ingredient.stackTagCompound.getTag(s).hashCode() != invStack.stackTagCompound.getTag(s).hashCode())
                     return false;
             }
             return true;

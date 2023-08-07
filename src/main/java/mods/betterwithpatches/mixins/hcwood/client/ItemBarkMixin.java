@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 import java.util.Map;
 
-import static mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions.metaOverrides;
+import static mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions.displayMap;
 
 @Mixin(ItemBark.class)
 public abstract class ItemBarkMixin extends Item {
@@ -63,7 +63,7 @@ public abstract class ItemBarkMixin extends Item {
     @Inject(method = "getSubItems", at = @At("HEAD"), cancellable = true)
     public void nbtAware(Item item, CreativeTabs tab, List<ItemStack> list, CallbackInfo ctx) {
         ctx.cancel();
-        for (Map.Entry<String, int[]> bark : metaOverrides.entrySet()) {
+        for (Map.Entry<String, int[]> bark : displayMap.entrySet()) {
             for (int i : bark.getValue()) {
                 ItemStack stack = new ItemStack(item, 1, 0);
                 NBTTagCompound tag = new NBTTagCompound();

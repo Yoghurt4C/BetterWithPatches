@@ -20,6 +20,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import static mods.betterwithpatches.util.BWMaterials.*;
+
 public interface SteelCraftingManager {
     List<IRecipe> RECIPES = new ArrayList<>();
 
@@ -90,14 +92,19 @@ public interface SteelCraftingManager {
     }
 
     static void addSteelAnvilRecipes() {
-        addShapedRecipe(new ItemStack(BWRegistry.detector), "CCCC", "LTTL", "SRRS", "SRRS", 'C', "cobblestone", 'L', new ItemStack(BWRegistry.material, 1, 20), 'T', Blocks.redstone_torch, 'S', "stone", 'R', "dustRedstone");
+        addShapedRecipe(new ItemStack(BWRegistry.detector), "CCCC", "LTTL", "SRRS", "SRRS", 'C', "cobblestone", 'L', getMaterial(POLISHED_LAPIS), 'T', Blocks.redstone_torch, 'S', "stone", 'R', "dustRedstone");
         addShapedRecipe(new ItemStack(BWRegistry.material, 2, 20), "LLL", "LLL", "GGG", " R ", 'L', "gemLapis", 'R', "dustRedstone", 'G', "nuggetGold");
-        ItemStack haft = new ItemStack(BWRegistry.material, 1, 38);
+        ItemStack haft = getMaterial(HAFT);
         addShapedRecipe(new ItemStack(BWPRegistry.steelAxe), "XX", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', haft);
         addShapedRecipe(new ItemStack(BWPRegistry.steelHoe), "XX", " H", " H", " H", 'X', "ingotSoulforgedSteel", 'H', haft);
         addShapedRecipe(new ItemStack(BWPRegistry.steelPickaxe), "XXX", " H ", " H ", " H ", 'X', "ingotSoulforgedSteel", 'H', haft);
         addShapedRecipe(new ItemStack(BWPRegistry.steelShovel), "X", "H", "H", "H", 'X', "ingotSoulforgedSteel", 'H', haft);
         addShapedRecipe(new ItemStack(BWPRegistry.steelSword), "X", "X", "X", "H", 'X', "ingotSoulforgedSteel", 'H', haft);
+        ItemStack plate = getMaterial(ARMOR_PLATE);
+        addShapedRecipe(new ItemStack(BWPRegistry.steelHelmet), "SSSS", "S  S", "S  S", " PP ", 'P', plate, 'S', "ingotSoulforgedSteel");
+        addShapedRecipe(new ItemStack(BWPRegistry.steelChestplate), "P  P", "SSSS", "SSSS", "SSSS", 'P', plate, 'S', "ingotSoulforgedSteel");
+        addShapedRecipe(new ItemStack(BWPRegistry.steelLeggings), "SSSS", "PSSP", "P  P", "P  P", 'P', plate, 'S', "ingotSoulforgedSteel");
+        addShapedRecipe(new ItemStack(BWPRegistry.steelBoots), " SS ", " SS ", "SPPS", 'P', plate, 'S', "ingotSoulforgedSteel");
 
     }
 }

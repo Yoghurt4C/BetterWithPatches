@@ -2,13 +2,14 @@ package mods.betterwithpatches.item.tool;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import mods.betterwithpatches.BWPRegistry;
-import mods.betterwithpatches.client.DredgeHeavyArmorRenderer;
+import mods.betterwithpatches.client.ModelDredgeHeavyArmor;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
 public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassArmor {
@@ -19,7 +20,7 @@ public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassAr
     public ItemDredgeHeavyArmor(int armorSlot) {
         super(BWPRegistry.SOULFORGED_ARMOR, 2, armorSlot);
         if (FMLCommonHandler.instance().getSide().isClient()) {
-            this.model = new DredgeHeavyArmorRenderer(armorSlot);
+            this.model = new ModelDredgeHeavyArmor(armorSlot);
         } else {
             this.model = null;
         }
@@ -32,7 +33,7 @@ public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassAr
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
-        return type == null ? DredgeHeavyArmorRenderer.texPath.toString() : DredgeHeavyArmorRenderer.overPath.toString();
+        return type == null ? ModelDredgeHeavyArmor.texPath.toString() : ModelDredgeHeavyArmor.overPath.toString();
     }
 
     @Override
@@ -58,7 +59,7 @@ public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassAr
 
     @Override
     public int getColorFromItemStack(ItemStack stack, int pass) {
-        return getColorForRenderPass(stack, pass);
+        return this.getColorForRenderPass(stack, pass);
     }
 
     @Override
@@ -73,18 +74,17 @@ public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassAr
 
     @Override
     public int getColor(ItemStack stack) {
-        return getColorForRenderPass(stack, 0);
+        return this.getColorForRenderPass(stack, 0);
     }
 
     @Override
     public int getColorForRenderPass(ItemStack stack, int pass) {
-        if (hasColor(stack)) {
-            return pass == 1 ? getColorFromTag(stack, "leather") : getColorFromTag(stack, "steel");
-        } else return getDefaultColorForRenderPass(pass);
+        return this.hasColor(stack) ? this.getColorFromTag(stack, pass) : this.getDefaultColorForRenderPass(pass);
     }
 
-    @Override
-    public int getColorFromTag(ItemStack stack, String color) {
-        return stack.getTagCompound().getCompoundTag("color").getInteger(color);
+    public int getColorFromTag(ItemStack stack, int pass) {
+        NBTTagCompound tag = stack.getTagCompound().getCompoundTag("color");
+        String key = String.valueOf(pass);
+        return tag.hasKey(key) ? tag.getInteger(key) : this.getDefaultColorForRenderPass(pass);
     }
 }

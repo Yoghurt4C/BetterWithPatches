@@ -5,8 +5,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import mods.betterwithpatches.data.PenaltyRegistry;
 import mods.betterwithpatches.data.PenaltyRegistry.PenaltyData;
+import mods.betterwithpatches.util.BWPUtils;
 import mods.betterwithpatches.util.PenaltyTicker;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -51,7 +51,7 @@ public class PunitiveEvents {
         if (data.canSprint < 0) {
             evt.player.setSprinting(false);
         }
-        if (evt.player.isInWater() && data.canSwim < 0 && evt.player.worldObj.getBlock((int) evt.player.posX, offsetYPos(evt.player, 2), (int) evt.player.posZ).getMaterial().isReplaceable()) {
+        if (evt.player.isInWater() && data.canSwim < 0 && evt.player.worldObj.getBlock((int) evt.player.posX, BWPUtils.offsetYDown(evt.player, 2), (int) evt.player.posZ).getMaterial().isReplaceable()) {
             evt.player.motionY -= 0.04;
         }
     }
@@ -91,9 +91,5 @@ public class PunitiveEvents {
             }
             attr.applyModifier(mod);
         }
-    }
-
-    public static int offsetYPos(EntityPlayer player, float offset) {
-        return (int) (player.posY - (player instanceof EntityClientPlayerMP ? (offset + player.yOffset) : offset));
     }
 }

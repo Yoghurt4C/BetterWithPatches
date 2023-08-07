@@ -2,10 +2,13 @@ package mods.betterwithpatches.mixins.fixes;
 
 import betterwithmods.craft.BulkRecipe;
 import betterwithmods.craft.OreStack;
+import betterwithmods.items.ItemBark;
 import betterwithmods.util.InvUtils;
+import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
 import mods.betterwithpatches.util.InvUtilsExtensions;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -30,20 +33,21 @@ public abstract class BulkRecipeMixin {
     @Overwrite(remap = false)
     public boolean doesInvContainIngredients(IInventory inv) {
         if (this.recipeInput != null && this.recipeInput.size() > 0) {
-            for (int i = 0; i < this.recipeInput.size(); ++i) {
-                if (this.recipeInput.get(i) instanceof ItemStack) {
-                    ItemStack stack = (ItemStack) this.recipeInput.get(i);
-                    if (stack != null && InvUtilsExtensions.countItemsWithTagsInInventory(inv, stack, stack.getItemDamage()) < stack.stackSize) {
+            for (Object o : this.recipeInput) {
+                if (o instanceof ItemStack) {
+                    ItemStack stack = (ItemStack) o;
+                    int stackSize = stack.stackSize;
+                    int meta = stack.getItemDamage();
+                    if (InvUtilsExtensions.countItemsWithTagsInInventory(inv, stack, meta) < stackSize) {
                         return false;
                     }
-                } else if (this.recipeInput.get(i) instanceof OreStack) {
-                    OreStack stack = (OreStack) this.recipeInput.get(i);
-                    if (stack != null && InvUtils.countOresInInv(inv, stack.getOres()) < stack.getStackSize()) {
+                } else if (o instanceof OreStack) {
+                    OreStack stack = (OreStack) o;
+                    if (InvUtils.countOresInInv(inv, stack.getOres()) < stack.getStackSize()) {
                         return false;
                     }
                 }
             }
-
             return true;
         } else {
             return false;
@@ -57,16 +61,15 @@ public abstract class BulkRecipeMixin {
     @Overwrite(remap = false)
     public boolean consumeInvIngredients(IInventory inv) {
         boolean success = true;
-        if (this.recipeInput != null && this.recipeInput.size() > 0) {
-            for (int i = 0; i < this.recipeInput.size(); ++i) {
-                if (this.recipeInput.get(i) instanceof ItemStack) {
-                    ItemStack stack = (ItemStack) this.recipeInput.get(i);
-                    if (stack != null)
-                        success = InvUtilsExtensions.consumeItemsWithTagsInInventory(inv, stack, stack.getItemDamage(), stack.stackSize);
-                } else if (this.recipeInput.get(i) instanceof OreStack) {
-                    OreStack stack = (OreStack) this.recipeInput.get(i);
-                    if (stack != null)
-                        success = InvUtils.consumeOresInInventory(inv, stack.getOres(), stack.getStackSize());
+        if (this.recipeInput.size() > 0) {
+            for (Object o : this.recipeInput) {
+                if (o instanceof ItemStack) {
+                    ItemStack stack = (ItemStack) o;
+                    int stackSize = stack.stackSize;
+                    success = InvUtilsExtensions.consumeItemsWithTagsInInventory(inv, stack, stack.getItemDamage(), stackSize);
+                } else if (o instanceof OreStack) {
+                    OreStack stack = (OreStack) o;
+                    success = InvUtils.consumeOresInInventory(inv, stack.getOres(), stack.getStackSize());
                 }
             }
         }

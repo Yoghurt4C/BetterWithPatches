@@ -68,7 +68,7 @@ public class SteelAnvilRecipeHandler extends TemplateRecipeHandler implements IC
                 y++;
             }
         }
-        PositionedStack output = new PositionedStack(recipe.getRecipeOutput(), getX(113), getY(27), false);
+        PositionedStack output = new PositionedStack(recipe.getRecipeOutput(), getX(113), getY(28), false);
         this.arecipes.add(new CachedBWMRecipe(stacks, output));
     }
 

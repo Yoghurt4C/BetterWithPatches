@@ -51,12 +51,12 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
 
     abstract public CraftingManagerBulk getManager();
 
-    abstract public void create(BulkRecipe recipe);
+    abstract public void create(BulkRecipe recipe, ItemStack usageStack);
 
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(this.getOverlayIdentifier())) {
-            for (BulkRecipe recipe : this.getRecipes()) create(recipe);
+            for (BulkRecipe recipe : this.getRecipes()) create(recipe, null);
         } else if (outputId.equals("item")) {
             for (Object result : results) {
                 loadCraftingRecipes((ItemStack) result);
@@ -68,7 +68,7 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
     public void loadCraftingRecipes(ItemStack result) {
         for (BulkRecipe recipe : this.getRecipes()) {
             for (ItemStack output : recipe.getOutput()) {
-                if (NEIServerUtils.areStacksSameType(result, output)) create(recipe);
+                if (NEIServerUtils.areStacksSameType(result, output)) create(recipe, null);
                 break;
             }
         }
@@ -77,7 +77,7 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
     @Override
     public void loadUsageRecipes(String inputId, Object... ingredients) {
         if (inputId.equals(this.getOverlayIdentifier())) {
-            for (BulkRecipe recipe : this.getRecipes()) create(recipe);
+            for (BulkRecipe recipe : this.getRecipes()) create(recipe, null);
         } else if (inputId.equals("item"))
             for (Object ingredient : ingredients) {
                 loadUsageRecipes((ItemStack) ingredient);
@@ -87,7 +87,7 @@ public abstract class BulkRecipeHandler extends TemplateRecipeHandler implements
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
         for (BulkRecipe recipe : this.getRecipes()) {
-            if (BWPNEIHelper.matchInput(recipe.getInput(), ingredient)) create(recipe);
+            if (BWPNEIHelper.matchInput(recipe.getInput(), ingredient)) create(recipe, ingredient);
         }
     }
 

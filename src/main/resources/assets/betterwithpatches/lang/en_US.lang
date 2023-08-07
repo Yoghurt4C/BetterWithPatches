@@ -13,3 +13,7 @@ item.bwm:steelHelmet.name=Soulforged Steel Helmet
 item.bwm:steelChestplate.name=Soulforged Steel Chestplate
 item.bwm:steelLeggings.name=Soulforged Steel Leggings
 item.bwm:steelBoots.name=Soulforged Steel Boots
+item.bwm:dredgeHeavyHelmet.name=Forgeman Helmet
+item.bwm:dredgeHeavyChestplate.name=Forgeman Chestplate
+item.bwm:dredgeHeavyLeggings.name=Forgeman Leggings
+item.bwm:dredgeHeavyBoots.name=Forgeman Boots

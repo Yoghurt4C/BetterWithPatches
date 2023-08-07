@@ -31,7 +31,7 @@ public class BWPMixinLoader {
         } else {
             load(true, "BWCraftingMixin", "BWRegistryMixin");
             load(Config.enableNEICompat, "CraftingManagerBulkMixin");
-            load(Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin");
+            load(Config.genericFixes, "fixes.BlockMechMachinesMixin", "fixes.TileEntityMechGeneratorMixin", "fixes.BlockGearboxMixin", "fixes.TileEntityTurntableMixin", "fixes.BulkRecipeMixin", "fixes.BlockPlanterMixin", "fixes.ItemMaterialMixin");
             load(Config.patchCreativeTabs, "fixes.creativetab.BWRegistryMixin");
             load(Config.patchKiln, "kiln.KilnInteractionMixin", "kiln.BlockKilnMixin", "kiln.BWCraftingMixin");
             load(Config.genericFixes && Config.patchTurntable, "turntable.BWCraftingMixin", "turntable.TileEntityTurntableMixin", "turntable.TurntableInteractionMixin");
@@ -42,6 +42,7 @@ public class BWPMixinLoader {
             load(Config.patchHCBuckets, "hcbuckets.BWModMixin");
             if (MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT) {
                 load(true, "client.RenderTileEntitiesMixin");
+                load(Config.genericFixes, "fixes.client.ItemMaterialMixin");
                 load(Config.patchHCWood, "hcwood.client.ItemBarkMixin");
                 load(Config.patchCookingPot, "cauldron.GuiCookingPotMixin");
                 if (loadedMods.contains("lwjgl3ify") && loadedMods.contains("signpic"))

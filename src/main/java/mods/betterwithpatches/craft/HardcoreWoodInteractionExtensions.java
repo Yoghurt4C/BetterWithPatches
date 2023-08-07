@@ -2,6 +2,9 @@ package mods.betterwithpatches.craft;
 
 import betterwithmods.BWCrafting;
 import betterwithmods.BWRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import mods.betterwithpatches.util.BWMaterials;
 import mods.betterwithpatches.util.BWPConstants;
 import mods.betterwithpatches.util.BWPUtils;
 import net.minecraft.block.Block;
@@ -10,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -18,7 +22,8 @@ import java.util.*;
 import static mods.betterwithpatches.util.BWPUtils.getId;
 
 public interface HardcoreWoodInteractionExtensions {
-    Map<String, int[]> metaOverrides = new LinkedHashMap<>();
+    @SideOnly(Side.CLIENT)
+    Map<String, int[]> displayMap = new LinkedHashMap<>();
     Hashtable<String, ItemStack[]> barkOverrides = new Hashtable<>();
     Hashtable<String, Integer> tannin = new Hashtable<>();
 
@@ -59,6 +64,7 @@ public interface HardcoreWoodInteractionExtensions {
         return tag;
     }
 
+    @SideOnly(Side.CLIENT)
     /**
      * @param logId Identifier of the log, e.g. "minecraft:log2"
      * @param meta  Ints specifying the meta values for the override.
@@ -66,14 +72,14 @@ public interface HardcoreWoodInteractionExtensions {
      *              However, minecraft:log2 only uses [0, 1], so it needs an override.
      *              This exists to *specifically* define edge cases like that.
      */
-    static void overrideLogMeta(String logId, int... meta) {
-        if (logId.contains(":")) metaOverrides.put(logId, meta);
+    static void displayLogMeta(String logId, int... meta) {
+        if (logId.contains(":")) displayMap.put(logId, meta);
         else
             BWPConstants.L.warn("Tried to add a Hardcore Wood Bark Override for {}, which isn't a valid identifier and will be skipped!", logId);
     }
 
-    static void overrideLogMeta(String modId, String logId, int... meta) {
-        metaOverrides.put(modId + ":" + logId, meta);
+    static void displayLogMeta(String modId, String logId, int... meta) {
+        displayMap.put(modId + ":" + logId, meta);
     }
 
     /**
@@ -95,20 +101,31 @@ public interface HardcoreWoodInteractionExtensions {
         return tannin.contains(logId) ? tannin.get(logId) : tannin.getOrDefault(logId + "@" + meta, getDefaultTanninAmount(logId.split(":"), meta));
     }
 
-    static int getDefaultTanninAmount(String[] splittId, int meta) {
-        return Math.min(2, (splittId[0].length() << 1) + (splittId[1].length() & 7) - (meta & 3));
+    static int getTanninAmount(ItemStack stack) {
+        NBTTagCompound tag = stack.stackTagCompound;
+        String id = tag.getString("logId");
+        int meta = tag.getInteger("logMeta");
+        return getTanninAmount(id, meta);
     }
 
-    static void addVanillaTanninOverrides() {
+    static int getDefaultTanninAmount(String[] splittId, int meta) {
+        return MathHelper.clamp_int(splittId[0].length() & 7 - (splittId[1].length() & 5) + (meta & 3), 2, 10);
+    }
+
+    static void registerTannin() {
         overrideTanninAmount("minecraft:log", 0, 5);
         overrideTanninAmount("minecraft:log", 1, 3);
         overrideTanninAmount("minecraft:log", 2, 8);
         overrideTanninAmount("minecraft:log", 3, 2);
         overrideTanninAmount("minecraft:log2", 0, 4);
         overrideTanninAmount("minecraft:log2", 1, 2);
+        ItemStack stack = new ItemStack(BWRegistry.bark, 1, 32767);
+        BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 1, 6), new Object[]{BWMaterials.getMaterial(BWMaterials.SCOURED_LEATHER), stack});
+        BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 2, 33), new Object[]{BWMaterials.getMaterial(BWMaterials.SCOURED_LEATHER_CUT, 2), stack});
     }
 
-    static void registerBarkVariants() {
+    @SideOnly(Side.CLIENT)
+    static void fillDisplayMap() {
         List<ItemStack> logs = new ArrayList<>();
         List<ItemStack> temp = new ArrayList<>();
         int ore = OreDictionary.getOreID("logWood");
@@ -143,23 +160,10 @@ public interface HardcoreWoodInteractionExtensions {
             for (int i = 0; i < entry.getValue().size(); i++) {
                 int point = entry.getValue().get(i);
                 meta[i] = point;
-                HardcoreWoodInteractionExtensions.registerTanninRecipe(entry.getKey(), point);
             }
 
-            HardcoreWoodInteractionExtensions.overrideLogMeta(entry.getKey(), meta);
+            HardcoreWoodInteractionExtensions.displayLogMeta(entry.getKey(), meta);
         }
         map.clear();
-    }
-
-    static void registerTanninRecipe(String id, int meta) {
-        int tannin = HardcoreWoodInteractionExtensions.getTanninAmount(id, meta);
-        ItemStack stack = new ItemStack(BWRegistry.bark, tannin, 0);
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("logId", id);
-        tag.setInteger("logMeta", meta);
-        stack.setTagCompound(tag);
-
-        BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 1, 6), new Object[]{new ItemStack(BWRegistry.material, 1, 7), stack});
-        BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 2, 33), new Object[]{new ItemStack(BWRegistry.material, 2, 34), stack});
     }
 }
