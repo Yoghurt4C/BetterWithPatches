@@ -8,4 +8,6 @@ public interface MultiRenderPassArmor {
     boolean hasColor(ItemStack stack);
 
     int getColorForRenderPass(ItemStack stack, int pass);
+
+    void setColor(ItemStack stack, int pass, int color);
 }

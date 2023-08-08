@@ -18,7 +18,7 @@ public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassAr
     public static final int steelColor = 0x757575, leatherColor = 0x562A1A;
 
     public ItemDredgeHeavyArmor(int armorSlot) {
-        super(BWPRegistry.SOULFORGED_ARMOR, 2, armorSlot);
+        super(BWPRegistry.DREDGE_HEAVY_ARMOR, 2, armorSlot);
         if (FMLCommonHandler.instance().getSide().isClient()) {
             this.model = new ModelDredgeHeavyArmor(armorSlot);
         } else {
@@ -86,5 +86,21 @@ public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassAr
         NBTTagCompound tag = stack.getTagCompound().getCompoundTag("color");
         String key = String.valueOf(pass);
         return tag.hasKey(key) ? tag.getInteger(key) : this.getDefaultColorForRenderPass(pass);
+    }
+
+    @Override
+    public void setColor(ItemStack stack, int pass, int color) {
+        NBTTagCompound colors;
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        if (!stack.stackTagCompound.hasKey("color")) {
+            colors = new NBTTagCompound();
+            stack.stackTagCompound.setTag("color", colors);
+        } else {
+            colors = stack.stackTagCompound.getCompoundTag("color");
+        }
+
+        colors.setInteger(String.valueOf(pass), color);
     }
 }

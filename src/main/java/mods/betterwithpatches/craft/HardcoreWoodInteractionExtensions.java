@@ -98,7 +98,8 @@ public interface HardcoreWoodInteractionExtensions {
     }
 
     static int getTanninAmount(String logId, int meta) {
-        return tannin.contains(logId) ? tannin.get(logId) : tannin.getOrDefault(logId + "@" + meta, getDefaultTanninAmount(logId.split(":"), meta));
+        String joint = logId + "@" + meta;
+        return tannin.containsKey(joint) ? tannin.get(logId + "@" + meta) : getDefaultTanninAmount(logId, meta);
     }
 
     static int getTanninAmount(ItemStack stack) {
@@ -108,8 +109,11 @@ public interface HardcoreWoodInteractionExtensions {
         return getTanninAmount(id, meta);
     }
 
-    static int getDefaultTanninAmount(String[] splittId, int meta) {
-        return MathHelper.clamp_int(splittId[0].length() & 7 - (splittId[1].length() & 5) + (meta & 3), 2, 10);
+    static int getDefaultTanninAmount(String id, int meta) {
+        String[] splitId = id.split(":");
+        int amt = MathHelper.clamp_int(splitId[0].length() & 7 - (splitId[1].length() & 5) + (meta & 3), 2, 10);
+        overrideTanninAmount(id, meta, amt);
+        return amt;
     }
 
     static void registerTannin() {
@@ -119,6 +123,7 @@ public interface HardcoreWoodInteractionExtensions {
         overrideTanninAmount("minecraft:log", 3, 2);
         overrideTanninAmount("minecraft:log2", 0, 4);
         overrideTanninAmount("minecraft:log2", 1, 2);
+
         ItemStack stack = new ItemStack(BWRegistry.bark, 1, 32767);
         BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 1, 6), new Object[]{BWMaterials.getMaterial(BWMaterials.SCOURED_LEATHER), stack});
         BWCrafting.addOreCauldronRecipe(new ItemStack(BWRegistry.material, 2, 33), new Object[]{BWMaterials.getMaterial(BWMaterials.SCOURED_LEATHER_CUT, 2), stack});

@@ -10,7 +10,6 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 import mods.betterwithpatches.compat.nei.BulkRecipeHandler;
 import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
-import mods.betterwithpatches.util.BWMaterials;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;

@@ -15,7 +15,8 @@ import static mods.betterwithpatches.util.BWMaterials.*;
 
 @Mixin(ItemMaterial.class)
 public abstract class ItemMaterialMixin {
-    @Shadow(remap = false) public IIcon[] icons;
+    @Shadow(remap = false)
+    public IIcon[] icons;
 
     @ModifyConstant(method = "getSubItems", constant = @Constant(intValue = 42, ordinal = 0))
     private int entireArray(int fortytwo) {

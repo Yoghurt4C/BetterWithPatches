@@ -1,6 +1,5 @@
 package mods.betterwithpatches.util;
 
-import betterwithmods.BWRegistry;
 import betterwithmods.util.InvUtils;
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;

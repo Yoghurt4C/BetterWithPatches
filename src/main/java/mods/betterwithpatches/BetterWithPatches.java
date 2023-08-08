@@ -3,6 +3,7 @@ package mods.betterwithpatches;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import mods.betterwithpatches.proxy.CommonProxy;
@@ -28,5 +29,10 @@ public class BetterWithPatches {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent e) {
         PROXY.postInit();
+    }
+
+    @Mod.EventHandler
+    public void afterInit(FMLLoadCompleteEvent e) {
+        PROXY.afterInit();
     }
 }

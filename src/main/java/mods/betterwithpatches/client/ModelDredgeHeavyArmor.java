@@ -1,5 +1,6 @@
 package mods.betterwithpatches.client;
 
+import mods.betterwithpatches.util.BWPConstants;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -117,14 +118,14 @@ public class ModelDredgeHeavyArmor extends ModelBiped {
     public void render(Entity entity, float limbSwing, float prevLimbSwing, float wrappedYaw, float yawHead, float pitch, float scale) {
         this.setRotationAngles(limbSwing, prevLimbSwing, wrappedYaw, yawHead, pitch, scale, entity);
         if (entity instanceof EntityZombie) {
-            float f6 = MathHelper.sin(this.onGround * (float)Math.PI);
-            float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float)Math.PI);
+            float f6 = MathHelper.sin(this.onGround * (float) Math.PI);
+            float f7 = MathHelper.sin((1.0F - (1.0F - this.onGround) * (1.0F - this.onGround)) * (float) Math.PI);
             this.bipedRightArm.rotateAngleZ = 0.0F;
             this.bipedLeftArm.rotateAngleZ = 0.0F;
             this.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
             this.bipedLeftArm.rotateAngleY = 0.1F - f6 * 0.6F;
-            this.bipedRightArm.rotateAngleX = -((float)Math.PI * 0.5F);
-            this.bipedLeftArm.rotateAngleX = -((float)Math.PI * 0.5F);
+            this.bipedRightArm.rotateAngleX = -((float) Math.PI * 0.5F);
+            this.bipedLeftArm.rotateAngleX = -((float) Math.PI * 0.5F);
             this.bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
             this.bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
             this.bipedRightArm.rotateAngleZ += MathHelper.cos(prevLimbSwing * 0.09F) * 0.05F + 0.05F;
@@ -165,7 +166,7 @@ public class ModelDredgeHeavyArmor extends ModelBiped {
             Random rand = entity.worldObj.rand;
             Vec3 vector = Vec3.createVectorHelper(entity.posX, entity.posY + entity.getEyeHeight() - 0.07f, entity.posZ);
             Vec3 v2 = Vec3.createVectorHelper(0.36, 0, 0);
-            v2.rotateAroundY(-entity.rotationYaw * 0.01745329251994329576923690768489f);
+            v2.rotateAroundY(-entity.rotationYaw * BWPConstants.div180byPi);
             vector = v2.subtract(vector);
             entity.worldObj.spawnParticle("smoke", vector.xCoord, vector.yCoord, vector.zCoord, rand.nextFloat() * 0.0125f, 0.05f, rand.nextFloat() * 0.0125f);
         }

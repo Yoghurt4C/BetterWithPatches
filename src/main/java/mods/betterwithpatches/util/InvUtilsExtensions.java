@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.List;
 
 import static betterwithmods.util.InvUtils.decrStackSize;
@@ -20,6 +21,7 @@ public interface InvUtilsExtensions {
         if (OreDictionary.doesOreNameExist(replaced)) return OreDictionary.getOres(replaced, false);
         return Collections.EMPTY_LIST;
     }
+
 
     static int countItemsWithTagsInInventory(IInventory inv, ItemStack stack, int meta) {
         int itemCount = 0;
@@ -35,27 +37,66 @@ public interface InvUtilsExtensions {
         return itemCount;
     }
 
-    static boolean consumeItemsWithTagsInInventory(IInventory inv, ItemStack stack, int meta, int stackSize) {
+    static void consumeItemsWithTagsInInventory(IInventory inv, ItemStack stack, int meta, int stackSize) {
         for (int i = 0; i < inv.getSizeInventory(); ++i) {
             ItemStack invStack = inv.getStackInSlot(i);
             if (invStack != null && invStack.getItem() == stack.getItem() && (meta == 32767 || invStack.getItemDamage() == meta)) {
-                if (invStack.getItem() instanceof ItemBark && invStack.hasTagCompound()) {
-                    NBTTagCompound tag = invStack.stackTagCompound;
-                    String id = tag.getString("logId");
-                    int bMeta = tag.getInteger("logMeta");
-                    stackSize = HardcoreWoodInteractionExtensions.getTanninAmount(id, bMeta);
-                }
                 if (invStack.stackSize >= stackSize && compareTags(stack, invStack)) {
                     decrStackSize(inv, i, stackSize);
-                    return false;
+                    return;
                 }
 
                 stackSize -= stack.stackSize;
                 inv.setInventorySlotContents(i, null);
             }
         }
+    }
 
-        return false;
+
+    /**
+     * @return false if there's enough bark in the inventory for a recipe, true if the recipe matching fails.
+     */
+    static boolean countBarkInInventory(IInventory inv) {
+        Hashtable<String, Integer> cache = new Hashtable<>();
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack invStack = inv.getStackInSlot(i);
+            if (invStack != null && invStack.getItem() instanceof ItemBark && invStack.hasTagCompound()) {
+                NBTTagCompound tag = invStack.stackTagCompound;
+                String id = tag.getString("logId");
+                int bMeta = tag.getInteger("logMeta");
+                String joint = id + bMeta;
+                int has = cache.containsKey(joint) ? cache.get(joint) + invStack.stackSize : invStack.stackSize;
+                int expected = HardcoreWoodInteractionExtensions.getTanninAmount(id, bMeta);
+                if (has < expected) {
+                    cache.put(joint, has);
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    static void consumeBarkInInventory(IInventory inv) {
+        Hashtable<String, Integer> cache = new Hashtable<>();
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            ItemStack invStack = inv.getStackInSlot(i);
+            if (invStack != null && invStack.getItem() instanceof ItemBark && invStack.hasTagCompound()) {
+                NBTTagCompound tag = invStack.stackTagCompound;
+                String id = tag.getString("logId");
+                int bMeta = tag.getInteger("logMeta");
+                String joint = id + bMeta;
+                int stackSize = cache.getOrDefault(joint, HardcoreWoodInteractionExtensions.getTanninAmount(id, bMeta));
+                if (invStack.stackSize < stackSize) {
+                    stackSize -= invStack.stackSize;
+                    inv.setInventorySlotContents(i, null);
+                    cache.put(id + bMeta, stackSize);
+                } else {
+                    decrStackSize(inv, i, stackSize);
+                    return;
+                }
+            }
+        }
     }
 
 

@@ -8,5 +8,5 @@ public interface Proxy {
 
     void postInit();
 
-    void registerRenderInformation();
+    void afterInit();
 }

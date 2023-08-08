@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemMaterial.class)
 public abstract class ItemMaterialMixin extends Item {
-    @Shadow(remap = false) public String[] names;
+    @Shadow(remap = false)
+    public String[] names;
 
     @Inject(method = "<init>", at = @At(value = "RETURN"), remap = false)
     public void noNames(CallbackInfo ctx) {

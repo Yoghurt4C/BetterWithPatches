@@ -61,6 +61,7 @@ public interface BWMaterials {
     static ItemStack getMaterial(short meta) {
         return getMaterial(meta, 1);
     }
+
     static ItemStack getMaterial(short meta, int stackSize) {
         return new ItemStack(BWRegistry.material, stackSize, meta);
     }

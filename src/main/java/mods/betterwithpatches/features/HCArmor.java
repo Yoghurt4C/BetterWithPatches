@@ -1,5 +1,6 @@
 package mods.betterwithpatches.features;
 
+import mods.betterwithpatches.BWPRegistry;
 import mods.betterwithpatches.data.IngredientMap;
 import mods.betterwithpatches.data.Penalty;
 import mods.betterwithpatches.data.PenaltyRegistry;
@@ -39,12 +40,15 @@ public interface HCArmor {
         weights.put(Items.golden_leggings, any, 7);
         weights.put(Items.golden_boots, any, 2);
 
-        /*
-        weights.put(BWRegistry.STEEL_HELMET, any, 5);
-        weights.put(BWMItems.STEEL_CHEST, any, 8);
-        weights.put(BWMItems.STEEL_PANTS, any, 7);
-        weights.put(BWMItems.STEEL_BOOTS, any, 4);
-         */
+        weights.put(BWPRegistry.steelHelmet, any, 5);
+        weights.put(BWPRegistry.steelChestplate, any, 8);
+        weights.put(BWPRegistry.steelLeggings, any, 7);
+        weights.put(BWPRegistry.steelBoots, any, 4);
+
+        weights.put(BWPRegistry.dredgeHeavyHelmet, any, 4);
+        weights.put(BWPRegistry.dredgeHeavyChestplate, any, 7);
+        weights.put(BWPRegistry.dredgeHeavyLeggings, any, 5);
+        weights.put(BWPRegistry.dredgeHeavyBoots, any, 4);
     }
 
     class ArmorPenalty implements Penalty {

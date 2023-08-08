@@ -16,7 +16,8 @@ import net.minecraftforge.common.util.EnumHelper;
 public class BWPRegistry {
     public static final CreativeTabs bwpTab = new BWPCreativeTab();
     public static final Item.ToolMaterial SOULFORGED_TOOL = EnumHelper.addToolMaterial("soulforgedSteel", 4, 2250, 10f, 3, 22);
-    public static final ItemArmor.ArmorMaterial SOULFORGED_ARMOR = EnumHelper.addArmorMaterial("soulforgedSteel", 40, new int[]{3, 8, 6, 3}, 25);
+    public static final ItemArmor.ArmorMaterial SOULFORGED_ARMOR = EnumHelper.addArmorMaterial("soulforgedSteel", 40, new int[]{3, 8, 6, 3}, 25),
+            DREDGE_HEAVY_ARMOR = EnumHelper.addArmorMaterial("dredgeHeavy", 38, new int[]{3, 8, 6, 3}, 17);
     public static Block steelAnvil;
     public static Item steelAxe, steelHoe, steelPickaxe, steelShovel, steelSword, steelHelmet, steelChestplate, steelLeggings, steelBoots,
             dredgeHeavyHelmet, dredgeHeavyChestplate, dredgeHeavyLeggings, dredgeHeavyBoots;

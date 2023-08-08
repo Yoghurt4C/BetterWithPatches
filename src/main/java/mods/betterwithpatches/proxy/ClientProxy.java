@@ -31,11 +31,11 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit() {
         super.postInit();
-        HardcoreWoodInteractionExtensions.fillDisplayMap();
     }
 
     @Override
-    public void registerRenderInformation() {
-        super.registerRenderInformation();
+    public void afterInit() {
+        super.afterInit();
+        HardcoreWoodInteractionExtensions.fillDisplayMap();
     }
 }

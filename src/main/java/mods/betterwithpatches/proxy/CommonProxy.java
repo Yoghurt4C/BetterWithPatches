@@ -9,10 +9,7 @@ import mods.betterwithpatches.BWPRegistry;
 import mods.betterwithpatches.Config;
 import mods.betterwithpatches.compat.minetweaker.util.MTHelper;
 import mods.betterwithpatches.compat.nei.NEIBWMConfig;
-import mods.betterwithpatches.craft.HardcoreWoodInteractionExtensions;
-import mods.betterwithpatches.craft.KilnInteractionExtensions;
-import mods.betterwithpatches.craft.SawInteractionExtensions;
-import mods.betterwithpatches.craft.SteelCraftingManager;
+import mods.betterwithpatches.craft.*;
 import mods.betterwithpatches.event.PunitiveEvents;
 import mods.betterwithpatches.features.*;
 import mods.betterwithpatches.menu.BWPMenuHandler;
@@ -24,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class CommonProxy implements Proxy {
@@ -53,6 +51,7 @@ public class CommonProxy implements Proxy {
     @Override
     public void init() {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWPRegistry.steelAnvil), "sss", " s ", "sss", 's', "ingotSoulforgedSteel"));
+        GameRegistry.addRecipe(new RecipeMultiRenderPassArmorDyes());
         SteelCraftingManager.addSteelAnvilRecipes();
 
         if (Loader.isModLoaded("MineTweaker3")) {
@@ -104,7 +103,27 @@ public class CommonProxy implements Proxy {
     }
 
     @Override
-    public void registerRenderInformation() {
-
+    public void afterInit() {
+        String[] dyes = {
+                "dyeBlack",
+                "dyeRed",
+                "dyeGreen",
+                "dyeBrown",
+                "dyeBlue",
+                "dyePurple",
+                "dyeCyan",
+                "dyeLightGray",
+                "dyeGray",
+                "dyePink",
+                "dyeLime",
+                "dyeYellow",
+                "dyeLightBlue",
+                "dyeMagenta",
+                "dyeOrange",
+                "dyeWhite"
+        };
+        for (int i = 0; i < dyes.length; i++) {
+            BWPConstants.dyeOreIds[i] = OreDictionary.getOreID(dyes[i]);
+        }
     }
 }

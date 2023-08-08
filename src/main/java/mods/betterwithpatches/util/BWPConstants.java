@@ -8,4 +8,6 @@ public interface BWPConstants {
     Logger L = LogManager.getLogger(MODNAME);
     byte[] snakeX = new byte[]{1, 0, -1, -1, 0, 0, 1, 1};
     byte[] snakeZ = new byte[]{0, 1, 0, 0, -1, -1, 0, 0};
+    int[] dyeOreIds = new int[16];
+    float div180byPi = 0.01745329251994329576923690768489f;
 }
