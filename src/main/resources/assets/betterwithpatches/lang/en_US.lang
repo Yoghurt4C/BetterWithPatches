@@ -4,6 +4,18 @@ text.bwp:bark=Bark
 text.bwp.hcFurnace=Cook Time: %s Seconds (%s Items)
 
 tile.bwm:steelAnvil.name=Soulforged Steel Anvil
+
+item.bwm:material.SoulFlux.name=Soul Flux
+item.bwm:material.EnderSlag.name=Ender Slag
+item.bwm:material.EnderOcular.name=Ender Ocular
+item.bwm:material.Padding.name=Padding
+item.bwm:material.ArmorPlate.name=Armor Plate
+item.bwm:material.Broadhead.name=Broadhead
+item.bwm:material.CocoaPowder.name=Cocoa Powder
+item.bwm:material.DiamondIngot.name=Diamond Ingot
+item.bwm:material.Chainmail.name=Chainmail
+
+
 item.bwm:steelAxe.name=Soulforged Steel Axe
 item.bwm:steelHoe.name=Soulforged Steel Hoe
 item.bwm:steelPickaxe.name=Soulforged Steel Pickaxe

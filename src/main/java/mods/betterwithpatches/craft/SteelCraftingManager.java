@@ -93,18 +93,26 @@ public interface SteelCraftingManager {
 
     static void addSteelAnvilRecipes() {
         addShapedRecipe(new ItemStack(BWRegistry.detector), "CCCC", "LTTL", "SRRS", "SRRS", 'C', "cobblestone", 'L', getMaterial(POLISHED_LAPIS), 'T', Blocks.redstone_torch, 'S', "stone", 'R', "dustRedstone");
-        addShapedRecipe(new ItemStack(BWRegistry.material, 2, 20), "LLL", "LLL", "GGG", " R ", 'L', "gemLapis", 'R', "dustRedstone", 'G', "nuggetGold");
+        addShapedRecipe(getMaterial(POLISHED_LAPIS, 2), "LLL", "LLL", "GGG", " R ", 'L', "gemLapis", 'R', "dustRedstone", 'G', "nuggetGold");
+        addShapedRecipe(getMaterial(CHAINMAIL, 2), "N N ", " N N", "N N ", " N N", 'N', "nuggetIron");
+
         ItemStack haft = getMaterial(HAFT);
         addShapedRecipe(new ItemStack(BWPRegistry.steelAxe), "XX", "XH", " H", " H", 'X', "ingotSoulforgedSteel", 'H', haft);
         addShapedRecipe(new ItemStack(BWPRegistry.steelHoe), "XX", " H", " H", " H", 'X', "ingotSoulforgedSteel", 'H', haft);
         addShapedRecipe(new ItemStack(BWPRegistry.steelPickaxe), "XXX", " H ", " H ", " H ", 'X', "ingotSoulforgedSteel", 'H', haft);
         addShapedRecipe(new ItemStack(BWPRegistry.steelShovel), "X", "H", "H", "H", 'X', "ingotSoulforgedSteel", 'H', haft);
         addShapedRecipe(new ItemStack(BWPRegistry.steelSword), "X", "X", "X", "H", 'X', "ingotSoulforgedSteel", 'H', haft);
+
         ItemStack plate = getMaterial(ARMOR_PLATE);
+        addShapedRecipe(plate, "BSPB", 'B', getMaterial(LEATHER_STRAP), 'S', "ingotSoulforgedSteel", 'P', getMaterial(PADDING));
         addShapedRecipe(new ItemStack(BWPRegistry.steelHelmet), "SSSS", "S  S", "S  S", " PP ", 'P', plate, 'S', "ingotSoulforgedSteel");
         addShapedRecipe(new ItemStack(BWPRegistry.steelChestplate), "P  P", "SSSS", "SSSS", "SSSS", 'P', plate, 'S', "ingotSoulforgedSteel");
         addShapedRecipe(new ItemStack(BWPRegistry.steelLeggings), "SSSS", "PSSP", "P  P", "P  P", 'P', plate, 'S', "ingotSoulforgedSteel");
         addShapedRecipe(new ItemStack(BWPRegistry.steelBoots), " SS ", " SS ", "SPPS", 'P', plate, 'S', "ingotSoulforgedSteel");
-
+        ItemStack leather = getMaterial(TANNED_LEATHER_CUT);
+        addShapedRecipe(new ItemStack(BWPRegistry.dredgeHeavyHelmet), "SSSS", "LSSL", "L  L", " PP ", 'S', "ingotSoulforgedSteel", 'L', leather, 'P', plate);
+        addShapedRecipe(new ItemStack(BWPRegistry.dredgeHeavyChestplate), "SPPS", "LSSL", "LPPL", "SSSS", 'S', "ingotSoulforgedSteel", 'L', leather, 'P', plate);
+        addShapedRecipe(new ItemStack(BWPRegistry.dredgeHeavyLeggings), "SPPS", "SLLS", "L  L", "L  L", 'S', "ingotSoulforgedSteel", 'L', leather, 'P', plate);
+        addShapedRecipe(new ItemStack(BWPRegistry.dredgeHeavyBoots), " SS ", "PSSP", "SLLS", 'S', "ingotSoulforgedSteel", 'L', leather, 'P', plate);
     }
 }

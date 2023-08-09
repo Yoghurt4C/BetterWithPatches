@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.Random;
 
 public class ModelDredgeHeavyArmor extends ModelBiped {
+    public static final ModelBiped[] models = new ModelBiped[4];
 
     private final ModelRenderer flap;
     public static final ResourceLocation texPath = new ResourceLocation("betterwithpatches:textures/models/armor/dredge_heavy_layer_0.png");

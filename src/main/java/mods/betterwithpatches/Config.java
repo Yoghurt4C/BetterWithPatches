@@ -21,7 +21,7 @@ public class Config {
     public static float hcMovementDefault, hcMovementFast;
     public static boolean
             genericFixes, patchKiln, canKilnSmeltOres, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, patchCreativeTabs, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder,
-            vanillaRecipesInAnvil,
+            vanillaRecipesInAnvil, chainmailArmorRecipe,
             HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel, HCOres, hcOreDusts,
             enablePenalties, HCArmor, HCMovement, removeSpeedPenaltyFOVChanges;
     private static boolean isInitialized = false;
@@ -71,6 +71,8 @@ public class Config {
                         "LWJGL3ify seems to cause the SignPicture upload overlay to constantly trigger during normal play, this patch simply removes the check that causes it. [Side: CLIENT | Default: true]"),
                 Entry.of("vanillaRecipesInAnvil", true,
                         "If true, the Soulforged Steel Anvil will attempt to match vanilla recipes in its grid. [Side: BOTH | Default: true]"),
+                Entry.of("chainmailArmorRecipe", true,
+                        "Replaces the broken vanilla recipes for Chainmail Armor with functional ones."),
                 Entry.of("furnaceHCGunpowder", true,
                         "Makes Gunpowder explode when put inside a lit furnace. [Side: SERVER | Default: true]"),
                 Entry.of("HCFurnace", false,

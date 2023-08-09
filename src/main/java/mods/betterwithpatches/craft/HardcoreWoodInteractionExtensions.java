@@ -22,7 +22,6 @@ import java.util.*;
 import static mods.betterwithpatches.util.BWPUtils.getId;
 
 public interface HardcoreWoodInteractionExtensions {
-    @SideOnly(Side.CLIENT)
     Map<String, int[]> displayMap = new LinkedHashMap<>();
     Hashtable<String, ItemStack[]> barkOverrides = new Hashtable<>();
     Hashtable<String, Integer> tannin = new Hashtable<>();

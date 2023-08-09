@@ -3,32 +3,46 @@ package mods.betterwithpatches.item.tool;
 import cpw.mods.fml.common.FMLCommonHandler;
 import mods.betterwithpatches.BWPRegistry;
 import mods.betterwithpatches.client.ModelDredgeHeavyArmor;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockCauldron;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassArmor {
     public IIcon overlay;
-    public final ModelBiped model;
     public static final int steelColor = 0x757575, leatherColor = 0x562A1A;
 
     public ItemDredgeHeavyArmor(int armorSlot) {
         super(BWPRegistry.DREDGE_HEAVY_ARMOR, 2, armorSlot);
         if (FMLCommonHandler.instance().getSide().isClient()) {
-            this.model = new ModelDredgeHeavyArmor(armorSlot);
-        } else {
-            this.model = null;
+            ModelDredgeHeavyArmor.models[armorSlot] = new ModelDredgeHeavyArmor(armorSlot);
         }
     }
 
     @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
+        Block block = world.getBlock(x, y, z);
+        if (block instanceof BlockCauldron) {
+            int meta = world.getBlockMetadata(x, y, z);
+            if (meta > 0) {
+                this.removeColor(stack);
+                ((BlockCauldron) block).func_150024_a(world, x, y, z, meta - 1);
+            }
+        }
+        return super.onItemUse(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+    }
+
+    @Override
     public ModelBiped getArmorModel(EntityLivingBase entityLiving, ItemStack itemStack, int armorSlot) {
-        return this.model;
+        return ModelDredgeHeavyArmor.models[armorSlot];
     }
 
     @Override
@@ -102,5 +116,18 @@ public class ItemDredgeHeavyArmor extends ItemArmor implements MultiRenderPassAr
         }
 
         colors.setInteger(String.valueOf(pass), color);
+    }
+
+    @Override
+    public void removeColor(ItemStack stack) {
+        if (hasColor(stack)) {
+            stack.stackTagCompound.removeTag("color");
+            if (stack.stackTagCompound.hasNoTags()) stack.stackTagCompound = null;
+        }
+    }
+
+    @Override
+    public void removeColor(ItemStack stack, int pass) {
+        this.removeColor(stack);
     }
 }

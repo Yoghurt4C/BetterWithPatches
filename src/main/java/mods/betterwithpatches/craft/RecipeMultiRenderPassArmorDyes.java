@@ -11,7 +11,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class RecipeMultiRenderPassArmorDyes implements IRecipe {
-
     @Override
     public boolean matches(InventoryCrafting inv, World world) {
         boolean hasArmor = false, hasDye = false;
@@ -41,7 +40,7 @@ public class RecipeMultiRenderPassArmorDyes implements IRecipe {
         MultiRenderPassArmor mrpa = null;
         int pass = 0;
         int colors = 0;
-        float[] rgb = new float[3];
+        long[] rgb = new long[3];
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.getStackInSlot(i);
             if (stack == null) continue;
@@ -64,9 +63,9 @@ public class RecipeMultiRenderPassArmorDyes implements IRecipe {
                         int r = (int) (dye[0] * 255);
                         int b = (int) (dye[1] * 255);
                         int g = (int) (dye[2] * 255);
-                        rgb[0] += r * r;
-                        rgb[1] += g * g;
-                        rgb[2] += b * b;
+                        rgb[0] += (long) r * r;
+                        rgb[1] += (long) g * g;
+                        rgb[2] += (long) b * b;
                         colors++;
                         break;
                     }
@@ -76,12 +75,10 @@ public class RecipeMultiRenderPassArmorDyes implements IRecipe {
 
         if (armor == null) return null;
         else if (colors > 0) {
-            int r = (int) Math.min(255, Math.sqrt(rgb[0] / colors)) & 0xFF;
-            int b = (int) Math.min(255, Math.sqrt(rgb[1] / colors)) & 0xFF;
-            int g = (int) Math.min(255, Math.sqrt(rgb[2] / colors)) & 0xFF;
-            int color = r << 16
-                    | g << 8
-                    | b;
+            int r = (int) Math.min(255, Math.sqrt((double) rgb[0] / colors)) & 0xFF;
+            int b = (int) Math.min(255, Math.sqrt((double) rgb[1] / colors)) & 0xFF;
+            int g = (int) Math.min(255, Math.sqrt((double) rgb[2] / colors)) & 0xFF;
+            int color = r << 16 | g << 8 | b;
             mrpa.setColor(armor, pass, color);
         }
 

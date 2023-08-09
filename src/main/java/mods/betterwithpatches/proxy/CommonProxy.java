@@ -13,7 +13,9 @@ import mods.betterwithpatches.craft.*;
 import mods.betterwithpatches.event.PunitiveEvents;
 import mods.betterwithpatches.features.*;
 import mods.betterwithpatches.menu.BWPMenuHandler;
+import mods.betterwithpatches.util.BWMaterials;
 import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.RecipeUtils;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
@@ -23,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class CommonProxy implements Proxy {
 
@@ -51,8 +54,21 @@ public class CommonProxy implements Proxy {
     @Override
     public void init() {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(BWPRegistry.steelAnvil), "sss", " s ", "sss", 's', "ingotSoulforgedSteel"));
-        GameRegistry.addRecipe(new RecipeMultiRenderPassArmorDyes());
         SteelCraftingManager.addSteelAnvilRecipes();
+        GameRegistry.addRecipe(new RecipeMultiRenderPassArmorDyes());
+
+        if (Config.chainmailArmorRecipe) {
+            RecipeUtils.removeRecipes(Items.chainmail_helmet, Items.chainmail_chestplate, Items.chainmail_leggings, Items.chainmail_boots);
+            OreDictionary.registerOre("chainmail", BWMaterials.getMaterial(BWMaterials.CHAINMAIL));
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.chainmail_helmet), "CCC", "C C", 'C', "chainmail"));
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.chainmail_chestplate), "C C", "CCC", "CCC", 'C', "chainmail"));
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.chainmail_leggings), "CCC", "C C", "C C", 'C', "chainmail"));
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.chainmail_boots), "C C", "C C", 'C', "chainmail"));
+        }
+
+        if (!OreDictionary.doesOreNameExist("feather")) OreDictionary.registerOre("feather", Items.feather);
+        OreDictionary.registerOre("fabricHemp", BWMaterials.getMaterial(BWMaterials.HEMP_CLOTH));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(BWMaterials.getMaterial(BWMaterials.PADDING), "feather", "fabricHemp"));
 
         if (Loader.isModLoaded("MineTweaker3")) {
             MTHelper.addMineTweakerCompat();
