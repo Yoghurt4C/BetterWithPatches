@@ -4,9 +4,9 @@ import minetweaker.IUndoableAction;
 import minetweaker.MineTweakerAPI;
 import minetweaker.api.item.IItemStack;
 import minetweaker.api.minecraft.MineTweakerMC;
-import mods.betterwithpatches.data.Ingredient;
 import mods.betterwithpatches.features.HCArmor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
@@ -41,7 +41,7 @@ public class HCArmorTweaker {
 
         @Override
         public void undo() {
-            HCArmor.weights.remove(new Ingredient(item, OreDictionary.WILDCARD_VALUE));
+            HCArmor.weights.remove(new ItemStack(item, OreDictionary.WILDCARD_VALUE));
         }
 
         @Override

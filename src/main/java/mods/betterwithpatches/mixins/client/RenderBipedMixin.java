@@ -22,7 +22,7 @@ public class RenderBipedMixin {
             float r = (float) (color >> 16 & 255) / 255.0F;
             float g = (float) (color >> 8 & 255) / 255.0F;
             float b = (float) (color & 255) / 255.0F;
-            GL11.glColor4f(r, g, b, 1f);
+            GL11.glColor3f(r, g, b);
         }
     }
 }

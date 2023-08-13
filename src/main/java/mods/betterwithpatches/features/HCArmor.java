@@ -1,7 +1,7 @@
 package mods.betterwithpatches.features;
 
 import mods.betterwithpatches.BWPRegistry;
-import mods.betterwithpatches.data.IngredientMap;
+import mods.betterwithpatches.data.recipe.ItemStackMap;
 import mods.betterwithpatches.data.Penalty;
 import mods.betterwithpatches.data.PenaltyRegistry;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public interface HCArmor {
-    IngredientMap<Integer> weights = new IngredientMap<>(3);
+    ItemStackMap<Integer> weights = new ItemStackMap<>(3);
 
     static int getWeight(ItemStack stack) {
         return weights.get(stack);

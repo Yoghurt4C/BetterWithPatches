@@ -13,8 +13,8 @@ import mods.betterwithpatches.craft.*;
 import mods.betterwithpatches.event.PunitiveEvents;
 import mods.betterwithpatches.features.*;
 import mods.betterwithpatches.menu.BWPMenuHandler;
-import mods.betterwithpatches.util.BWMaterials;
 import mods.betterwithpatches.util.BWPConstants;
+import mods.betterwithpatches.util.BWPUtils;
 import mods.betterwithpatches.util.RecipeUtils;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntitySkeleton;
@@ -27,7 +27,11 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import static mods.betterwithpatches.util.BWMaterials.*;
+import static mods.betterwithpatches.util.BWMaterials.getMaterial;
+
 public class CommonProxy implements Proxy {
+    public static final boolean isMTPresent = Loader.isModLoaded("MineTweaker3");
 
     @Override
     public void preInit() {
@@ -59,20 +63,25 @@ public class CommonProxy implements Proxy {
 
         if (Config.chainmailArmorRecipe) {
             RecipeUtils.removeRecipes(Items.chainmail_helmet, Items.chainmail_chestplate, Items.chainmail_leggings, Items.chainmail_boots);
-            OreDictionary.registerOre("chainmail", BWMaterials.getMaterial(BWMaterials.CHAINMAIL));
+            OreDictionary.registerOre("chainmail", getMaterial(CHAINMAIL));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.chainmail_helmet), "CCC", "C C", 'C', "chainmail"));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.chainmail_chestplate), "C C", "CCC", "CCC", 'C', "chainmail"));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.chainmail_leggings), "CCC", "C C", "C C", 'C', "chainmail"));
             GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.chainmail_boots), "C C", "C C", 'C', "chainmail"));
         }
 
-        if (!OreDictionary.doesOreNameExist("feather")) OreDictionary.registerOre("feather", Items.feather);
-        OreDictionary.registerOre("fabricHemp", BWMaterials.getMaterial(BWMaterials.HEMP_CLOTH));
-        GameRegistry.addRecipe(new ShapelessOreRecipe(BWMaterials.getMaterial(BWMaterials.PADDING), "feather", "fabricHemp"));
+        BWPUtils.offerOre("feather", Items.feather);
+        BWPUtils.registerOre("fabricHemp", getMaterial(HEMP_CLOTH));
+        GameRegistry.addRecipe(new ShapelessOreRecipe(getMaterial(PADDING), "feather", "fabricHemp"));
 
-        if (Loader.isModLoaded("MineTweaker3")) {
-            MTHelper.addMineTweakerCompat();
-        }
+        BWPUtils.offerOre("paper", Items.paper);
+        BWPUtils.offerOre("string", Items.string);
+        BWPUtils.registerOre("hideTanned", getMaterial(TANNED_LEATHER), getMaterial(TANNED_LEATHER_CUT));
+        BWPUtils.registerOre("hideScoured", getMaterial(SCOURED_LEATHER), getMaterial(SCOURED_LEATHER_CUT));
+        BWPUtils.registerOre("hideBelt", getMaterial(LEATHER_BELT));
+        BWPUtils.registerOre("hideStrap", getMaterial(LEATHER_STRAP));
+
+        if (Config.patchFilteredHopper) FilteredHopperInteractions.registerFiltersAndRecipes();
 
         if (Config.HCTreestumps) {
             MinecraftForge.EVENT_BUS.register(new HCTreestumps());
@@ -87,6 +96,10 @@ public class CommonProxy implements Proxy {
             if (Config.HCMovement) {
                 HCMovement.registerHCMovement();
             }
+        }
+
+        if (isMTPresent) {
+            MTHelper.addMineTweakerCompat();
         }
     }
 

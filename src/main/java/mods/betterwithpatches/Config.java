@@ -17,12 +17,12 @@ import java.util.Map;
 import static mods.betterwithpatches.util.BWPConstants.*;
 
 public class Config {
-    public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance, hcFurnaceDefaultCookTime;
+    public static int lazyGeneratorDelay, lazyCauldronDelay, hcWoodPlankLoss, choppingBlockHeadDropChance, hcFurnaceDefaultCookTime, filteredHopperItemsPerTick;
     public static float hcMovementDefault, hcMovementFast;
     public static boolean
-            genericFixes, patchKiln, canKilnSmeltOres, patchTurntable, patchHCWood, HCTreestumps, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, patchCreativeTabs, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder,
+            genericFixes, patchKiln, canKilnSmeltOres, patchTurntable, patchHCWood, patchSaw, forceChopPlayerHeads, dirtyStokedFlameFix, patchCookingPot, patchHCBuckets, patchFilteredHopper, patchCreativeTabs, enableNEICompat, patchSignPicForLwjglify, furnaceHCGunpowder,
             vanillaRecipesInAnvil, chainmailArmorRecipe,
-            HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel, HCOres, hcOreDusts,
+            HCTreestumps, HCFurnace, hcFurnaceTooltip, hcFurnaceCustomFuel, HCOres, hcOreDusts,
             enablePenalties, HCArmor, HCMovement, removeSpeedPenaltyFOVChanges;
     private static boolean isInitialized = false;
 
@@ -61,6 +61,10 @@ public class Config {
                         "Extends the lifespan of Stoked Flames to hide the weird gaps in the current update system. [Side: SERVER | Default: true]"),
                 Entry.of("patchCookingPot", true,
                         "Various additions and fixes to the Cauldron and Crucible. Patches the GUI to have an indicator of being Stoked. [Side: BOTH | Default: true]"),
+                Entry.of("patchFilteredHopper", true,
+                        "A lot of patches for the Filtered Hopper to make it easily extensible. [Side: BOTH | Default: true]"),
+                Entry.of("filteredHopperItemsPerTick", 8,
+                        "How many items should be processed by the hopper every tick. [Side: SERVER | Default: true]"),
                 Entry.of("patchHCBuckets", true,
                         "Makes Hardcore Buckets actually work in a modded environment. Forces HCBuckets to be on if it's disabled in the BWM Config. [Side: SERVER | Default: true]"),
                 Entry.of("patchCreativeTabs", true,

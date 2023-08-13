@@ -10,6 +10,20 @@ import net.minecraft.item.crafting.IRecipe;
 import java.util.*;
 
 public interface RecipeUtils {
+    static ItemStack[] toOutputs(Object[] outputs) {
+        ItemStack[] out = new ItemStack[outputs.length];
+        for (int i = 0; i < outputs.length; i++) {
+            Object o = outputs[i];
+            if (o instanceof ItemStack) {
+                out[i] = (ItemStack) o;
+            } else if (o instanceof Item) {
+                out[i] = new ItemStack((Item) o);
+            } else if (o instanceof Block) {
+                out[i] = new ItemStack((Block) o);
+            }
+        }
+        return out;
+    }
     static void removeRecipes(Object... objects) {
         List<ItemStack> list = new ArrayList<>();
         for (Object obj : objects) {

@@ -31,6 +31,42 @@ public interface BWPUtils {
         return ArrayUtils.contains(OreDictionary.getOreIDs(stack), OreDictionary.getOreID(od));
     }
 
+    static boolean presentInOD(ItemStack stack, String... od) {
+        for (String s : od) {
+            if (presentInOD(stack, s)) return true;
+        }
+        return false;
+    }
+
+    static boolean stackHasODPrefix(ItemStack stack, String prefix) {
+        for (int oreID : OreDictionary.getOreIDs(stack)) {
+            String name = OreDictionary.getOreName(oreID);
+            if (name.startsWith(prefix)) return true;
+        }
+        return false;
+    }
+
+    static void offerOre(String name, Object... ores) {
+        processOres(name, false, ores);
+    }
+
+    static void registerOre(String name, Object... ores) {
+        processOres(name, true, ores);
+    }
+
+    static void processOres(String name, boolean force, Object... ores) {
+        if (force || !OreDictionary.doesOreNameExist(name))
+            for (Object ore : ores) {
+                if (ore instanceof ItemStack) {
+                    OreDictionary.registerOre(name, (ItemStack) ore);
+                } else if (ore instanceof Item) {
+                    OreDictionary.registerOre(name, new ItemStack((Item) ore));
+                } else if (ore instanceof Block) {
+                    OreDictionary.registerOre(name, new ItemStack((Block) ore));
+                }
+            }
+    }
+
     static void copyInto(List<ItemStack> list, ItemStack... stacks) {
         for (ItemStack stack : stacks) {
             list.add(stack.copy());

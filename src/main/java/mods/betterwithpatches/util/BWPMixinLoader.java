@@ -1,6 +1,8 @@
 package mods.betterwithpatches.util;
 
 import mods.betterwithpatches.Config;
+import mods.betterwithpatches.mixins.filteredhopper.TileEntityFilteredHopperMixin;
+import mods.betterwithpatches.mixins.filteredhopper.client.BlockMechMachinesMixin;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import java.util.ArrayList;
@@ -39,12 +41,14 @@ public class BWPMixinLoader {
             load(Config.patchHCWood && Config.patchSaw, "saw.BWModMixin", "saw.BlockSawMixin", "saw.SawInteractionMixin");
             load(Config.dirtyStokedFlameFix, "fixes.dirty.BlockFireStokedMixin");
             load(Config.patchCookingPot, "cauldron.ContainerCookingPotMixin", "cauldron.TileEntityCookingPotMixin");
+            load(Config.patchFilteredHopper, "filteredhopper.BlockMechMachinesMixin", "filteredhopper.TileEntityFilteredHopperMixin");
             load(Config.patchHCBuckets, "hcbuckets.BWModMixin");
             if (MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT) {
                 load(true, "client.RenderTileEntitiesMixin");
                 load(Config.genericFixes, "fixes.client.ItemMaterialMixin");
                 load(Config.patchHCWood, "hcwood.client.ItemBarkMixin");
                 load(Config.patchCookingPot, "cauldron.GuiCookingPotMixin");
+                load(Config.patchFilteredHopper, "filteredhopper.client.BlockMechMachinesMixin");
                 if (loadedMods.contains("lwjgl3ify") && loadedMods.contains("signpic"))
                     load(Config.patchSignPicForLwjglify, "compat.signpic.GuiTaskAccessor", "compat.signpic.GuiTaskMixin", "compat.signpic.GuiTask$1$1Mixin", "compat.signpic.CoreHandlerMixin");
             }

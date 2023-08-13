@@ -4,12 +4,14 @@ import betterwithmods.craft.BulkRecipe;
 import betterwithmods.craft.CraftingManagerBulk;
 import betterwithmods.craft.OreStack;
 import minetweaker.MineTweakerAPI;
+import minetweaker.MineTweakerImplementationAPI;
 import minetweaker.api.item.IIngredient;
 import minetweaker.api.minecraft.MineTweakerMC;
 import minetweaker.api.oredict.IOreDictEntry;
 import minetweaker.mc1710.item.MCItemStack;
 import minetweaker.mc1710.oredict.MCOreDictEntry;
 import mods.betterwithpatches.compat.minetweaker.*;
+import mods.betterwithpatches.compat.minetweaker.event.BWPPostMTReloadEvent;
 import mods.betterwithpatches.util.BWMRecipeAccessor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -34,6 +36,8 @@ public interface MTHelper {
         for (Class<?> cls : compat) {
             MineTweakerAPI.registerClass(cls);
         }
+
+        MineTweakerImplementationAPI.onPostReload(new BWPPostMTReloadEvent());
     }
 
     static Object toBWMStack(IIngredient ingr) {
