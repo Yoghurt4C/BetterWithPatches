@@ -1,8 +1,6 @@
 package mods.betterwithpatches.util;
 
 import mods.betterwithpatches.Config;
-import mods.betterwithpatches.mixins.filteredhopper.TileEntityFilteredHopperMixin;
-import mods.betterwithpatches.mixins.filteredhopper.client.BlockMechMachinesMixin;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import java.util.ArrayList;

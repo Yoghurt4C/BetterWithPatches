@@ -24,6 +24,7 @@ public interface RecipeUtils {
         }
         return out;
     }
+
     static void removeRecipes(Object... objects) {
         List<ItemStack> list = new ArrayList<>();
         for (Object obj : objects) {

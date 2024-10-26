@@ -18,8 +18,11 @@ public class OutputStack implements RecipeOutput {
         this(new ItemStack(item));
     }
 
-    public OutputStack(ItemStack output) {
-        this.stack = output;
+    /**
+     * @param stack guaranteed singleton stack produced by this recipe output
+     */
+    public OutputStack(ItemStack stack) {
+        this.stack = stack;
     }
 
     @Override

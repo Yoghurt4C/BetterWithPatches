@@ -20,7 +20,7 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
     public ItemStackMap(T defaultValue) {
         this.loadFactor = 0.75f;
         this.table = new Entry<?>[11];
-        this.threshold = (int)Math.min(11 * loadFactor, MAX_ARRAY_SIZE + 1);
+        this.threshold = (int) Math.min(11 * loadFactor, MAX_ARRAY_SIZE + 1);
         this.defaultValue = defaultValue;
     }
 
@@ -84,8 +84,8 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         }
 
         Entry<?>[] tab = table;
-        for (int i = tab.length ; i-- > 0 ;) {
-            for (Entry<?> e = tab[i]; e != null ; e = e.next) {
+        for (int i = tab.length; i-- > 0; ) {
+            for (Entry<?> e = tab[i]; e != null; e = e.next) {
                 if (e.value.equals(value)) {
                     return true;
                 }
@@ -128,16 +128,16 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         Entry<?>[] newMap = new Entry<?>[newCapacity];
 
         modCount++;
-        threshold = (int)Math.min(newCapacity * loadFactor, MAX_ARRAY_SIZE + 1);
+        threshold = (int) Math.min(newCapacity * loadFactor, MAX_ARRAY_SIZE + 1);
         table = newMap;
 
-        for (int i = oldCapacity ; i-- > 0 ;) {
-            for (Entry<T> old = (Entry<T>)oldMap[i]; old != null ; ) {
+        for (int i = oldCapacity; i-- > 0; ) {
+            for (Entry<T> old = (Entry<T>) oldMap[i]; old != null; ) {
                 Entry<T> e = old;
                 old = old.next;
 
                 int index = (e.hash & 0x7FFFFFFF) % newCapacity;
-                e.next = (Entry<T>)newMap[index];
+                e.next = (Entry<T>) newMap[index];
                 newMap[index] = e;
             }
         }
@@ -179,8 +179,8 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         int hash = stackHash(key);
         int index = (hash & 0x7FFFFFFF) % tab.length;
         @SuppressWarnings("unchecked")
-        Entry<T> entry = (Entry<T>)tab[index];
-        for(; entry != null ; entry = entry.next) {
+        Entry<T> entry = (Entry<T>) tab[index];
+        for (; entry != null; entry = entry.next) {
             if ((entry.hash == hash) && compareStacks(entry.key, key)) {
                 T old = entry.value;
                 entry.value = value;
@@ -262,7 +262,7 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
             return new Enumerator<>(type, true);
         }
     }
-    
+
     private transient volatile Set<ItemStack> keySet;
     private transient volatile Set<Map.Entry<ItemStack, T>> entrySet;
     private transient volatile Collection<T> values;
@@ -277,22 +277,26 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         public Iterator<ItemStack> iterator() {
             return getIterator(KEYS);
         }
+
         public int size() {
             return count;
         }
+
         public boolean contains(Object o) {
             return containsKey(o);
         }
+
         public boolean remove(Object o) {
             return ItemStackMap.this.remove(o) != null;
         }
+
         public void clear() {
             ItemStackMap.this.clear();
         }
     }
 
     public Set<Map.Entry<ItemStack, T>> entrySet() {
-        if (entrySet==null)
+        if (entrySet == null)
             entrySet = Collections.synchronizedSet(new EntrySet());
         return entrySet;
     }
@@ -310,14 +314,14 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         public boolean contains(Object o) {
             if (!(o instanceof Map.Entry))
                 return false;
-            Map.Entry<?,?> entry = (Map.Entry<?,?>)o;
+            Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
             Object key = entry.getKey();
             Entry<?>[] tab = table;
             int hash = key.hashCode();
             int index = (hash & 0x7FFFFFFF) % tab.length;
 
             for (Entry<?> e = tab[index]; e != null; e = e.next)
-                if (e.hash==hash && e.equals(entry))
+                if (e.hash == hash && e.equals(entry))
                     return true;
             return false;
         }
@@ -325,16 +329,16 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         public boolean remove(Object o) {
             if (!(o instanceof Map.Entry))
                 return false;
-            Map.Entry<?,?> entry = (Map.Entry<?,?>) o;
+            Map.Entry<?, ?> entry = (Map.Entry<?, ?>) o;
             Object key = entry.getKey();
             Entry<?>[] tab = table;
             int hash = key.hashCode();
             int index = (hash & 0x7FFFFFFF) % tab.length;
 
             @SuppressWarnings("unchecked")
-            Entry<T> e = (Entry<T>)tab[index];
-            for(Entry<T> prev = null; e != null; prev = e, e = e.next) {
-                if (e.hash==hash && e.equals(entry)) {
+            Entry<T> e = (Entry<T>) tab[index];
+            for (Entry<T> prev = null; e != null; prev = e, e = e.next) {
+                if (e.hash == hash && e.equals(entry)) {
                     modCount++;
                     if (prev != null)
                         prev.next = e.next;
@@ -374,7 +378,7 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
      * @since 1.2
      */
     public Collection<T> values() {
-        if (values==null)
+        if (values == null)
             values = Collections.synchronizedCollection(new ValueCollection());
         return values;
     }
@@ -383,18 +387,21 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         public Iterator<T> iterator() {
             return getIterator(VALUES);
         }
+
         public int size() {
             return count;
         }
+
         public boolean contains(Object o) {
             return containsValue(o);
         }
+
         public void clear() {
             ItemStackMap.this.clear();
         }
     }
 
-    private static class Entry<V> implements Map.Entry<ItemStack,V> {
+    private static class Entry<V> implements Map.Entry<ItemStack, V> {
         final int hash;
         final ItemStack key;
         V value;
@@ -402,7 +409,7 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
 
         protected Entry(int hash, ItemStack key, V value, Entry<V> next) {
             this.hash = hash;
-            this.key =  key;
+            this.key = key;
             this.value = value;
             this.next = next;
         }
@@ -410,7 +417,7 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         @Override
         @SuppressWarnings("unchecked")
         protected Object clone() {
-            return new Entry<>(hash, key, value, (next==null ? null : (Entry<V>) next.clone()));
+            return new Entry<>(hash, key, value, (next == null ? null : (Entry<V>) next.clone()));
         }
 
         // Map.Entry Ops
@@ -439,10 +446,10 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
         public boolean equals(Object o) {
             if (!(o instanceof Map.Entry))
                 return false;
-            Map.Entry<?,?> e = (Map.Entry<?,?>)o;
+            Map.Entry<?, ?> e = (Map.Entry<?, ?>) o;
 
-            return (key==null ? e.getKey()==null : key.equals(e.getKey())) &&
-                    (value==null ? e.getValue()==null : value.equals(e.getValue()));
+            return (key == null ? e.getKey() == null : key.equals(e.getKey())) &&
+                    (value == null ? e.getValue() == null : value.equals(e.getValue()));
         }
 
         @Override
@@ -452,13 +459,14 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
 
         @Override
         public String toString() {
-            return key.toString()+"="+value.toString();
+            return key.toString() + "=" + value.toString();
         }
     }
 
     private static final int KEYS = 0;
     private static final int VALUES = 1;
     private static final int ENTRIES = 2;
+
     private class Enumerator<R> implements Enumeration<R>, Iterator<R> {
         Entry<?>[] table = ItemStackMap.this.table;
         int index = table.length;
@@ -511,7 +519,7 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
             if (et != null) {
                 Entry<?> e = lastReturned = entry;
                 entry = e.next;
-                return type == KEYS ? (R)e.key : (type == VALUES ? (R)e.value : (R)e);
+                return type == KEYS ? (R) e.key : (type == VALUES ? (R) e.value : (R) e);
             }
             throw new NoSuchElementException("Hashtable Enumerator");
         }
@@ -535,13 +543,13 @@ public class ItemStackMap<T> implements Map<ItemStack, T> {
             if (modCount != expectedModCount)
                 throw new ConcurrentModificationException();
 
-            synchronized(ItemStackMap.this) {
+            synchronized (ItemStackMap.this) {
                 Entry<?>[] tab = ItemStackMap.this.table;
                 int index = (lastReturned.hash & 0x7FFFFFFF) % tab.length;
 
                 @SuppressWarnings("unchecked")
-                Entry<T> e = (Entry<T>)tab[index];
-                for(Entry<T> prev = null; e != null; prev = e, e = e.next) {
+                Entry<T> e = (Entry<T>) tab[index];
+                for (Entry<T> prev = null; e != null; prev = e, e = e.next) {
                     if (e == lastReturned) {
                         modCount++;
                         expectedModCount++;

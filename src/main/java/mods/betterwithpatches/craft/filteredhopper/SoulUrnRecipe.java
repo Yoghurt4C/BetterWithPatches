@@ -15,6 +15,7 @@ public class SoulUrnRecipe extends HopperRecipe {
     public SoulUrnRecipe(Object... outputs) {
         super(-1, outputs);
     }
+
     public SoulUrnRecipe(int oreId, Object... outputs) {
         super(oreId, outputs);
     }

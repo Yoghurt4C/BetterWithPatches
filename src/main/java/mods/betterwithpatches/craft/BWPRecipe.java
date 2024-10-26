@@ -1,8 +1,6 @@
 package mods.betterwithpatches.craft;
 
-import mods.betterwithpatches.data.recipe.ChanceStack;
 import mods.betterwithpatches.data.recipe.RecipeOutput;
-import mods.betterwithpatches.data.recipe.WeightedStack;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;

@@ -8,5 +8,7 @@ import net.minecraft.world.World;
 import java.util.function.Predicate;
 
 public interface HopperFilter extends Predicate<ItemStack> {
-    default boolean shouldHopperProcessItems(World world, int x, int y, int z, TileEntityFilteredHopper tile, Entity entity) { return true; }
+    default boolean shouldHopperProcessItems(World world, int x, int y, int z, TileEntityFilteredHopper tile, Entity entity) {
+        return true;
+    }
 }

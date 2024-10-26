@@ -28,7 +28,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import static mods.betterwithpatches.util.BWMaterials.*;
-import static mods.betterwithpatches.util.BWMaterials.getMaterial;
 
 public class CommonProxy implements Proxy {
     public static final boolean isMTPresent = Loader.isModLoaded("MineTweaker3");

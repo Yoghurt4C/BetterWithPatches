@@ -15,6 +15,7 @@ import static mods.betterwithpatches.craft.FilteredHopperInteractions.RECIPE_MAP
 
 public class BWPPostMTReloadEvent implements IEventHandler<MineTweakerImplementationAPI.ReloadEvent> {
     public static final ItemStackMap<Set<HopperRecipe>> toAdd = new ItemStackMap<>(new HashSet<>());
+
     //todo collapse
     @Override
     public void handle(MineTweakerImplementationAPI.ReloadEvent reloadEvent) {

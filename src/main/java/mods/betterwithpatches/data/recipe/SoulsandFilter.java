@@ -16,7 +16,7 @@ public abstract class SoulsandFilter implements HopperFilter {
             int value = orb.getXpValue();
             if (remaining > 0) {
                 if (value <= remaining) {
-                    acc.setExperienceCount(acc.getExperienceCount()+value);
+                    acc.setExperienceCount(acc.getExperienceCount() + value);
                     orb.setDead();
                     return false;
                 }

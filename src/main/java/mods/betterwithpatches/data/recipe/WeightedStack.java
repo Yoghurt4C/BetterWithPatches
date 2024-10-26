@@ -9,8 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WeightedStack implements RecipeOutput {
-    private final ChanceStack[] stacks;
+    public final ChanceStack[] stacks;
 
+    /**
+     * @param obj one or more inputs that will be converted into {@link ChanceStack}
+     *            While ChanceStack on its own does a single roll for a single item using {@link ChanceStack#chance},
+     *            this class uses those values to randomly compute a single item from a collection of ChanceStacks.
+     */
     public WeightedStack(Object... obj) {
         this.stacks = new ChanceStack[obj.length];
         float avgWeight = 1f / obj.length;

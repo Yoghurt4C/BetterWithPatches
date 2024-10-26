@@ -1,9 +1,9 @@
 package mods.betterwithpatches.features;
 
 import mods.betterwithpatches.BWPRegistry;
-import mods.betterwithpatches.data.recipe.ItemStackMap;
 import mods.betterwithpatches.data.Penalty;
 import mods.betterwithpatches.data.PenaltyRegistry;
+import mods.betterwithpatches.data.recipe.ItemStackMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

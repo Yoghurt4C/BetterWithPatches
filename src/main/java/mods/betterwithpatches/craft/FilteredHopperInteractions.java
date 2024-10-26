@@ -69,7 +69,7 @@ public interface FilteredHopperInteractions {
 
     /**
      * @param filter Filter stack
-     * @param input Input stack, if you need OD use the method below
+     * @param input  Input stack, if you need OD use the method below
      * @param recipe new HopperRecipe(String oreName, ItemStack[] outputs)
      */
     static void addCustomRecipe(@Nullable ItemStack filter, @Nonnull ItemStack input, HopperRecipe recipe) {
@@ -117,7 +117,8 @@ public interface FilteredHopperInteractions {
 
         addCustomRecipe(soulSand, new SoulUrnRecipe("dustNetherrack", BWMaterials.getMaterial(BWMaterials.HELLFIRE_DUST)));
         addCustomRecipe(soulSand, new SoulUrnRecipe("dustSoul", BWMaterials.getMaterial(BWMaterials.SAWDUST)));
-        /*todo config?*/ addCustomRecipe(soulSand, new SoulUrnRecipe("dustGlowstone", BWMaterials.getMaterial(BWMaterials.BRIMSTONE)));
+        /*todo config?*/
+        addCustomRecipe(soulSand, new SoulUrnRecipe("dustGlowstone", BWMaterials.getMaterial(BWMaterials.BRIMSTONE)));
         addRecipe(wicker, Blocks.gravel, new WeightedStack(new ChanceStack(Blocks.sand, 0.5f), new ChanceStack(new ItemStack(Blocks.sand, 1, 1), 0.5f)), Items.flint);
         addCustomRecipe(soulSand, new HopperRecipe("sand", Blocks.soul_sand) {
             @Override

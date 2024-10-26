@@ -2,18 +2,13 @@ package mods.betterwithpatches.craft.filteredhopper;
 
 import betterwithmods.blocks.tile.TileEntityFilteredHopper;
 import mods.betterwithpatches.craft.BWPRecipe;
-import mods.betterwithpatches.data.recipe.ChanceStack;
 import mods.betterwithpatches.data.recipe.OutputStack;
 import mods.betterwithpatches.data.recipe.RecipeOutput;
-import mods.betterwithpatches.data.recipe.WeightedStack;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class HopperRecipe implements BWPRecipe {
     final RecipeOutput[] outputs;
