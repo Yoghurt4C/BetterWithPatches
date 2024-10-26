@@ -7,7 +7,6 @@
 /build/
 /data/
 /eclipse/
-/gradle/
 /jars/
 /lib/
 /out/
@@ -19,9 +18,6 @@
 /.project
 /CREDITS-fml.txt
 /forge-1.7.10-10.13.4.1566-1.7.10-changelog.txt
-/gradlew
-/gradlew.sh
-/gradlew.bat
 /LICENSE-fml.txt
 /MinecraftForge-Credits.txt
 /MinecraftForge-License.txt
