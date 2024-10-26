@@ -11,7 +11,7 @@ import mods.betterwithpatches.proxy.CommonProxy;
 import static mods.betterwithpatches.util.BWPConstants.MODID;
 import static mods.betterwithpatches.util.BWPConstants.MODNAME;
 
-@Mod(modid = MODID, name = MODNAME, version = "${version}", dependencies = "required-after:betterwithmods")
+@Mod(modid = MODID, useMetadata = true)
 public class BetterWithPatches {
     @SidedProxy(clientSide = "mods.betterwithpatches.proxy.ClientProxy", serverSide = "mods.betterwithpatches.proxy.CommonProxy")
     public static CommonProxy PROXY;

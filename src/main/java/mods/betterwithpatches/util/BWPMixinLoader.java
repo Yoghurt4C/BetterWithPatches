@@ -27,6 +27,7 @@ public class BWPMixinLoader {
             if (MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT) {
                 load(Config.HCFurnace, "hcfurnace.client.TileEntityFurnaceMixin");
                 load(true, "client.RenderBipedMixin", "client.RenderPlayerMixin");
+                load(loadedMods.contains("angelica"), "client.BlockBTWPaneMixin");
             }
         } else {
             load(true, "BWCraftingMixin", "BWRegistryMixin");

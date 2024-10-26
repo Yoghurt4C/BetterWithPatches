@@ -1,10 +1,10 @@
 [
   {
-    "modid": "betterwithpatches",
-    "name": "BetterWithPatches",
+    "modid": "${mod_id}",
+    "name": "${mod_name}",
     "description": "doing silly things",
-    "version": "${modVersion}",
-    "mcversion": "1.7.10",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
     "url": "https://www.curseforge.com/minecraft/mc-mods/audino",
     "updateUrl": "",
     "authorList": [
@@ -13,6 +13,7 @@
     "credits": "BeetoGuy, FlowerChild",
     "logoFile": "assets/betterwithpatches/icon.png",
     "screenshots": [],
-    "dependencies": []
+    "requiredMods": ["betterwithmods"],
+    "dependencies": ["betterwithmods"]
   }
 ]

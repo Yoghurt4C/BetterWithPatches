@@ -8,8 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import scala.actors.threadpool.Arrays;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
 

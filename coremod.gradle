@@ -1,0 +1,21 @@
+coremod = {
+    if (project.coremod != null && file((group + "." + coremod).replace("\\.", "/")).exists()) {
+        return group + "." + project.coremod
+    }
+    return null
+}
+
+jar {
+    manifest {
+        attributes "FMLCorePlugin": coremod;
+        attributes "FMLCorePluginContainsFMLMod": "true"
+    }
+}
+
+runClient {
+    args("-Dfml.coreMods.load", coremod)
+}
+
+runServer {
+    args("-Dfml.coreMods.load", coremod)
+}
