@@ -63,7 +63,7 @@ public interface FilteredHopperInteractions {
 
     static void addRecipe(ItemStack filter, ItemStack input, Object... outputs) {
         if (input == null) return;
-        else if (RECIPE_MAP.get(filter) == null) RECIPE_MAP.put(filter, new ItemStackMap<>(null));
+        else RECIPE_MAP.computeIfAbsent(filter, k -> new ItemStackMap<>(null));
         RECIPE_MAP.get(filter).put(input, new HopperRecipe(-1, outputs));
     }
 
@@ -73,7 +73,7 @@ public interface FilteredHopperInteractions {
      * @param recipe new HopperRecipe(String oreName, ItemStack[] outputs)
      */
     static void addCustomRecipe(@Nullable ItemStack filter, @Nonnull ItemStack input, HopperRecipe recipe) {
-        if (RECIPE_MAP.get(filter) == null) RECIPE_MAP.put(filter, new ItemStackMap<>(null));
+        RECIPE_MAP.computeIfAbsent(filter, k -> new ItemStackMap<>(null));
         RECIPE_MAP.get(filter).put(input, recipe);
     }
 

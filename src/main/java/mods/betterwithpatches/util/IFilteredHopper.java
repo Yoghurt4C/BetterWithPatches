@@ -2,6 +2,7 @@ package mods.betterwithpatches.util;
 
 import mods.betterwithpatches.data.recipe.HopperFilter;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
 public interface IFilteredHopper {
@@ -24,6 +25,10 @@ public interface IFilteredHopper {
     void setExperienceCount(int xp);
 
     void setSoulsRetained(int souls);
+
+    AxisAlignedBB getCollectionZone();
+
+    void setCollectionZone(AxisAlignedBB box);
 
     default boolean isXPFull() {
         return this.getExperienceCount() >= this.getMaxExperienceCount();

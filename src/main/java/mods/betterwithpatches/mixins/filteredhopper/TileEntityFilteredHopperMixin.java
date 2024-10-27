@@ -55,6 +55,7 @@ public abstract class TileEntityFilteredHopperMixin extends TileEntityVisibleInv
     public void initFilter(CallbackInfo ctx) {
         this.filterStack = null;
         this.filter = FilteredHopperInteractions.EMPTY;
+        //this.collectionZone = AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord + 0.625f, this.zCoord, this.xCoord + 1, this.yCoord + 1.15f, this.zCoord + 1);
     }
 
     @Redirect(method = "readFromNBT", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NBTTagCompound;hasKey(Ljava/lang/String;)Z", ordinal = 3))
@@ -116,7 +117,7 @@ public abstract class TileEntityFilteredHopperMixin extends TileEntityVisibleInv
 
     @Override
     public void onEntityCollidedWithHopper(World world, int x, int y, int z, Entity entity) {
-        if (entity != null && entity.boundingBox.intersectsWith(this.collectionZone) && !entity.isDead) {
+        if (entity != null && !entity.isDead && entity.boundingBox.intersectsWith(this.collectionZone)) {
             TileEntityFilteredHopper tile = (TileEntityFilteredHopper) (Object) this;
             if (this.filter.shouldHopperProcessItems(world, x, y, z, tile, entity)) {
                 if (entity instanceof EntityItem) {
@@ -200,5 +201,15 @@ public abstract class TileEntityFilteredHopperMixin extends TileEntityVisibleInv
     @Override
     public boolean trySpawnGhast() {
         return this.spawnGhast();
+    }
+
+    @Override
+    public AxisAlignedBB getCollectionZone() {
+        return this.collectionZone;
+    }
+
+    @Override
+    public void setCollectionZone(AxisAlignedBB box) {
+        this.collectionZone = box;
     }
 }
