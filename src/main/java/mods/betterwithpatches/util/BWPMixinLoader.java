@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Set;
 
 public class BWPMixinLoader {
-    private final boolean early;
-    private final List<String> list;
+    public final boolean early;
+    public final List<String> list;
 
     public BWPMixinLoader(boolean early) {
         this.early = early;
@@ -27,7 +27,6 @@ public class BWPMixinLoader {
             if (MixinEnvironment.getCurrentEnvironment().getSide() == MixinEnvironment.Side.CLIENT) {
                 load(Config.HCFurnace, "hcfurnace.client.TileEntityFurnaceMixin");
                 load(true, "client.RenderBipedMixin", "client.RenderPlayerMixin");
-                load(loadedMods.contains("angelica"), "client.BlockBTWPaneMixin");
             }
         } else {
             load(true, "BWCraftingMixin", "BWRegistryMixin");
@@ -50,6 +49,7 @@ public class BWPMixinLoader {
                 load(Config.patchFilteredHopper, "filteredhopper.client.BlockMechMachinesMixin");
                 if (loadedMods.contains("lwjgl3ify") && loadedMods.contains("signpic"))
                     load(Config.patchSignPicForLwjglify, "compat.signpic.GuiTaskAccessor", "compat.signpic.GuiTaskMixin", "compat.signpic.GuiTask$1$1Mixin", "compat.signpic.CoreHandlerMixin");
+                load(loadedMods.contains("angelica"), "client.BlockBTWPaneMixin");
             }
         }
         return list;

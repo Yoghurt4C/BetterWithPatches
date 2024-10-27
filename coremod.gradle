@@ -1,13 +1,9 @@
-coremod = {
-    if (project.coremod != null && file((group + "." + coremod).replace("\\.", "/")).exists()) {
-        return group + "." + project.coremod
-    }
-    return null
-}
+def coremod = file(String.format("src/main/java/%s/%s.java", group.replace(".", "/"), project.coremod.replace(".", "/"))).exists() ? group + "." + project.coremod
+            : { throw new GradleException("Couldn't find the \"" + project.coremod + "\" coremod as specified in \"gradle.properties\".") }()
 
 jar {
     manifest {
-        attributes "FMLCorePlugin": coremod;
+        attributes "FMLCorePlugin": coremod
         attributes "FMLCorePluginContainsFMLMod": "true"
     }
 }

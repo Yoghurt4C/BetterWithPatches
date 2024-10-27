@@ -20,7 +20,6 @@ repositories {
 
 java.targetCompatibility(JavaVersion.VERSION_1_8)
 version = project.mod_version
-mod_id = project.mod_id
 group= project.maven_group + "." + project.mod_id
 archivesBaseName = project.archives_base_name
 
@@ -65,7 +64,7 @@ processResources {
     }
 }
 
-if (coremod != null) {
+if (!(coremod == null || coremod.isEmpty())) {
     apply from: "coremod.gradle"
 }
 apply from: "mixin.gradle"
